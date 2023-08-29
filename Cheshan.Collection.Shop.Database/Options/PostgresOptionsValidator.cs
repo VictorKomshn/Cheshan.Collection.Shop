@@ -11,7 +11,7 @@ namespace Cheshan.Collection.Shop.Database.Options
     {
         public ValidateOptionsResult Validate(string? name, PostgresOptions options)
         {
-            throw new NotImplementedException();
+            return ValidateOptionsResult.Success;
         }
     }
 }

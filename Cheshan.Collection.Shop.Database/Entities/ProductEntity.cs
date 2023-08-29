@@ -1,6 +1,6 @@
-﻿namespace Cheshan.Collection.Shop.Core.Models
+﻿namespace Cheshan.Collection.Shop.Database.Entities
 {
-    public class ProductModel
+    public class ProductEntity
     {
         public Guid Id { get; set; }
 
@@ -26,6 +26,6 @@
 
         public string MainPhoto { get; set; }
 
-        public IEnumerable<string> Photos { get; set; }
+        public string[] Photos { get; set; }
     }
 }

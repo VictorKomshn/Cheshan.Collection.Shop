@@ -33,11 +33,11 @@ namespace Cheshan.Collection.Shop.Core.Services
             return createdCartGuid;
         }
 
-        public async Task<CartModel> GetAsync(Guid id)
+        public async Task<CartModel> GetAsync(Guid userId)
         {
             try
             {
-                var cartEntity = await _repository.GetAsync(id);
+                var cartEntity = await _repository.GetAsync(userId);
                 return cartEntity.ToModel();
             }
             catch

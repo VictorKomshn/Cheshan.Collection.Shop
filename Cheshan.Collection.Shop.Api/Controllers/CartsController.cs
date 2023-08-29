@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cheshan.Collection.Shop.Api.Controllers
 {
+    [Route("cart")]
     [ApiController]
     public class CartsController : ControllerBase
     {
@@ -13,7 +14,15 @@ namespace Cheshan.Collection.Shop.Api.Controllers
             _service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
+
+        /// <summary>
+        /// Добавить продукт в корзину
+        /// </summary>
+        /// <param name="productId"> Id продукта</param>
+        /// <param name="cartId"></param>
+        /// <returns></returns>
         [HttpPost]
+        [Route("add/{productId}")]
         public async Task<IActionResult> AddToCartAsync(Guid productId, Guid cartId)
         {
             try
@@ -28,6 +37,7 @@ namespace Cheshan.Collection.Shop.Api.Controllers
         }
 
         [HttpPost]
+        [Route("remove/{productId}")]
         public async Task<IActionResult> RemoveFromCartAsync(Guid productId, Guid cartId)
         {
             try
@@ -56,11 +66,11 @@ namespace Cheshan.Collection.Shop.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync(Guid cartId)
+        public async Task<IActionResult> GetAsync(Guid userId)
         {
             try
             {
-                var cart = await _service.GetAsync(cartId);
+                var cart = await _service.GetAsync(userId);
                 return Ok(cart);
             }
             catch (Exception ex)
@@ -68,7 +78,5 @@ namespace Cheshan.Collection.Shop.Api.Controllers
                 return NotFound(ex);
             }
         }
-
-
     }
 }

@@ -1,10 +1,10 @@
-﻿using Cheshan.Collection.Shop.Database.Models;
+﻿using Cheshan.Collection.Shop.Database.Entities;
 
 namespace Cheshan.Collection.Shop.Database.Abstract
 {
     public interface ICartsRepository
     {
-        Task<CartEntity> GetAsync(Guid id);
+        Task<CartEntity> GetAsync(Guid userId);
 
         Task<Guid> CreateCartAsync(Guid userId);
 

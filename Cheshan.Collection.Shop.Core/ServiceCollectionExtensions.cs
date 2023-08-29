@@ -1,9 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Cheshan.Collection.Shop.Core.Abstract;
+using Cheshan.Collection.Shop.Core.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Cheshan.Collection.Shop.Core
 {
@@ -11,6 +8,10 @@ namespace Cheshan.Collection.Shop.Core
     {
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
+            services.AddScoped<ICartsService, CartsService>();
+            services.AddScoped<IProductsService, ProductsService>();
+            services.AddScoped<INotificationRecieversService, NotificationRecieversService>();
+
             return services;
         }
     }

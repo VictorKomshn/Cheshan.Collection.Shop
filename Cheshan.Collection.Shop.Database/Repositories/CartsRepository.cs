@@ -1,6 +1,6 @@
 ﻿using Cheshan.Collection.Shop.Database.Abstract;
 using Cheshan.Collection.Shop.Database.Database;
-using Cheshan.Collection.Shop.Database.Models;
+using Cheshan.Collection.Shop.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cheshan.Collection.Shop.Database.Repositories
@@ -29,6 +29,10 @@ namespace Cheshan.Collection.Shop.Database.Repositories
             {
                 throw new Exception("Product was not found");
             }
+            if(cart.Products == null)
+            {
+                cart.Products = new List<ProductEntity>();
+            }
             cart?.Products.Add(product);
 
             await _dataContext.SaveChangesAsync();
@@ -48,9 +52,9 @@ namespace Cheshan.Collection.Shop.Database.Repositories
             return cart.Id;
         }
 
-        public async Task<CartEntity> GetAsync(Guid id)
+        public async Task<CartEntity> GetAsync(Guid userId)
         {
-            var cart = _dataContext.Carts.FirstOrDefault(x => x.Id == id);
+            var cart = _dataContext.Carts.Include(x=> x.Products).FirstOrDefault(x => x.UserId == userId);
 
             if(cart == null)
             {

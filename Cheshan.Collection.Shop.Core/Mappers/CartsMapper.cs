@@ -1,5 +1,5 @@
 ﻿using Cheshan.Collection.Shop.Core.Models;
-using Cheshan.Collection.Shop.Database.Models;
+using Cheshan.Collection.Shop.Database.Entities;
 
 namespace Cheshan.Collection.Shop.Core.Mappers
 {

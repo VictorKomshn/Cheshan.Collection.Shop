@@ -6,4 +6,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cheshan.Collection.Shop.Api\Cheshan.Collection.Shop.Api.csproj" />
+    <ProjectReference Include="..\Cheshan.Collection.Shop.Core\Cheshan.Collection.Shop.Core.csproj" />
+  </ItemGroup>
+
 </Project>
