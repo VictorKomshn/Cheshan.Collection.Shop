@@ -19,15 +19,15 @@ namespace Cheshan.Collection.Shop.Api.Controllers
         /// Добавить продукт в корзину
         /// </summary>
         /// <param name="productId"> Id продукта</param>
-        /// <param name="cartId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("add/{productId}")]
-        public async Task<IActionResult> AddToCartAsync(Guid productId, Guid cartId)
+        public async Task<IActionResult> AddToCartAsync(Guid productId, Guid userId)
         {
             try
             {
-                await _service.AddToCartAsync(productId, cartId);
+                await _service.AddToCartAsync(productId, userId);
                 return Ok();
             }
             catch (Exception ex)
@@ -66,6 +66,7 @@ namespace Cheshan.Collection.Shop.Api.Controllers
         }
 
         [HttpGet]
+        [Route("{userId}")]
         public async Task<IActionResult> GetAsync(Guid userId)
         {
             try

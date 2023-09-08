@@ -14,9 +14,9 @@ namespace Cheshan.Collection.Shop.Database.Repositories
             _dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
         }
 
-        public async Task AddToCartAsync(Guid productId, Guid cartId)
-        {
-            var cart = await _dataContext.Carts.FirstOrDefaultAsync(x => x.Id == cartId);
+        public async Task AddToCartAsync(Guid productId, Guid userId)
+        {   
+            var cart = await GetAsync( userId);
 
             if (cart == null)
             {
@@ -33,6 +33,7 @@ namespace Cheshan.Collection.Shop.Database.Repositories
             {
                 cart.Products = new List<ProductEntity>();
             }
+
             cart?.Products.Add(product);
 
             await _dataContext.SaveChangesAsync();
@@ -64,14 +65,9 @@ namespace Cheshan.Collection.Shop.Database.Repositories
             return cart;
         }
 
-        public async Task RemoveFromCartAsync(Guid productId, Guid cartId)
+        public async Task RemoveFromCartAsync(Guid productId, Guid userId)
         {
-            var cart = await _dataContext.Carts.FirstOrDefaultAsync(x => x.Id == cartId);
-
-            if (cart == null)
-            {
-                throw new Exception("Failed to find cart");
-            }
+            var cart = await GetAsync(userId);
 
             var product = await _dataContext.Products.FirstOrDefaultAsync(x => x.Id == productId);
 

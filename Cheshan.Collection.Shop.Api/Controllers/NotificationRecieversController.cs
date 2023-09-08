@@ -20,7 +20,7 @@ namespace Cheshan.Collection.Shop.Api.Controllers
         [Route("add")]
         public async Task AddToList(string emailAdress)
         {
-            if (emailAdress == null)
+            if (emailAdress != null)
             {
                 await _service.AddNotificationAsync(emailAdress);
             }
@@ -30,7 +30,7 @@ namespace Cheshan.Collection.Shop.Api.Controllers
         [Route("remove")]
         public async Task DeleteFromList(string emailAdress)
         {
-            if (emailAdress == null)
+            if (emailAdress != null)
             {
                 await _service.DeleteNotificationAsync(emailAdress);
             }

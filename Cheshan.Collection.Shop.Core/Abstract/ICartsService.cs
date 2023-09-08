@@ -7,9 +7,9 @@ namespace Cheshan.Collection.Shop.Core.Abstract
     {
         Task<CartModel> GetAsync(Guid id);
 
-        Task AddToCartAsync(Guid productId,Guid cartId);
+        Task AddToCartAsync(Guid productId,Guid userId);
 
-        Task RemoveFromCartAsync(Guid productId, Guid cartId);
+        Task RemoveFromCartAsync(Guid productId, Guid userId);
 
         Task<Guid> CreateCartAsync(Guid userId);
 

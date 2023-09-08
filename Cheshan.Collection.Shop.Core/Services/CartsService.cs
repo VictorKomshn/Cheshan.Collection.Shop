@@ -15,11 +15,11 @@ namespace Cheshan.Collection.Shop.Core.Services
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task AddToCartAsync(Guid productId, Guid cartId)
+        public async Task AddToCartAsync(Guid productId, Guid userId)
         {
             try
             {
-                await _repository.AddToCartAsync(productId, cartId);
+                await _repository.AddToCartAsync(productId, userId);
             }
             catch
             {
@@ -46,11 +46,11 @@ namespace Cheshan.Collection.Shop.Core.Services
             }
         }
 
-        public async Task RemoveFromCartAsync(Guid productId, Guid cartId)
+        public async Task RemoveFromCartAsync(Guid productId, Guid userId)
         {
             try
             {
-                await _repository.RemoveFromCartAsync(productId, cartId);
+                await _repository.RemoveFromCartAsync(productId, userId);
             }
             catch
             {
