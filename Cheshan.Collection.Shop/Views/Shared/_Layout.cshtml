@@ -1,0 +1,543 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="~/css/site.css" rel="stylesheet">
+    <link href="~/css/FilterMenuStyle.css" rel="stylesheet" />
+    <link href="~/css/ProductInCartMenuStyle.css" rel="stylesheet">
+
+</head>
+<body>
+    <header>
+        <div class="marquee" style="display:none;">
+            <div class="marquee__group">
+                <span class="marquee-text">официальный представитель брендов на Урале</span>
+                <span class="marquee-text">официальный представитель брендов на Урале</span>
+                <span class="marquee-text">официальный представитель брендов на Урале</span>
+                <span class="marquee-text">официальный представитель брендов на Урале</span>
+                <span class="marquee-text">официальный представитель брендов на Урале</span>
+
+            </div>
+            <div class="marquee__group" aria-hidden="true">
+                <span class="marquee-text">официальный представитель брендов на Урале</span>
+                <span class="marquee-text">официальный представитель брендов на Урале</span>
+                <span class="marquee-text">официальный представитель брендов на Урале</span>
+                <span class="marquee-text">официальный представитель брендов на Урале</span>
+                <span class="marquee-text">официальный представитель брендов на Урале</span>
+
+            </div>
+        </div>
+        <div class="header-menu-wrapper">
+            <div class="header-menu-inner">
+                <button id="mobile-menu-button" class="category-button" onclick="openMobileMenu()">
+                    <div class="button-container-inner">
+                        <div>
+                            <i class="icon menu-icon"></i>
+                        </div>
+                        <span class="text-regular">МЕНЮ</span>
+                    </div>
+                </button>
+                <button class="category-button big-screen-visible" onclick="openSideMenu(this)" data-button-name="woman"><span class="text-regular">Женское</span></button>
+                <button class="category-button big-screen-visible" onclick="openSideMenu(this)" data-button-name="man"><span class="text-regular">Мужское</span></button>
+                <button id="header-brands-button" class="category-button big-screen-visible" onclick="openSideMenu(this)" data-button-name="brands"><span class="text-regular">Бренды </span></button>
+            </div>
+            <a class="logo-container" href="/"><img class="header-logo" src="~/img/logo-home.svg" /></a>
+            <div class="header-navigation-inner">
+                <button id="search-button" class="category-button">
+                    <div class="button-container-inner">
+                        <div class="icon-container">
+                            <i class="icon search-icon"></i>
+                        </div>
+                        <span class="text-regular">ПОИСК</span>
+                    </div>
+                </button>
+
+                <button id="info-button" onclick="location.href = '/info';" class="category-button">
+                    <div class="button-container-inner">
+                        <div class="icon-container">
+                            <i class="icon info-icon"></i>
+                        </div>
+                        <span class="text-regular">INFO</span>
+                    </div>
+                </button>
+
+                <button id="account-button" class="category-button">
+                    <div class="button-container-inner">
+                        <div class="icon-container">
+                            <i class="icon acc-icon"></i>
+                        </div>
+                        <span class="text-regular">ВОЙТИ</span>
+                    </div>
+                </button>
+
+                <button id="cart-button" class="category-button" onclick="openCartMenu()">
+                    <div class="button-container-inner">
+                        <i class="icon bag-icon"></i>
+                        <span id="user-cart-counter" class="cart-counter text-regular">(0)</span>
+                        <script>
+                            $.get('@Url.Action("GetAmount", "Carts")', function (content) {
+                                $("#user-cart-counter").textContent = content;
+                            });
+                        </script>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </header>
+    <div id="side-menu-wrapper">
+        <div class="side-menu-inner ">
+            <div class="close-icon-wrapper" data-close="side-menu-wrapper">
+                <i class="icon close-icon"></i>
+            </div>
+            <div id="side-menu-buttons" class="menu-buttons-inner" data-selected-category="">
+                <button id="filter-button-woman" class="category-button filter-category-button" onclick="selectCategory(this)" data-category="woman"><span class="text-regular">Женское</span></button>
+                <button id="filter-button-man" class="category-button filter-category-button" onclick="selectCategory(this)" data-category="man"><span class="text-regular">Мужское</span></button>
+                <button id="filter-button-brands" class="category-button filter-category-button" onclick="selectCategory(this)" data-category="brands"><span class="text-regular">Бренды </span></button>
+            </div>
+            <div class="menu-filters-inner text-regular-caps">
+                <div class="all-categories-inner filter-wrapper">
+                    <button class="filter-button" data-category="all" onclick="filterCategory(this)">ВСЕ ТОВАРЫ</button>
+                    <button class="filter-button" data-category="new">NEW</button>
+                    <button class="filter-button sale-button" data-filter="sale">SALE</button>
+                </div>
+                <div id="filters-inner" class="main-filters-wrapper">
+                    <div id="woman-categories-inner" class="main-filters-wrapper">
+                        <div class="clothes-categories-inner filter-wrapper">
+                            <button class="filter-button">ФУТБОЛКИ И ТОПЫ</button>
+                            <button class="filter-button">ЖАКЕТЫ</button>
+                            <button class="filter-button">ТОЛСТОВКИ И СВИТШОТЫ</button>
+                            <button class="filter-button">СВИТЕРЫ И ДЖЕМПЕРЫ</button>
+                            <button class="filter-button">ПЛАТЬЯ</button>
+                            <button class="filter-button">ЮБКИ</button>
+                            <button class="filter-button">РУБАШКИ И БЛУЗЫ</button>
+                            <button class="filter-button" onclick="filterCategory(this)" data-category="брюки">БРЮКИ И ШОРТЫ</button>
+                            <button class="filter-button">ДЖИНСЫ</button>
+                            <button class="filter-button">SPORT</button>
+                            <button class="filter-button">ПЛЯЖНАЯ ОДЕЖДА</button>
+                            <button class="filter-button" onclick="filterCategory(this)" data-category="куртка">ВЕРХНЯЯ ОДЕЖДА</button>
+
+                        </div>
+                        <div class="footwear-categories-inner filter-wrapper">
+                            <button class="filter-button" data-filter="new">КРОССОВКИ</button>
+                            <button class="filter-button" data-filter="new">БОТИНКИ</button>
+                            <button class="filter-button" data-filter="new">ТУФЛИ</button>
+
+                        </div>
+                        <div class="accessories-categories-inner filter-wrapper">
+                            <button class="filter-button" data-filter="new">ГОЛОВНЫЕ УБОРЫ</button>
+                            <button class="filter-button" data-filter="new">СУМКИ</button>
+                            <button class="filter-button" data-filter="new">УКРАШЕНИЯ</button>
+                            <button class="filter-button" data-filter="new">АКСЕССУАРЫ</button>
+                        </div>
+                    </div>
+                    <div id="man-categories-inner" class="main-filters-wrapper">
+                        <div class="clothes-categories-inner filter-wrapper">
+                            <button class="filter-button">ФУТБОЛКИ</button>
+                            <button class="filter-button">РУБАШКИ</button>
+                            <button class="filter-button">ТОЛСТОВКИ И СВИТШОТЫ</button>
+                            <button class="filter-button">СВИТЕРЫ И ДЖЕМПЕРЫ</button>
+                            <button class="filter-button">ПИДЖАКИ</button>
+                            <button class="filter-button" onclick="filterCategory(this)" data-category="брюки">БРЮКИ И ШОРТЫ</button>
+                            <button class="filter-button">ДЖИНСЫ</button>
+                            <button class="filter-button">SPORT</button>
+                            <button class="filter-button" onclick="filterCategory(this)" data-category="куртка">ВЕРХНЯЯ ОДЕЖДА</button>
+
+                        </div>
+                        <div class="footwear-categories-inner filter-wrapper">
+                            <button class="filter-button" data-filter="new">КРОССОВКИ</button>
+                            <button class="filter-button" data-filter="new">БОТИНКИ</button>
+                            <button class="filter-button" data-filter="new">ТУФЛИ</button>
+
+                        </div>
+                        <div class="accessories-categories-inner filter-wrapper">
+                            <button class="filter-button" data-filter="new">СУМКИ</button>
+                            <button class="filter-button" data-filter="new">АКСЕССУАРЫ</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="brands-wrapper" class="filter-wrapper">
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/altea';">ALTEA</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/acne-studios';">ACNE STUDIOS</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/autry';">AUTRY</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/botega-veneta';">BOTEGA VENETA</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/by-far';">BY FAR</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/cult-gaia';">CULT GAIA</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/dirk-bikkembergs';">DIRK BIKKEMBERGS</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/ermanno-scervino';">ERMANNO SCERVINO</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/etro';">ETRO</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/fabiana-filippi';">FABIANA FILIPPI</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/fendi';">FENDI</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/giuseppe-zanotti';">GIUSEPPE ZANOTTI</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/giuseppe-de-morabito';">GIUSEPPE DE MORABITO</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/palm-angels';">PALM ANGELS</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/premiata';">PREMIATA</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/peserico';">PESERICO</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/panicale';">PANICALE</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/jil-sander';">JIL SANDER</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/jacquemus';">JACQUEMUS</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/karl-lagerfeld';">KARL LAGERFELD</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/khrisjoy';">KHRISJOY</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/kiton';">KITON</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/sara-roka';">SARA ROKA</button>
+                    <button class="filter-button" data-filter="new" onclick="location.href = '/products/brands/moorer';">MOORER</button>
+
+                </div>
+            </div>
+        </div>
+        <div class="empty" onclick='closeOnClick("side-menu-wrapper")'></div>
+    </div>
+    <div id="cart-menu-wrapper">
+        <div class="empty" onclick='closeOnClick("cart-menu-wrapper")'>
+        </div>
+        <div class="cart-menu-inner">
+            <div class="close-icon-wrapper" data-close="cart-menu-wrapper">
+                <i class="icon close-icon"></i>
+            </div>
+            <div class="cart-menu-buttons">
+                <div class="cart-mark">
+                    <i class="icon bag-icon"></i>
+                    <span class="cart-counter text-regular">(0)</span>
+                </div>
+                <a id="clear-cart-button" onclick="clearCart()">ОЧИСТИТЬ</a>
+            </div>
+            <div class="cart-menu-sumprice-wrapper">
+                <span id="cart-menu-sumprice"></span>
+            </div>
+            <div class="cart-menu-content-wrapper">
+                <div id="cart-menu-content">
+                </div>
+            </div>
+            <div class="cart-menu-navigation-buttons">
+                <div class="cart-menu-navigation-buttons-wrapper">
+                    <button id="proceed-to-cart-button" class="action-button" onclick="location.href = '/cart';">
+                        <span class="text-regular">ПЕРЕЙТИ К ОФОРМЛЕНИЮ</span>
+                    </button>
+                    <button id="proceed-to-products-button" class="action-button" onclick="location.href = '/products';">
+                        <span class="text-regular">ПРОДОЛЖИТЬ ПОКУПКИ</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="mobile-menu-wrapper">
+        <div class="close-icon-wrapper" data-close="mobile-menu-wrapper">
+            <i class="icon close-icon"></i>
+        </div>
+        <div class="mobile-menu-header-wrapper">
+            <div class="mobile-menu-header">
+                <div>
+                    <i class="icon menu-icon-white"></i>
+                </div>
+                <span class="text-regular">МЕНЮ</span>
+            </div>
+        </div>
+        <div class="mobile-collapsibles-wrapper">
+            <div class="collapsible">
+                <button class="collapsible-button">
+                    <span class="collapsible-name text-regular-caps">ЖЕНСКОЕ</span>
+                    <i class="collapsible-icon"></i>
+                </button>
+                <div class="collapsible-content text-regular-small">
+                    <div id="filters-mobile-women-inner" class="mobile-side-menu-collapsible" data-sex="woman">
+                        <div class="mobile-all-categories-inner filter-wrapper">
+                            <button class="filter-button" data-category="all">ВСЕ ТОВАРЫ</button>
+                            <button class="filter-button" data-category="new">NEW</button>
+                            <button class="filter-button sale-button" data-category="sale">SALE</button>
+                        </div>
+                        <div class="clothes-categories-inner filter-wrapper">
+                            <button class="filter-button" data-category="футболка,топ">ФУТБОЛКИ И ТОПЫ</button>
+                            <button class="filter-button" data-category="жакет">ЖАКЕТЫ</button>
+                            <button class="filter-button" data-category="толстовка,свитшот">ТОЛСТОВКИ И СВИТШОТЫ</button>
+                            <button class="filter-button" data-category="свитер,джемпер">СВИТЕРЫ И ДЖЕМПЕРЫ</button>
+                            <button class="filter-button" data-category="платье">ПЛАТЬЯ</button>
+                            <button class="filter-button" data-category="юбка">ЮБКИ</button>
+                            <button class="filter-button" data-category="рубашка,блуза">РУБАШКИ И БЛУЗЫ</button>
+                            <button class="filter-button" data-category="брюки,шорты">БРЮКИ И ШОРТЫ</button>
+                            <button class="filter-button" data-category="джинсы">ДЖИНСЫ</button>
+                            <button class="filter-button" data-category="sport">SPORT</button>
+                            <button class="filter-button" data-category="пляжная одежда">ПЛЯЖНАЯ ОДЕЖДА</button>
+                            <button class="filter-button" data-category="верхняя одежда">ВЕРХНЯЯ ОДЕЖДА</button>
+
+                        </div>
+                        <div class="footwear-categories-inner filter-wrapper">
+                            <button class="filter-button" data-category="кроссовки">КРОССОВКИ</button>
+                            <button class="filter-button" data-category="ботинки">БОТИНКИ</button>
+                            <button class="filter-button" data-category="туфли">ТУФЛИ</button>
+
+                        </div>
+                        <div class="accessories-categories-inner filter-wrapper">
+                            <button class="filter-button" data-category="головной убор">ГОЛОВНЫЕ УБОРЫ</button>
+                            <button class="filter-button" data-category="сумка">СУМКИ</button>
+                            <button class="filter-button" data-category="украшение">УКРАШЕНИЯ</button>
+                            <button class="filter-button" data-category="аксессуар">АКСЕССУАРЫ</button>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            </div>
+            <div class="collapsible">
+                <button class="collapsible-button">
+                    <span class="collapsible-name text-regular-caps">МУЖСКОЕ</span>
+                    <i class="collapsible-icon"></i>
+                </button>
+                <div class="collapsible-content text-regular-small">
+                    <div id="filters-mobile-men-inner" class="mobile-side-menu-collapsible" data-sex="man">
+                        <div class="mobile-all-categories-inner filter-wrapper">
+                            <button class="filter-button" data-category="all">ВСЕ ТОВАРЫ</button>
+                            <button class="filter-button" data-category="new">NEW</button>
+                            <button class="filter-button sale-button" data-category="sale">SALE</button>
+                        </div>
+                        <div class="clothes-categories-inner filter-wrapper">
+                            <button class="filter-button" data-category="футболка">ФУТБОЛКИ</button>
+                            <button class="filter-button" data-category="рубашка">РУБАШКИ</button>
+                            <button class="filter-button" data-category="толстовка,свитшот">ТОЛСТОВКИ И СВИТШОТЫ</button>
+                            <button class="filter-button" data-category="свитер,джемпер">СВИТЕРЫ И ДЖЕМПЕРЫ</button>
+                            <button class="filter-button" data-category="пиджак">ПИДЖАКИ</button>
+                            <button class="filter-button" data-category="брюки,шорты">БРЮКИ И ШОРТЫ</button>
+                            <button class="filter-button" data-category="джинсы">ДЖИНСЫ</button>
+                            <button class="filter-button" data-category="sport">SPORT</button>
+                            <button class="filter-button" data-category="верхняя одежда">ВЕРХНЯЯ ОДЕЖДА</button>
+
+                        </div>
+                        <div class="footwear-categories-inner filter-wrapper">
+                            <button class="filter-button" data-category="кроссовки">КРОССОВКИ</button>
+                            <button class="filter-button" data-category="ботинки">БОТИНКИ</button>
+                            <button class="filter-button" data-category="туфли">ТУФЛИ</button>
+
+                        </div>
+                        <div class="accessories-categories-inner filter-wrapper">
+                            <button class="filter-button" data-category="сумка">СУМКИ</button>
+                            <button class="filter-button" data-category="аксессуар">АКСЕССУАРЫ</button>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            </div>
+            <div class="collapsible">
+                <button class="collapsible-button">
+                    <span class="collapsible-name text-regular-caps">БРЕНДЫ</span>
+                    <i class="collapsible-icon"></i>
+                </button>
+                <div class="brands-collapsible collapsible-content text-regular-small">
+                    <div class="brands-collapsible-wrapper">
+                        <button class="filter-button" onclick="location.href = '/products/brands/altea';">ALTEA</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/acne-studios';">ACNE STUDIOS</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/autry';">AUTRY</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/botega-veneta';">BOTEGA VENETA</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/by-far';">BY FAR</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/cult-gaia';">CULT GAIA</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/dirk-bikkembergs';">DIRK BIKKEMBERGS</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/ermanno-scervino';">ERMANNO SCERVINO</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/etro';">ETRO</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/fabiana-filippi';">FABIANA FILIPPI</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/fendi';">FENDI</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/giuseppe-zanotti';">GIUSEPPE ZANOTTI</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/giuseppe-de-morabito';">GIUSEPPE DE MORABITO</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/palm-angels';">PALM ANGELS</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/premiata';">PREMIATA</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/peserico';">PESERICO</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/panicale';">PANICALE</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/jil-sander';">JIL SANDER</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/jacquemus';">JACQUEMUS</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/karl-lagerfeld';">KARL LAGERFELD</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/khrisjoy';">KHRISJOY</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/kiton';">KITON</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/sara-roka';">SARA ROKA</button>
+                        <button class="filter-button" onclick="location.href = '/products/brands/moorer';">MOORER</button>
+                    </div>
+                </div>
+                <hr />
+            </div>
+        </div>
+        <div class="mobile-menu-footer">
+            <div class="footer-menu-info text-regular">
+                <button class="category-button" onclick="location.href = '/info';">О НАС</button>
+                <button class="category-button" onclick="location.href = '/info/delivery-and-payment';">ДОСТАВКА И ОПЛАТА</button>
+                <button class="category-button" onclick="location.href = '/info/refund';">ВОЗВРАТ</button>
+                <button class="category-button" onclick="location.href = '/info/priveleges';">ПРОГРАММА ПРИВЕЛЕГИЙ</button>
+                <button class="category-button" onclick="location.href = '/info/delivery-and-payment';">ЛИЧНЫЙ КАБИНЕТ</button>
+            </div>
+            <div class="footer-contacts-inner">
+                <div class="contact">
+                    <span class="contact-name text-small-caps">COLLECTION</span>
+                    <div class="contact-adress">
+                        <span class="adress text-regular-small">г. Челябинск, Цвиллинга, 28 <br /><br />+7 (351) 263-66-23<br />+7 (908) 099-53-10</span>
+                    </div>
+                </div>
+                <div class="contact">
+                    <span class="contact-name text-small-caps">COLLECTION</span>
+                    <div class="contact-adress">
+                        <span class="adress text-regular-small">
+                            г. Челябинск, Кирова, 163<br /><br />
+                            +7 (351) 263-15-97<br />
+                            +7 (922) 733-18-97<br />
+                        </span>
+                    </div>
+                </div>
+                <span id="mail-adress"></span>
+                <div class="media-info-inner">
+                    <a class="media-logo"><i class="icon-footer whatsapp-icon"></i></a>
+                    <a class="media-logo"><i class="icon-footer instagram-icon"></i></a>
+                    <a class="media-logo"><i class="icon-footer telegram-icon"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @RenderBody()
+    <div class="widgets-inner">
+        <a class="widget-icon" onclick="openWindow('notifications-wrapper','flex')"><i class="dicount-icon"></i></a>
+        <a class="widget-icon" onclick="openWindow('help-wrapper','flex')"><i class="helpchat-icon"></i></a>
+    </div>
+
+    <div id="notifications-wrapper">
+        <div class="popup-window-wrapper-header">
+            <div class="popup-window-wrapper-header-inner">
+                <span class="text-medium">ПРОГРАММА ПРИВЕЛЕГИЙ</span>
+            </div>
+            <div class="close-icon-wrapper" data-close="notifications-wrapper">
+                <i class="icon close-icon-white"></i>
+            </div>
+        </div>
+        <div class="notifications-wrapper-content">
+            <div class="gratitude-cover">
+                <div class="gratitude-content">
+                    <span class="gratitude-header">СПАСИБО ЗА ПОДПИСКУ!</span>
+                    <span class="gratitude-text-info">Теперь Вы являеетесь участником Программы привилегий. Войдите в свой аккаунт по этому же почтовому адресу, чтобы начать покупки.</span>
+                    <a class="priveledges-program-link"><span class="priveledges-program-info">ПОДРОБНЕЕ О ПРОГРАММЕ ПРИВЕЛЕГИЙ</span></a>
+                    <span class="unsubscribe-notification ">*Вы можете отписаться от новостной рассылки в любое время</span>
+                </div>
+            </div>
+            <div class="notifications-content-info-inner">
+                <span class="notifications-content-info">Станьте участником нашей программы привилегий и получайте индивидуальные предложения и скидки на все товары</span>
+                <a class="priveledges-program-info-button">ПОДРОБНЕЕ О ПРОГРАММЕ ПРИВИЛЕГИЙ</a>
+            </div>
+            <div class="notificaitons-subscribe-wrapper">
+                <div class="notificaiton-input-wrapper">
+                    <span>ИМЯ</span>
+                    <input id="notifications-subscriber-name-input" type="text" />
+                </div>
+                <div class="notificaiton-input-wrapper">
+                    <span>EMAIL</span>
+                    <input id="notifications-subscriber-email-input" type="text" />
+                </div>
+                <span class="privacy-warning-text">Нажимая "Подписаться", вы даете согласие на обработку моих персональных данных (закон №152-ФЗ «О персональных данных»)</span>
+                <button class="action-button subscribe-to-notifications-button text-regular-caps" onclick="subscribeOnNotifications()">ПОДПИСАТЬСЯ</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="help-wrapper">
+        <div class="popup-window-wrapper-header">
+            <div class="popup-window-wrapper-header-inner">
+                <span class="text-medium">НУЖНА ПОМОЩЬ?</span>
+            </div>
+            <div class="close-icon-wrapper" data-close="help-wrapper">
+                <i class="icon close-icon-white"></i>
+            </div>
+        </div>
+        <div class="help-wrapper-content">
+            <div class="help-wrapper-info text-twelve-small">
+                <span>Оставьте свои контакты и мы свяжемся с Вами в ближайшее время</span>
+            </div>
+            <div class="help-success-wrapper">
+                <span class="text-twelve-small">
+                    Спасибо за обращение, Ваше сообщение успешно отправлено! Мы свяжемся
+                    в Вами в ближайшее время и ответим
+                    на все интересующие вопросы.
+                </span>
+                <button class="action-button" onclick="closeOnClick('help-wrapper')">OK</button>
+            </div>
+            <div class="help-content-initial">
+                <div class="help-form-wrapper">
+                    <div class="help-data-input">
+                        <span class="text-small-caps">ИМЯ</span>
+                        <input id="help-name-input" type="text" />
+                    </div>
+                    <div class="help-data-input">
+                        <span class="text-small-caps">EMAIL</span>
+                        <input id="help-email-input" type="text" />
+                    </div>
+                    <div class="help-data-input">
+                        <span class="text-small-caps">ТЕЛЕФОН</span>
+                        <input id="help-phone-input" type="text" />
+                    </div>
+                    <div class="help-data-input">
+                        <span class="text-small-caps">СООБЩЕНИЕ</span>
+                        <input id="help-text-input" type="text" />
+                    </div>
+                </div>
+                <span class="privacy-warning-text text-twelve-small">
+                    Нажимая на кнопку “Отправить” Вы подтверждаете согласие на обработку моих персональных данных (закон №152-ФЗ «О персональных данных»)
+                </span>
+                <button class="action-button help-request-button text-regular-caps" onclick="requestHelp()">ОТПРАВИТЬ</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-inner-grid">
+            <div class="footer-menu-inner">
+                <div class="footer-menu-info text-regular">
+                    <button class="category-button">О НАС</button>
+                    <button class="category-button">ДОСТАВКА И ОПЛАТА</button>
+                    <button class="category-button">ВОЗВРАТ</button>
+                    <button class="category-button">ПРОГРАММА ПРИВЕЛЕГИЙ</button>
+                    <button class="category-button">ЛИЧНЫЙ КАБИНЕТ</button>
+                </div>
+                <div class="media-inner-desktop">
+
+                    <a class="media-logo"><i class="icon-footer whatsapp-icon"></i></a>
+                    <a class="media-logo"><i class="icon-footer instagram-icon"></i></a>
+                    <a class="media-logo"><i class="icon-footer telegram-icon"></i></a>
+                    <a class="media-logo"><i></i></a>
+                </div>
+
+            </div>
+            <div class="footer-contacts-inner">
+                <div class="contact">
+                    <span class="contact-name text-small-caps">COLLECTION</span>
+                    <div class="contact-adress">
+                        <span class="adress text-regular-small">г. Челябинск, Цвиллинга, 28 <br /><br />+7 (351) 263-66-23<br />+7 (908) 099-53-10</span>
+                    </div>
+                </div>
+                <div class="contact">
+                    <span class="contact-name text-small-caps">COLLECTION</span>
+                    <div class="contact-adress">
+                        <span class="adress text-regular-small">
+                            г. Челябинск, Кирова, 163<br /><br />
+                            +7 (351) 263-15-97<br />
+                            +7 (922) 733-18-97<br />
+                        </span>
+                    </div>
+                </div>
+                <span id="mail-adress" class="text-regular-small">
+                    collecti0n.info@yandex.ru
+                </span>
+                <div class="media-info-inner">
+                    <a id="whatsapp-media" class="media-icon"><i></i></a>
+                    <a id="telegram-media" class="media-icon"><i></i></a>
+                    <a id="instagram-media" class="media-icon"><i></i></a>
+                </div>
+            </div>
+            <div class="media-inner-mobile">
+
+                <a class="media-logo"><i class="icon-footer whatsapp-icon"></i></a>
+                <a class="media-logo"><i class="icon-footer instagram-icon"></i></a>
+                <a class="media-logo"><i class="icon-footer telegram-icon"></i></a>
+                <a class="media-logo"><i></i></a>
+            </div>
+        </div>
+    </footer>
+    @*
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)*@
+    <script src="~/js/site.js"></script>
+    <script src="~/js/ProductInCartScript.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</body>
+</html>

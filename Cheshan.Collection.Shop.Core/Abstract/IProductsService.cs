@@ -4,7 +4,7 @@ namespace Cheshan.Collection.Shop.Core.Abstract
 {
     public interface IProductsService
     {
-        Task<IEnumerable<ProductModel>> GetByConditionAsync(ProductsCondition condition);
+        Task<GetByConditionResultModel> GetByConditionAsync(ProductsCondition? condition, SortingType? sortType = null, bool getSuggested = false);
 
         Task<ProductModel> GetAsync(Guid id);
 

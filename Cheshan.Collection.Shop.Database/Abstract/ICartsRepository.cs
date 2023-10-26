@@ -1,4 +1,5 @@
 ﻿using Cheshan.Collection.Shop.Database.Entities;
+using Cheshan.Collection.Shop.Database.Enums;
 
 namespace Cheshan.Collection.Shop.Database.Abstract
 {
@@ -8,8 +9,13 @@ namespace Cheshan.Collection.Shop.Database.Abstract
 
         Task<Guid> CreateCartAsync(Guid userId);
 
-        Task AddToCartAsync(Guid productId, Guid cartId);
+        Task<int> AddToCartAsync(Guid productId, string size, Guid userId);
 
-        Task RemoveFromCartAsync(Guid productId, Guid cartId);
+        Task RemoveAllFromCartAsync(Guid userId);
+
+        Task ClearCartProductsAsync(Guid userId);
+
+        Task<int> DecreaseAmountOfProductInCartAsync(Guid productId, string size, Guid userId, DecreaseAmount amount);
+
     }
 }

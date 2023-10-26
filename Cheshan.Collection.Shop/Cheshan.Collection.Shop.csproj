@@ -7,12 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Duende.BFF" Version="2.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Cheshan.Collection.Shop.Api\Cheshan.Collection.Shop.Api.csproj" />
     <ProjectReference Include="..\Cheshan.Collection.Shop.Core\Cheshan.Collection.Shop.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Purchase\" />
+    <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
 
 </Project>

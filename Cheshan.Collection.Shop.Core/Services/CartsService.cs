@@ -15,11 +15,12 @@ namespace Cheshan.Collection.Shop.Core.Services
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task AddToCartAsync(Guid productId, Guid userId)
+        public async Task<int> AddToCartAsync(Guid productId, string size, Guid userId)
         {
             try
             {
-                await _repository.AddToCartAsync(productId, userId);
+                var newAmount = await _repository.AddToCartAsync(productId, size, userId);
+                return newAmount;
             }
             catch
             {
@@ -46,11 +47,51 @@ namespace Cheshan.Collection.Shop.Core.Services
             }
         }
 
-        public async Task RemoveFromCartAsync(Guid productId, Guid userId)
+        public async Task RemoveAllFromCartAsync(Guid userId)
         {
             try
             {
-                await _repository.RemoveFromCartAsync(productId, userId);
+                await _repository.RemoveAllFromCartAsync(userId);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<int> RemoveProductFromCartAsync(Guid productId, string size, Guid userId)
+        {
+            try
+            {
+                var newAmount = await _repository.DecreaseAmountOfProductInCartAsync(productId, size, userId,Database.Enums.DecreaseAmount.All);
+                return newAmount;
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task ClearCartProductsAsync(Guid userId)
+        {
+            try
+            {
+                await _repository.ClearCartProductsAsync(userId);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<int> RemoveProductOneSizeFromCartAsync(Guid productId, string size, Guid userId)
+        {
+            try
+            {
+                var newAmount = await _repository.DecreaseAmountOfProductInCartAsync(productId, size, userId, Database.Enums.DecreaseAmount.SingleItem);
+                return newAmount;
+
             }
             catch
             {

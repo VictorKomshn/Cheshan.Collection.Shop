@@ -1,0 +1,170 @@
+﻿@model CartViewModel
+<div class="cart-wrapper">
+    <div class="mobile-price-info-wrapper">
+        <div class="price-info-inner">
+            <div class="sum-price-info-wrapper">
+                <div class="sum-price-label-wrapper">
+                    <span class="sum-price-label text-small-caps">СУММА ЗАКАЗА:</span>
+                </div>
+                <div class="sum-price-wrapper">
+                    <span id="sum-price" class="text-small-caps">@Model.SumPrice ₽</span>
+                </div>
+            </div>
+            <div class="sum-price-info-wrapper">
+                <div class="sum-price-label-wrapper">
+                    <span class="sum-price-label text-small-caps">ДОСТАВКА:</span>
+                </div>
+                <div class="sum-price-wrapper">
+                    <span id="delivery-price" class="text-small-caps">0</span>
+                </div>
+            </div>
+            <div class="sum-price-info-wrapper">
+                <div class="sum-price-label-wrapper">
+                    <span class="sum-price-label text-small-caps">ПРОМОКОД:</span>
+                </div>
+                <div class="sum-price-wrapper">
+                    <span id="promocode-price" class="text-small-caps">-0</span>
+                </div>
+            </div>
+        </div>
+        <div class="result-sum-wrapper">
+            <span id="result-sum" class="text-medium">ИТОГОВАЯ СУММА: @Model.SumPrice ₽</span>
+        </div>
+    </div>
+    <div class="mobile-products-in-cart-wrapper">
+        <div class="mobile-products-in-cart">
+            @for (int i = 0; i < Model.Products.Count(); i++)
+            {
+                await Html.RenderPartialAsync("ProductInCartMobile", Model.Products.ElementAt(i));
+            }
+        </div>
+    </div>
+    <div class="purchase-info-wrapper">
+        @using (Html.BeginForm("PurchaseProducts", "Purchase", FormMethod.Post, new { id = "purchase-form" }))
+        {
+            <div class="personal-info-initial">
+                <span class="personal-data-header text-small-caps">ПЕРСОНАЛЬНЫЕ ДАННЫЕ</span>
+
+                <div class="input-with-label-wrapper">
+                    <label for="Name">ИМЯ</label>
+                    <input id="name-input" name="Name" type="text" />
+                </div>
+
+                <div class="input-with-label-wrapper">
+                    <label for="SecondName">ФАМИЛИЯ</label>
+                    <input id="secondname-input" name="SecondName" type="text" />
+                </div>
+
+                <div class="input-with-label-wrapper">
+                    <label for="Email">EMAIL</label>
+                    <input id="email-input" name="Email" type="text" />
+                </div>
+
+                <div class="input-with-label-wrapper">
+                    <label for="Phone">ТЕЛЕФОН</label>
+                    <input id="phone-input" name="Phone" type="text" />
+                </div>
+            </div>
+            <div class="delivery-options-wrapper">
+                <span class="delivery-options-header text-small-caps">ДОСТАВКА</span>
+                <div class="delivery-options-buttons-inner">
+                    <input type="button" class="delivery-button cart-button text-medium-cart" value="КУРЬЕР" data-deliverytype="courier" onclick="selectDelivery(this)" />
+                    <input type="button" class="delivery-button cart-button text-medium-cart" value="СДЭК" data-deliverytype="sdek" onclick="selectDelivery(this)" />
+                    <input type="button" class="delivery-button cart-button text-medium-cart selected-button" value="САМОВЫВОЗ" data-deliverytype="selfpickup" onclick="selectDelivery(this)" />
+                </div>
+                <div class="self-pick-up-options-wrapper">
+                    <div class="self-pick-up-option">
+                        <input type="radio" id="tsvillinga-delivery-adress" name="DeliveryAdress" value="Collection
+г.Челябинск, Цвиллинга, 28, пн-пт 11:00 – 20:00, сб-вс 11:00 – 18:00" checked="checked" />
+                        <label for="tsvillinga-delivery-adress">
+                            Collection<br />
+                            г.Челябинск, Цвиллинга, 28, пн-пт 11:00 – 20:00, сб-вс 11:00 – 18:00
+                        </label>
+                    </div>
+                    <div class="self-pick-up-option">
+                        <input type="radio" id="kirova-delivery-adress" name="DeliveryAdress" value="Via Collection outlet
+г.Челябинск, Кирова, 163, пн-пт 11:00 – 20:00, сб-вс 11:00 – 18:00 " />
+                        <label for="kirova-delivery-adress">
+                            Via Collection outlet<br />
+                            г.Челябинск, Кирова, 163, пн-пт 11:00 – 20:00, сб-вс 11:00 – 18:00
+                        </label>
+                    </div>
+                </div>
+                <div class="adress-input-wrapper"></div>
+            </div>
+            <input id="delivery-type-input" name="DeliveryType" type="hidden" value="selfpickup">
+
+            <div class="promocode-wrapper">
+                <span class="promocode-header text-small-caps">ПРОМОКОД</span>
+                <div class="promocode-input">
+                    <input id="promocode-input" name="Promocode" type="text" value="" />
+                    <input type="button" class="promocode-button text-regular-caps" value="АКТИВИРОВАТЬ" />
+                </div>
+            </div>
+
+            <div class="payment-type-wrapper">
+                <span class="payment-type-header text-small-caps">СПОСОБ ОПЛАТЫ</span>
+                <div class="payment-type-initial">
+                    <div class="payment-type-radio-button">
+                        <input id="cash-payment-radio-button" name="PaymentType" type="radio" class="cart-button text-regular-caps" value="НАЛИЧНЫМИ" data-paymenttype="cash" />
+                        <label for="cash-payment-radio-button" class="text-regular-caps">НАЛИЧНЫМИ</label>
+                    </div>
+                    <div class="payment-type-radio-button">
+                        <input id="online-payment-radio-button" name="PaymentType" type="radio" class="cart-button text-regular-caps selected-button" value="ОНЛАЙН(СБП)" data-paymenttype="online" />
+                        <label for="online-payment-radio-button" class="text-regular-caps">ОНЛАЙН(СБП)</label>
+                    </div>
+                </div>
+            </div>
+
+            <input id="payment-type-input" type="hidden" name="PaymentType" value="online" />
+
+            <input id="submitPurchaseButton" class="action-button  text-regular-caps" type="submit" value="ЗАКАЗАТЬ" />
+        }
+    </div>
+    <div class="cart-info-wrapper">
+        <div class="cart-info-inner">
+            <div class="price-info-wrapper">
+                <div class="price-info-inner">
+                    <div class="sum-price-info-wrapper">
+                        <div class="sum-price-label-wrapper">
+                            <span class="sum-price-label text-small-caps">СУММА ЗАКАЗА:</span>
+                        </div>
+                        <div class="sum-price-wrapper">
+                            <span id="sum-price" class="text-small-caps">@Model.SumPrice</span>
+                        </div>
+                    </div>
+                    <div class="sum-price-info-wrapper">
+                        <div class="sum-price-label-wrapper">
+                            <span class="sum-price-label text-small-caps">ДОСТАВКА:</span>
+                        </div>
+                        <div class="sum-price-wrapper">
+                            <span id="delivery-price" class="text-small-caps">0</span>
+                        </div>
+                    </div>
+                    <div class="sum-price-info-wrapper">
+                        <div class="sum-price-label-wrapper">
+                            <span class="sum-price-label text-small-caps">ПРОМОКОД:</span>
+                        </div>
+                        <div class="sum-price-wrapper">
+                            <span id="promocode-price" class="text-small-caps">-0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="result-sum-wrapper">
+                    <span id="result-sum" class="text-medium">ИТОГОВАЯ СУММА: @Model.SumPrice ₽</span>
+                </div>
+            </div>
+            <div class="products-in-cart-wrapper">
+                @for (int i = 0; i < Model.Products.Count(); i++)
+                {
+                    await Html.RenderPartialAsync("ProductInCart", Model.Products.ElementAt(i));
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/CartScript.js"></script>
+
+<link href="~/css/CartStyle.css" rel="stylesheet" />
+<link href="~/css/ProductInCartMenStyle.css rel="stylesheet" />

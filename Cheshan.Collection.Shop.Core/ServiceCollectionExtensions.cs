@@ -11,6 +11,9 @@ namespace Cheshan.Collection.Shop.Core
             services.AddScoped<ICartsService, CartsService>();
             services.AddScoped<IProductsService, ProductsService>();
             services.AddScoped<INotificationRecieversService, NotificationRecieversService>();
+            services.AddScoped<IPurchaseService, PurchaseService>();
+            services.AddScoped<IBrandService, BrandService>();
+            services.AddScoped<IHelpService, HelpService>();
 
             return services;
         }

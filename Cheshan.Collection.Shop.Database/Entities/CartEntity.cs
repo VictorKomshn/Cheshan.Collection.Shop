@@ -6,6 +6,6 @@
 
         public Guid UserId { get; set; }
 
-        public ICollection<ProductEntity> Products { get; set; }
+        public virtual ICollection<SizeWithAmountEntity> Products { get; set; }
     }
 }

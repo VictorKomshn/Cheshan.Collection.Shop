@@ -15,8 +15,6 @@ namespace Cheshan.Collection.Shop.Database
 
         public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
-            
-
             //services.AddOptions(configuration);
 
             services.AddDbContext<DataContext>();
@@ -30,7 +28,8 @@ namespace Cheshan.Collection.Shop.Database
                     Port = postgresOptions.Port,
                     Username = postgresOptions.Username,
                     Password = postgresOptions.Password,
-                    Database = postgresOptions.Database
+                    Database = postgresOptions.Database,
+
                 };
 
                 var builder = new DbContextOptionsBuilder<DataContext>()
@@ -43,14 +42,16 @@ namespace Cheshan.Collection.Shop.Database
             services.AddScoped<ICartsRepository, CartsRepository>();
             services.AddScoped<IProductsRepository, ProductsRepository>();
             services.AddScoped<INotificationRecieversRepository, NotificationRecieversRepository>();
+            services.AddScoped<IPurchasesRepository, PurchasesRepository>();
+            services.AddScoped<IBrandRepository, BrandRepository>();
 
 
             var provider = services.BuildServiceProvider();
             var postgresOptions = provider.GetRequiredService<IOptions<PostgresOptions>>().Value;
 
-            using var scope = provider.CreateScope();
-            using var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-            dataContext.Database.EnsureCreated();
+            //using var scope = provider.CreateScope();
+            //using var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+            //dataContext.Database.EnsureCreated();
 
             return services;
         }

@@ -9,5 +9,7 @@ namespace Cheshan.Collection.Shop.Core.Abstract
         Task DeleteNotificationAsync(string emailAdress);
 
         Task<IEnumerable<NotificationRecieverModel>> GetAllAsync();
+
+        Task AddProductNotificationAsync(Guid productId, string email, string selectedSize);
     }
 }

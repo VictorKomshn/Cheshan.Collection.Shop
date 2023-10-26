@@ -50,5 +50,20 @@ namespace Cheshan.Collection.Shop.Database.Repositories
             var result = await _context.Notifications.ToArrayAsync();
             return result;
         }
+
+        public async Task AddProductNotificationAsync(Guid productId, string email, string selectedSize)
+        {
+            var entity = new ProductNotificationRecieverEntity
+            {
+                Email = email,
+                ProductId = productId,
+                Size = selectedSize
+            };
+
+            await _context.ProductNotifications.AddAsync(entity);
+
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

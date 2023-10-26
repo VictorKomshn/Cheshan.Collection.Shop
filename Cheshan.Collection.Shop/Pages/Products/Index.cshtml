@@ -1,0 +1,16 @@
+﻿@using Cheshan.Collection.Shop.ViewModels;
+@model ProductsViewModel
+<head>
+
+</head>
+<div class="upper-head">
+</div>
+<div class="produts-inner">
+    @if (Model != null)
+    {
+        @foreach (var product in Model.Products)
+        {
+            await Html.RenderPartialAsync("ProductCard", product);
+        }
+    }
+</div>

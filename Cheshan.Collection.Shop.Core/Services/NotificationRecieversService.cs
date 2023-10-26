@@ -2,7 +2,6 @@
 using Cheshan.Collection.Shop.Core.Mappers;
 using Cheshan.Collection.Shop.Core.Models;
 using Cheshan.Collection.Shop.Database.Abstract;
-using Cheshan.Collection.Shop.Database.Repositories;
 
 namespace Cheshan.Collection.Shop.Core.Services
 {
@@ -31,6 +30,11 @@ namespace Cheshan.Collection.Shop.Core.Services
             var result = await _repository.GetAllAsync();
 
             return result.Select(x => x.ToModel());
+        }
+
+        public async Task AddProductNotificationAsync(Guid productId, string email, string selectedSize)
+        {
+            await _repository.AddProductNotificationAsync(productId, email, selectedSize);
         }
     }
 }

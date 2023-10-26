@@ -1,0 +1,385 @@
+﻿@model ProductViewModel
+
+<div class="product-wrapper-inner">
+    <div class="product-photos-wrapper">
+        <div class="photos-desktop-wrapper">
+            <div class="product-photo">
+                <img src="~/img/@Model.Product.MainPhoto" />
+            </div>
+            @foreach (var photo in Model.Product.Photos)
+            {
+                <div class="product-photo">
+                    <img src="~/img/@photo" />
+                </div>
+            }
+        </div>
+        <div class="photos-mobile-wrapper">
+            <div id="photos-slideshow" class="photos-slideshow-container">
+                <div class="slider-photo-wrapper">
+                    <img src="~/img/@Model.Product.MainPhoto" />
+                </div>
+                @foreach (var photo in Model.Product.Photos)
+                {
+                    <div class="slider-photo-wrapper">
+                        <img src="~/img/@photo" />
+                    </div>
+                }
+
+                <a class="photos-slideshow-prev" onclick="plusSlides(-1)">&#10094;</a>
+                <a class="photos-slideshow-next" onclick="plusSlides(1)">&#10095;</a>
+            </div>
+        </div>
+    </div>
+    <div class="product-info-wrapper">
+        <div class="sticky-info">
+            <div class="main-info">
+                <p id="product-brand" class="text-regular">@Model.Product.Brand</p>
+                <p class="text-regular-small">@Model.Product.Category</p>
+                <p class="text-regular-small" style="color:#cacaca">@Model.Product.SKU</p>
+                @if (Model.Product.SalePrice != null && Model.Product.SalePrice != 0 && Model.Product.SalePrice < Model.Product.Price)
+                {
+                    <span class="price text-regular">@Model.Product.SalePrice ₽</span>
+                    <span class="old-price price">@Model.Product.Price ₽</span>
+                }
+                else
+                {
+                    <span class="price text-regular">@Model.Product.Price ₽</span>
+                }
+            </div>
+            @if (Model.Product.SizesWithAmounts != null && Model.Product.SizesWithAmounts.Any())
+            {
+                <div class="product-sizes-wrapper">
+                    <div class="size-info-wrapper text-small-caps">
+                        <p id="size-info" class="selected-size-info">РАЗМЕР</p>
+                        <p id="product-id" style="display:none">@Model.Product.Id</p>
+                        <a id="sizes-open-button" style="text-decoration-line: underline;" onclick="openWindow('product-sizes-window','flex')">ТАБЛИЦА РАЗМЕРОВ</a>
+                    </div>
+                    <div class="sizes-wrapper">
+                        @foreach (var sizeWithAmount in Model.Product.SizesWithAmounts)
+                        {
+                            @if (sizeWithAmount.Amount != null && sizeWithAmount.Amount != 0)
+                            {
+                                <div class="size-wrapper text-regular-caps">@sizeWithAmount.Size</div>
+                            }
+                        }
+                    </div>
+                    <button id="add-to-cart-button" class="action-button text-regular">ВЫБЕРИТЕ РАЗМЕР</button>
+                </div>
+            }
+            <p class="product-description text-regular-small">@Model.Product.Description</p>
+            <div class="collapsible-wrapper">
+                <div class="collapsible">
+                    @if (Model.Product.Material != null)
+                    {
+
+                        <button class="collapsible-button">
+                            <span class="collapsible-name text-small-caps">СОСТАВ</span>
+                            <i class="collapsible-icon"></i>
+                        </button>
+                        <div class="collapsible-content text-regular-small">
+                            @Model.Product.Material
+                        </div>
+                        <hr />
+
+                    }
+
+                    <button class="collapsible-button">
+                        <span class="collapsible-name text-small-caps">ДЕТАЛИ</span>
+                        <i class="collapsible-icon"></i>
+                    </button>
+                    <div class="collapsible-content text-regular-small">
+                        <ul>
+                            <li>свободный крой</li>
+                            <li>боковые карманы</li>
+                            <li>скрытая молния</li>
+                        </ul>
+                    </div>
+                    <hr />
+
+
+                    <button class="collapsible-button">
+                        <span class="collapsible-name text-small-caps">ПАРАМЕТРЫ МОДЕЛИ</span>
+                        <i class="collapsible-icon"></i>
+                    </button>
+                    <div class="collapsible-content text-regular-small">
+                        81–58–87, размер 40
+                    </div>
+                    <hr />
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="product-sizes-window">
+    <div class="popup-window-wrapper-header">
+        <div class="popup-window-wrapper-header-inner">
+            <span class="text-medium">ТАБЛИЦА РАЗМЕРОВ</span>
+        </div>
+        <div class="close-icon-wrapper" data-close="product-sizes-window">
+            <i class="icon close-icon-white"></i>
+        </div>
+    </div>
+    @if (Model.Product.SizesWithAmounts == null && Model.Product.SizesWithAmounts.Count() == 0)
+    {
+        <div class="size-notification-wrapper">
+                <div id="any-sizes" style="display:none" data-value="true"></div>
+                <div class="notification-product-wrapper">
+                    <div class="notification-product-photo-wrapper">
+                        <img src="~/img/@Model.Product.MainPhoto" />
+                    </div>
+                    <div class="notification-product-info-wrapper">
+                        <span class="text-regular">@Model.Product.Brand</span>
+                        <span class="text-regular-small">@Model.Product.Category</span>
+                        <span class="text-small-caps" style="color: #CACACA;">АРТ: @Model.Product.SKU</span>
+                    </div>
+
+                </div>
+                <input id="notification-product-id" name="productId" type="hidden" value="@Model.Product.Id" />
+                <div class="notification-information-wrapper">
+                    <span class="text-regular-small"> Оставьте свои контакты и мы свяжемся с Вами, когда этот товар появится в наличии</span>
+                </div>
+                <div class="notification-size-selection-wrapper">
+                    <span class="text-regular-small">ВЫБЕРИТЕ РАЗМЕР</span>
+                    <div class="notification-size-selection">
+                        <div class="notification-size-wrapper text-regular-caps" data-size="38">38</div>
+                        <div class="notification-size-wrapper text-regular-caps" data-size="40">40</div>
+                        <div class="notification-size-wrapper text-regular-caps" data-size="42">42</div>
+                        <div class="notification-size-wrapper text-regular-caps" data-size="44">44</div>
+                        <div class="notification-size-wrapper text-regular-caps" data-size="46">46</div>
+                        <div class="notification-size-wrapper text-regular-caps" data-size="48">48</div>
+                        <div class="notification-size-wrapper text-regular-caps" data-size="50">50</div>
+                        <div class="notification-size-wrapper text-regular-caps" data-size="52">52</div>
+                        <div class="notification-size-wrapper text-regular-caps" data-size="54">54</div>
+                        <div class="notification-size-wrapper text-regular-caps" data-size="56">56</div>
+                    </div>
+                    <input type="hidden" id="notification-selected-size" name="selectedSize"/>
+                </div>
+                <div class="email-input-wrapper">
+                    <span class="text-regular-small">EMAIL</span>
+                    <input id="email-to-notificate" name="email" type="text" />
+                </div>
+                <input id="subscribe-on-product-button" class="action-button text-regular-caps" type="submit" value="ПОДИСАТЬСЯ" />
+        </div>
+    }
+    else
+    {
+        <div class="window-sizes-inner">
+            <div class="window-sizes-wrapper">
+                <div class="sizes-name-wrapper">
+                    <span class="text-small-caps">@Model.Product.Brand</span>
+                    <br />
+                    @if (Model.Product.IsMen == true)
+                    {
+                        <span class="text-small-caps">Мужское</span>
+                    }
+                    else
+                    {
+                        <span class="text-small-caps">Женское</span>
+                    }
+                </div>
+                @if (Model.Product.Brand.ToLower() == "fabiana filippi" ||
+               Model.Product.Brand.ToLower() == "peserico" ||
+               Model.Product.Brand.ToLower() == "panicale" ||
+               Model.Product.Brand.ToLower() == "etro" ||
+               Model.Product.Brand.ToLower() == "ermano scervino" ||
+               Model.Product.Brand.ToLower() == "sara roca")
+                {
+                    <div class="header-row">
+                        <span class="text-regular">RUS</span>
+                        <span class="text-regular">EU</span>
+                        <span class="text-regular">IT</span>
+                    </div>
+                }
+                else if (Model.Product.Brand.ToLower() == "cult gaia")
+                {
+                    <div class="header-row short-header">
+                        <span class="text-regular">RUS</span>
+                        <span class="text-regular">US</span>
+                    </div>
+
+                }
+                else if (Model.Product.Brand.ToLower() == "jil sander")
+                {
+                    <div class="header-row short-header">
+                        <span class="text-regular">RUS</span>
+                        <span class="text-regular">DE</span>
+                    </div>
+
+                }
+                else if (Model.Product.Brand.ToLower() == "karl lagerfeld")
+                {
+                    <div class="header-row short-header">
+                        <span class="text-regular">RUS</span>
+                        <span class="text-regular">EU</span>
+                    </div>
+
+                }
+                <div class="sizes-content-wrapper">
+                    @if (Model.Product.Brand.ToLower() == "fabiana filippi" ||
+                   Model.Product.Brand.ToLower() == "peserico" ||
+                   Model.Product.Brand.ToLower() == "panicale" ||
+                   Model.Product.Brand.ToLower() == "etro" ||
+                   Model.Product.Brand.ToLower() == "ermano scervino" ||
+                   Model.Product.Brand.ToLower() == "sara roca")
+                    {
+                        @if (Model.Product.IsMen == false)
+                        {
+                            <div class="content-row">
+                                <span class="left-element text-regular">40</span>
+                                <span class="text-regular">XS</span>
+                                <span class="right-element text-regular">36</span>
+                            </div>
+                            <div class="content-row">
+                                <span class="left-element text-regular">42</span>
+                                <span class="text-regular">S</span>
+                                <span class="right-element text-regular">38</span>
+                            </div>
+                            <div class="content-row">
+                                <span class="left-element text-regular">44</span>
+                                <span class="text-regular">M</span>
+                                <span class="right-element text-regular">40</span>
+                            </div>
+                            <div class="content-row">
+                                <span class="left-element text-regular">46-48</span>
+                                <span class="text-regular">L</span>
+                                <span class="right-element text-regular">42-44</span>
+                            </div>
+                            <div class="content-row">
+                                <span class="left-element text-regular">50-52</span>
+                                <span class="text-regular">XL</span>
+                                <span class="right-element text-regular">46-48</span>
+                            </div>
+                            <div class="content-row" style="border:none">
+                                <span class="left-element text-regular">52-54</span>
+                                <span class="text-regular">XXL</span>
+                                <span class="right-element text-regular">50</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="content-row">
+                                <span class="left-element text-regular">44</span>
+                                <span class="text-regular">XS</span>
+                                <span class="right-element text-regular">42</span>
+                            </div>
+                            <div class="content-row">
+                                <span class="left-element text-regular">46</span>
+                                <span class="text-regular">S</span>
+                                <span class="right-element text-regular">44</span>
+                            </div>
+                            <div class="content-row">
+                                <span class="left-element text-regular">48</span>
+                                <span class="text-regular">M</span>
+                                <span class="right-element text-regular">46</span>
+                            </div>
+                            <div class="content-row">
+                                <span class="left-element text-regular">50-52</span>
+                                <span class="text-regular">L</span>
+                                <span class="right-element text-regular">48</span>
+                            </div>
+                            <div class="content-row">
+                                <span class="left-element text-regular">54</span>
+                                <span class="text-regular">XL</span>
+                                <span class="right-element text-regular">50</span>
+                            </div>
+                            <div class="content-row" style="border:none">
+                                <span class="left-element text-regular">56</span>
+                                <span class="text-regular">XXL</span>
+                                <span class="right-element text-regular">52-54</span>
+                            </div>
+                        }
+                    }
+                    else if (Model.Product.Brand.ToLower() == "cult gaia")
+                    {
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">38</span>
+                            <span class="right-element text-regular">4</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">40</span>
+                            <span class="right-element text-regular">6</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">42</span>
+                            <span class="right-element text-regular">8</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">44</span>
+                            <span class="right-element text-regular">9</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">46</span>
+                            <span class="right-element text-regular">10</span>
+                        </div>
+                        <div class="content-row row-shorten" style="border:none">
+                            <span class="left-element text-regular">48</span>
+                            <span class="right-element text-regular">12</span>
+                        </div>
+                    }
+                    else if (Model.Product.Brand.ToLower() == "jil sander")
+                    {
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">38</span>
+                            <span class="right-element text-regular">32</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">40</span>
+                            <span class="right-element text-regular">34</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">42</span>
+                            <span class="right-element text-regular">36</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">44</span>
+                            <span class="right-element text-regular">38</span>
+                        </div>
+                        <div class="content-row row-shorten" style="border:none">
+                            <span class="left-element text-regular">46</span>
+                            <span class="right-element text-regular">40</span>
+                        </div>
+                    }
+                    else if (Model.Product.Brand.ToLower() == "karl lagerfeld")
+                    {
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">42</span>
+                            <span class="right-element text-regular">XS</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">44</span>
+                            <span class="right-element text-regular">S</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">46</span>
+                            <span class="right-element text-regular">M</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">48</span>
+                            <span class="right-element text-regular">L</span>
+                        </div>
+                        <div class="content-row row-shorten" style="border:none">
+                            <span class="left-element text-regular">50</span>
+                            <span class="right-element text-regular">XL</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+<div class="suggested-products">
+    <span class="text-regular">ВАМ МОЖЕТ ПОНРАВИТСЯ</span>
+    <div class="suggested-products-wrapper">
+        @foreach (var product in Model.SuggestedProducts)
+        {
+            await Html.RenderPartialAsync("ProductCard", product);
+        }
+    </div>
+</div>
+
+<script src="~/js/ProductScript.js"></script>
+<script src="~/js/InfoScript.js"></script>
+<link href="~/css/ProductCardStyle.css" rel="stylesheet">
+<link href="~/css/ProductStyle.css" rel="stylesheet">

@@ -1,0 +1,154 @@
+﻿@model BrandViewModel
+<div class="brand-info-wrapper">
+    <div class="brand-info-inner">
+        <div class="brand-logo">
+            <img src="~/img/@Model.Brand.Logo" />
+        </div>
+        <div class="brand-description-wrapper">
+            <span class="brand-description text-regular-small">@Model.Brand.Description</span>
+        </div>
+        <div class="sex-buttons-wrapper">
+            <button class="action-button text-regular" onclick="selectSex('man')">МУЖСКАЯ КОЛЛЕКЦИЯ</button>
+            <button class="action-button text-regular" onclick="selectSex('woman')">ЖЕНСКАЯ КОЛЛЕКЦИЯ</button>
+        </div>
+    </div>
+</div>
+<div class="categories-and-sort-inner">
+    <button id="filter-button" class="category-with-icon-button" onclick="openFiltersMenu()">
+        <div class="button-container-inner ">
+            <i class="icon filter-icon"></i>
+            <span class="text-regular-caps">ФИЛЬТРЫ</span>
+        </div>
+    </button>
+    <div class="sort-popup-wrapper">
+        <button id="sort-button-current" class="category-with-icon-button">
+            <div class="button-container-inner">
+                <i class="icon sort-icon"></i>
+                <span id="sort-button-current-span" class="text-regular-caps"></span>
+            </div>
+        </button>
+        <div id="sort-dropdown-content">
+            <button class="text-regular-caps" onclick="sortProducts(this)" data-sortoptions="0">ПО НОВИЗНЕ</button>
+            <button class="text-regular-caps" onclick="sortProducts(this)" data-sortoptions="1">ПО УБЫВАНИЮ ЦЕНЫ</button>
+            <button class="text-regular-caps" onclick="sortProducts(this)" data-sortoptions="2">ПО ВОЗРАСТАНИЮ ЦЕНЫ</button>
+            <button class="text-regular-caps" onclick="sortProducts(this)" data-sortoptions="3">ПО СКИДКАМ</button>
+        </div>
+    </div>
+</div>
+<div id="products-fitler-wrapper" onclick="">
+    <div class="products-filter-inner">
+        <div class="close-icon-wrapper" data-close="products-fitler-wrapper">
+            <i class="icon close-icon"></i>
+        </div>
+        <div class="product-filters-buttons-wrapper">
+            <div class="filters-information-rectangle">
+                <i class="icon filters-filter-icon"></i>
+                <span class="text-regular-caps">ФИЛЬТРЫ</span>
+            </div>
+            <div class="remove-filters-button-wrapper">
+                <a id="remove-filters-button" onclick="removeFilters()">
+                    СБРОСИТЬ ВСЕ
+                </a>
+            </div>
+        </div>
+        <div class="products-filters-collabsiables collapsible-wrapper">
+            <div class="collapsible">
+                <button class="collapsible-button">
+                    <span class="collapsible-name text-small-caps">КАТЕГОРИЯ</span>
+                    <i class="collapsible-icon"></i>
+                </button>
+                <div class="collapsible-content text-regular-small">
+                </div>
+                <hr />
+            </div>
+            <div class="collapsible">
+                <button class="collapsible-button">
+                    <span class="collapsible-name text-small-caps">РАЗМЕР</span>
+                    <i class="collapsible-icon"></i>
+                </button>
+                <div class="collapsible-content text-regular-small">
+                    <div class="sizes-inner">
+                        <div class="size-wrapper text-regular-caps" data-size="38">38</div>
+                        <div class="size-wrapper text-regular-caps" data-size="40">40</div>
+                        <div class="size-wrapper text-regular-caps" data-size="42">42</div>
+                        <div class="size-wrapper text-regular-caps" data-size="44">44</div>
+                        <div class="size-wrapper text-regular-caps" data-size="46">46</div>
+                        <div class="size-wrapper text-regular-caps" data-size="48">48</div>
+                        <div class="size-wrapper text-regular-caps" data-size="50">50</div>
+                    </div>
+                </div>
+                <hr />
+            </div>
+            <div class="collapsible">
+                <button class="collapsible-button">
+                    <span class="collapsible-name text-small-caps">ЦЕНА</span>
+                    <i class="collapsible-icon"></i>
+                </button>
+                <div class="collapsible-content text-regular-small">
+                    <div class="price-slider-wrapper">
+                        <div class="price-input-wrapper">
+                            <label class="price-input-label" for="price-min">От:</label>
+                            <label class="price-input-label" for="price-max">До:</label>
+                            <div class="price-input">
+                                <input id="price-min" type="number" class="price-input-min" value="" />
+                                <input id="price-max" type="number" class="price-input-max" value="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            </div>
+            <div class="collapsible">
+                <button class="collapsible-button">
+                    <span class="collapsible-name text-small-caps">БРЕНД</span>
+                    <i class="collapsible-icon"></i>
+                </button>
+                <div class="collapsible-content text-regular-small">
+                </div>
+                <hr />
+            </div>
+            <button class="action-button" id="apply-filters-button"><span class="text-regular">ПОКАЗАТЬ</span></button>
+        </div>
+        <div></div>
+    </div>
+    <div class="empty" onclick='closeOnClick("products-fitler-wrapper")'></div>
+
+</div>
+<div id="main-content-wrapper-to-hide">
+    <div class="products-inner">
+        @if (Model != null)
+        {
+            @foreach (var product in Model.Products)
+            {
+                await Html.RenderPartialAsync("ProductCard", product);
+            }
+        }
+    </div>
+    <div class="products-page-selector-wrapper">
+        <div id="max-amount-counter" data-amount="@Model.MaxAmount" style="display:none"></div>
+        <div class="products-page-selector">
+            <button id="previous-page-button" class="products-page-button">
+                <span id="previous-page-button-content" class="product-page-button-content">&#10094;</span>
+            </button>
+            <button id="first-page-button" class="products-page-button">
+                <span id="first-page-button-content" class="product-page-button-content text-regular"></span>
+            </button>
+            <button id="second-page-button" class="products-page-button">
+                <span id="second-page-button-content" class="product-page-button-content text-regular"></span>
+            </button>
+            <button id="third-page-button" class="products-page-button">
+                <span id="third-page-button-content" class="product-page-button-content text-regular"></span>
+            </button>
+            <button id="forth-page-button" class="products-page-button">
+                <span id="forth-page-button-content" class="product-page-button-content text-regular"></span>
+            </button>
+            <button id="next-page-button" class="products-page-button">
+                <span id="next-page-button-content" class="product-page-button-content text-regular">&#10095;</span>
+            </button>
+        </div>
+    </div>
+</div>
+<script src="~/js/ProductsScript.js"></script>
+<link href="~/css/ProductsStyle.css" rel="stylesheet" />
+<link href="~/css/BrandStyle.css" rel="stylesheet" />
+<link href="~/css/ProductCardStyle.css" rel="stylesheet">

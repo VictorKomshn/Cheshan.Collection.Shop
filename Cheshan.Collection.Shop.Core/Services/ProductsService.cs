@@ -2,8 +2,6 @@
 using Cheshan.Collection.Shop.Core.Mappers;
 using Cheshan.Collection.Shop.Core.Models;
 using Cheshan.Collection.Shop.Database.Abstract;
-using Cheshan.Collection.Shop.Database.Entities;
-using System.Linq.Expressions;
 
 namespace Cheshan.Collection.Shop.Core.Services
 {
@@ -56,17 +54,19 @@ namespace Cheshan.Collection.Shop.Core.Services
             }
         }
 
-        public async Task<IEnumerable<ProductModel>> GetByConditionAsync(ProductsCondition condition)
+        public async Task<GetByConditionResultModel> GetByConditionAsync(ProductsCondition? condition, SortingType? sortType = null, bool getSugested = false)
         {
-            Expression<Func<ProductEntity, bool>> filter = product =>
-                    product.Size == condition.Size &&
-                    product.Price >= condition.LowestPrice &&
-                    product.Price <= condition.HighestPrice;
             try
             {
-                var productEntities = await _repository.GetByConditionAsync(filter);
+                var productEntities = await _repository.GetByConditionAsync(condition.StartIndex, condition.IsMan, condition?.Brand?.Split(','), condition?.Category?.Split(','), condition?.LowestPrice, condition?.HighestPrice, condition.Sizes?.Split(','), null, condition.Take, getSugested, sortType);
 
-                return productEntities.Select(x => x.ToModel());
+                var result = new GetByConditionResultModel
+                {
+                    Products = productEntities.Products.Select(x => x.ToModel()),
+                    MaxAmount = productEntities.MaxAmount
+
+                };
+                return result;
             }
             catch
             {

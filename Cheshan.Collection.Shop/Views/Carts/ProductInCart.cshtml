@@ -1,0 +1,39 @@
+﻿@model SizeWithAmountModel
+
+<div class="cart-product-in-cart-wrapper">
+    <img class="product-in-cart-img" src="~/img/@Model.Product.MainPhoto" />
+    <div class="product-in-cart-content-wrapper">
+        <div class="product-in-cart-description">
+            <div class="brand-and-remove-button">
+                <span class="product-in-cart-brand text-regular-caps">@Model.Product.Brand</span>
+                <a><i class="icon remove-icon"></i></a>
+            </div>  
+            <span class="product-in-cart-category text-small-caps">@Model.Product.Category</span>
+            <span class="product-in-cart-sku text-very-small-caps">@Model.Product.SKU</span>
+        </div>
+
+        <span class="product-in-cart-size text-small-caps">РАЗМЕР: @Model.Size</span>
+        @if (Model.Product.SalePrice != null)
+        {
+            <div class="sale-price-menu-wrapper">
+                <span class="product-in-cart-menu-sale-price text-regular-caps">@Model.Product.Price</span>
+            </div>
+        }
+
+        <div class="amount-and-sum-wrapper">
+            <div class="product-in-cart-amount-wrapper">
+                <i class="icon minus-icon"></i>
+                <span id="product-in-cart-amount">(@Model.Amount)</span>
+                <i class="icon plus-icon"></i>
+            </div>
+            @if (Model.Product.SalePrice != null)
+            {
+                <span class="product-in-cart-menu-price text-regular-caps">@Model.Product.SalePrice</span>
+            }
+            else
+            {
+                <span class="product-in-cart-menu-price text-regular-caps">@Model.Product.Price</span>
+            }
+        </div>
+    </div>
+</div>

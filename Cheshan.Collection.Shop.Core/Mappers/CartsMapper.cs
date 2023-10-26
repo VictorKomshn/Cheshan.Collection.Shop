@@ -7,10 +7,11 @@ namespace Cheshan.Collection.Shop.Core.Mappers
     {
         public static CartEntity ToEntity(this CartModel model)
         {
+
             return new CartEntity
             {
                 Id = model.Id,
-                Products = model.Products.Select(x => x.ToEntity()).ToArray(),
+                Products = model.Products.Select(x => x.ToEntity(x.Product.ToEntity())).ToArray(),
                 UserId = model.UserId,
             };
         }
@@ -20,7 +21,7 @@ namespace Cheshan.Collection.Shop.Core.Mappers
             return new CartModel
             {
                 Id = entity.Id,
-                Products = entity.Products.Select(x => x.ToModel()).ToArray(),
+                Products = entity.Products.Select(x => x.ToModel(x.Product.ToModel())).ToArray(),
                 UserId = entity.UserId,
             };
         }

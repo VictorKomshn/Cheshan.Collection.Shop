@@ -5,11 +5,11 @@ VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cheshan.Collection.Shop", "Cheshan.Collection.Shop\Cheshan.Collection.Shop.csproj", "{F94A4D50-007B-4DD1-8A74-D4D159994946}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cheshan.Collection.Shop.Core", "Cheshan.Collection.Shop.Core\Cheshan.Collection.Shop.Core.csproj", "{21661DEC-000C-4754-A24B-440890102E66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cheshan.Collection.Shop.Core", "Cheshan.Collection.Shop.Core\Cheshan.Collection.Shop.Core.csproj", "{21661DEC-000C-4754-A24B-440890102E66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cheshan.Collection.Shop.Database", "Cheshan.Collection.Shop.Database\Cheshan.Collection.Shop.Database.csproj", "{7C4C8FCE-7A65-43C0-9CD3-3A585CC4CC54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cheshan.Collection.Shop.Database", "Cheshan.Collection.Shop.Database\Cheshan.Collection.Shop.Database.csproj", "{7C4C8FCE-7A65-43C0-9CD3-3A585CC4CC54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cheshan.Collection.Shop.Api", "Cheshan.Collection.Shop.Api\Cheshan.Collection.Shop.Api.csproj", "{43198DCD-D9A4-420F-AE4D-90F486B3FF7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cheshan.Collection.Shop.Api", "Cheshan.Collection.Shop.Api\Cheshan.Collection.Shop.Api.csproj", "{43198DCD-D9A4-420F-AE4D-90F486B3FF7F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,46 @@
+﻿body {
+}
+
+
+.product-card-inner img {
+    width: 100%;
+    align-self: stretch;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    align-self: stretch;
+}
+
+.product-card-inner {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: 0 0 10px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.prices-inner {
+    padding: 5px 0 0 0;
+}
+
+.old-price {
+    color: var(--grey, #ababab);
+    font-family: Roboto Condensed;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 1.04px;
+    text-decoration-line: line-through;
+}
+
+.price {
+    margin: 0 20px 0 0;
+}

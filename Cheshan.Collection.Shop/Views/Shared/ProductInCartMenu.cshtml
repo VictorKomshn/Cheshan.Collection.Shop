@@ -1,0 +1,42 @@
+﻿@model ICollection<SizeWithAmountModel>
+
+@foreach (var sizesWihAmounts in Model)
+{
+    <div class="product-in-cart-wrapper">
+        <img class="product-in-cart-img" src="~/img/@sizesWihAmounts.Product.MainPhoto" />
+        <div class="product-in-cart-content-wrapper">
+            <div class="product-in-cart-description">
+                <div class="brand-and-remove-button">
+                    <span class="product-in-cart-brand text-regular-caps">@sizesWihAmounts.Product.Brand</span>
+                    <a class="remove-item-wrapper" data-size="@sizesWihAmounts.Size" data-productid="@sizesWihAmounts.Product.Id" onclick="removeItemFromCart(this)"><i class="icon remove-icon"></i></a>
+                </div>
+                <span class="product-in-cart-category text-regular-small">@sizesWihAmounts.Product.Category</span>
+                <span class="product-in-cart-sku text-very-small-caps">@sizesWihAmounts.Product.SKU</span>
+            </div>
+
+            <span class="product-in-cart-size text-small-caps">РАЗМЕР: @sizesWihAmounts.Size</span>
+            @if (sizesWihAmounts.Product.SalePrice != null)
+            {
+                <div class="sale-price-menu-wrapper">
+                    <span class="product-in-cart-menu-sale-price text-regular-caps">@sizesWihAmounts.Product.Price</span>
+                </div>
+            }
+
+            <div class="amount-and-sum-wrapper">
+                <div class="product-in-cart-amount-wrapper">
+                    <a onclick="removeSingleItemFromCart(this)" data-itemid="@sizesWihAmounts.Product.Id" data-size="@sizesWihAmounts.Size"><i class="icon minus-icon"></i></a>
+                    <span class="product-in-cart-amount text-regular-caps" data-amount="@sizesWihAmounts.Amount">(@sizesWihAmounts.Amount)</span>
+                    <a onclick="increaseAmount(this)" data-itemid="@sizesWihAmounts.Product.Id" data-size="@sizesWihAmounts.Size"><i class="icon plus-icon"></i></a>
+                </div>
+                @if (sizesWihAmounts.Product.SalePrice != null)
+                {
+                    <span class="product-in-cart-menu-price text-regular-caps">@sizesWihAmounts.Product.SalePrice</span>
+                }
+                else
+                {
+                    <span class="product-in-cart-menu-price text-regular-caps" style="margin-top:20px">@sizesWihAmounts.Product.Price</span>
+                }
+            </div>
+        </div>
+    </div>
+}

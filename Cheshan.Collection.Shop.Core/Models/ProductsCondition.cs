@@ -1,23 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Cheshan.Collection.Shop.Core.Models
 {
     public class ProductsCondition
     {
-        public int Amount { get; set; }
+        public int StartIndex { get; set; } = 0;
 
-        public string Color { get; set; }
+        //public string? Color { get; set; }
 
-        public int HighestPrice { get; set; }
+        public int? HighestPrice { get; set; } = int.MaxValue;
 
-        public int LowestPrice { get; set; }
+        public int? LowestPrice { get; set; } = 0;
 
-        public string Category { get; set; }
+        public bool? IsMan { get; set; }
 
-        public string Size { get; set; }
+        public string? Category { get; set; } = null;
+
+        public string? Brand { get; set; } = null;
+
+        public string? Sizes { get; set; } = null;
+
+        public int? Take { get; set; } = 32;
     }
 }

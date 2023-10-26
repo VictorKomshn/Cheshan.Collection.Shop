@@ -6,7 +6,7 @@
 
         public Guid UserId { get; set; }
 
-        public ICollection<ProductModel> Products { get; set; }
+        public ICollection<SizeWithAmountModel> Products { get; set; }
 
     }
 }

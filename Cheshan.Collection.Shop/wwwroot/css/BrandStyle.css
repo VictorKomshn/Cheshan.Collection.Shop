@@ -1,0 +1,50 @@
+﻿body {
+}
+
+.brand-info-wrapper {
+    max-width: 625px;
+    margin: auto;
+}
+
+.brand-info-inner {
+    margin-bottom: 30px;
+}
+
+.brand-logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.brand-info-inner img {
+    width: 100%;
+}
+
+.brand-description-wrapper {
+    margin-bottom: 20px;
+}
+
+.brand-description {
+}
+
+.sex-buttons-wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+    .sex-buttons-wrapper button {
+        width: -webkit-fill-available;
+    }
+
+
+@media(max-width:768px) {
+
+    .brand-info-inner {
+        margin: 16px;
+        margin-bottom: 30px;
+    }
+
+    .sex-buttons-wrapper {
+        flex-direction: column;
+    }
+}
