@@ -12,13 +12,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Cheshan.Collection.Shop.Api\Cheshan.Collection.Shop.Api.csproj" />
     <ProjectReference Include="..\Cheshan.Collection.Shop.Core\Cheshan.Collection.Shop.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Views\Purchase\" />
     <Folder Include="wwwroot\fonts\" />
+    <Folder Include="wwwroot\pdf\" />
   </ItemGroup>
 
 </Project>

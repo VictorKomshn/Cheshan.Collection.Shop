@@ -15,8 +15,6 @@ namespace Cheshan.Collection.Shop.Database
 
         public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddOptions(configuration);
-
             services.AddDbContext<DataContext>();
             services.AddSingleton(provider =>
             {
@@ -33,13 +31,14 @@ namespace Cheshan.Collection.Shop.Database
                 };
 
                 var builder = new DbContextOptionsBuilder<DataContext>()
-                    .UseNpgsql(connectionBuilder.ToString()).EnableSensitiveDataLogging();
+                    //.UseNpgsql(connectionBuilder.ToString()).EnableSensitiveDataLogging();
+                    .UseSqlServer(connectionBuilder.ToString()).EnableSensitiveDataLogging();
 
                 return builder.Options;
             });
 
 
-            services.AddScoped<ICartsRepository, CartsRepository>();
+            services.AddTransient<ICartsRepository, CartsRepository>();
             services.AddScoped<IProductsRepository, ProductsRepository>();
             services.AddScoped<INotificationRecieversRepository, NotificationRecieversRepository>();
             services.AddScoped<IPurchasesRepository, PurchasesRepository>();
@@ -49,18 +48,10 @@ namespace Cheshan.Collection.Shop.Database
             var provider = services.BuildServiceProvider();
             var postgresOptions = provider.GetRequiredService<IOptions<PostgresOptions>>().Value;
 
-            //using var scope = provider.CreateScope();
-            //using var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-            //dataContext.Database.EnsureCreated();
+
 
             return services;
         }
 
-        //private static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration config)
-        //{
-        //    services.AddSingleton<IValidateOptions<PostgresOptions>, PostgresOptionsValidator>();
-        //    services.Configure<PostgresOptions>(x => config.GetSection(PostgresOptions.SectionName));
-        //    return services;
-        //}
     }
 }

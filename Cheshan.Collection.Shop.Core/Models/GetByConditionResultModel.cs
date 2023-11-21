@@ -2,8 +2,10 @@
 {
     public class GetByConditionResultModel
     {
-        public IEnumerable<ProductModel> Products { get; set; }
+        public ICollection<ProductModel> Products { get; set; }
 
         public int MaxAmount { get; set; }
+
+        public Database.Entities.Enums.CategoryType CategoryType { get; set; }
     }
 }

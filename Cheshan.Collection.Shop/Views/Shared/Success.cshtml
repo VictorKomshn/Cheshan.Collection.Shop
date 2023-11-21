@@ -1,0 +1,21 @@
+﻿@model SuccessViewModel
+
+<div class="success-payment-wrapper">
+    <div class="success-payment-container">
+        @if (string.IsNullOrEmpty(Model.PurchaseId))
+        {
+            <span class="success-main-info">ЗАКАЗ УСПЕШНО ОФОРМЛЕН</span>
+        }
+        else
+        {
+            <span class="success-main-info">ЗАКАЗ @Model.PurchaseId УСПЕШНО ОФОРМЛЕН</span>
+        }
+        <span class="success-comment">
+            Мы свяжемся с Вами, как только заказ будет готов к выдаче или отправлению.<br />
+            По всем вопросам Вы можете обращаться к нам <a href="/info">любым способом связи</a>.
+        </span>
+        <button class="action-button text-regular" onclick="location.href = '/products/filter?isMan=false';">В КАТАЛОГ</button>
+    </div>
+</div>
+
+<link href="~/css/SuccessStyle.css" rel="stylesheet" />

@@ -23,7 +23,7 @@ namespace Cheshan.Collection.Shop.Core.Services
         private const string SP2Token = "1ub4testfikatg052k7vg9laf9"; // r-collectionchel
 
 
-        private const string SuccessString = "https://localhost:44352/purchase/success";
+        private const string SuccessString = "/purchase/success";
 
 
 
@@ -34,6 +34,33 @@ namespace Cheshan.Collection.Shop.Core.Services
             _cartsService = cartsService;
             _repository = repository;
             client = new HttpClient();
+        }
+
+        public async Task<string> SaveCashPurchase(PurchaseModel purchase, Guid userId)
+        {
+            try
+            {
+
+                var productsFromCart = await _cartsService.GetAsync(userId);
+                var prices = GetPrices(productsFromCart);
+
+                var priceForSP1 = prices.priceForSp1;
+                var priceForSP2 = prices.priceForSp2;
+
+                var purchaseEntity = purchase.ToEntity(userId, priceForSP1, priceForSP2);
+                purchaseEntity.PaymentLinksWithPurchase = new List<PaymentLinkEntity>();
+                purchaseEntity.Id = Guid.NewGuid();
+
+                var hash = purchaseEntity.GetHashCode();
+                purchaseEntity.PurchaseId = hash.ToString();
+                await _repository.CreatePurchaseAsync(purchaseEntity);
+                return hash.ToString();
+            }
+            catch
+            {
+                throw;
+            }
+
         }
 
         public async Task<string> CompletePurchaseAsync(Guid purchaseId)
@@ -60,19 +87,56 @@ namespace Cheshan.Collection.Shop.Core.Services
 
             await _repository.CompletePurchaseAsync(purchase.Id, true);
 
+
             return SuccessString;
         }
 
         public async Task<string> CreatePurhcaseAsync(PurchaseModel purchase, Guid userId)
         {
             var productsFromCart = await _cartsService.GetAsync(userId);
-            int priceForSP1 = 0;
-            int priceForSP2 = 0;
-            foreach (var product in productsFromCart.Products)
+            var prices = GetPrices(productsFromCart);
+
+            var priceForSP1 = prices.priceForSp1;
+            var priceForSP2 = prices.priceForSp2;
+
+            var purchaseEntity = purchase.ToEntity(userId, priceForSP1, priceForSP2);
+            purchaseEntity.PaymentLinksWithPurchase = new List<PaymentLinkEntity>();
+            purchaseEntity.Id = Guid.NewGuid();
+            PaymentLinkEntity payment1 = null;
+            PaymentLinkEntity payment2 = null;
+
+            if (priceForSP1 != 0)
+            {
+                payment1 = await GetPaymentEntity(purchaseEntity.Id, SP1Token, priceForSP1);
+                purchaseEntity.PaymentLinksWithPurchase.Add(payment1);
+            }
+            if (priceForSP2 != 0)
+            {
+                payment2 = await GetPaymentEntity(purchaseEntity.Id, SP2Token, priceForSP2);
+                purchaseEntity.PaymentLinksWithPurchase.Add(payment2);
+            }
+
+            purchaseEntity.PurchaseId = purchaseEntity.GetHashCode().ToString();
+            await _repository.CreatePurchaseAsync(purchaseEntity);
+            if (priceForSP1 != 0)
+            {
+                return payment1.PaymentLink;
+            }
+            else
+            {
+                return payment2.PaymentLink;
+            }
+        }
+
+        private (double priceForSp1, double priceForSp2) GetPrices(CartModel cart)
+        {
+            double priceForSP1 = 0;
+            double priceForSP2 = 0;
+            foreach (var product in cart.Products)
             {
                 if (product.Product.SP == SP1Name)
                 {
-                    if (product.Product.SalePrice.HasValue &&  product.Product.SalePrice != null && product.Product.SalePrice != 0)
+                    if (product.Product.SalePrice.HasValue && product.Product.SalePrice != null && product.Product.SalePrice != 0)
                     {
                         priceForSP1 += product.Product.SalePrice.Value * product.Amount;
                     }
@@ -94,35 +158,13 @@ namespace Cheshan.Collection.Shop.Core.Services
                 }
             }
 
-            var purchaseEntity = purchase.ToEntity(userId, priceForSP1, priceForSP2);
-            purchaseEntity.PaymentLinksWithPurchase = new List<PaymentLinkEntity>();
-            purchaseEntity.Id = Guid.NewGuid();
-            PaymentLinkEntity payment1 = null;
-            PaymentLinkEntity payment2 = null;
+            priceForSP1 = priceForSP1 * 100;
+            priceForSP2 = priceForSP2 * 100;
 
-            if (priceForSP1 != 0)
-            {
-                payment1 = await GetPaymentEntity(purchaseEntity.Id, SP1Token, 100);
-                purchaseEntity.PaymentLinksWithPurchase.Add(payment1);
-            }
-            if (priceForSP2 != 0)
-            {
-                payment2 = await GetPaymentEntity(purchaseEntity.Id, SP2Token, 100);
-                purchaseEntity.PaymentLinksWithPurchase.Add(payment2);
-            }
-
-            await _repository.CreatePurchaseAsync(purchaseEntity);
-            if (priceForSP1 != 0)
-            {
-                return payment1.PaymentLink;
-            }
-            else
-            {
-                return payment2.PaymentLink;
-            }
+            return new(priceForSP1, priceForSP2);
         }
 
-        private async Task<PaymentLinkEntity> GetPaymentEntity(Guid purchaseId, string token, int price)
+        private async Task<PaymentLinkEntity> GetPaymentEntity(Guid purchaseId, string token, double price)
         {
             var paymentStringWithOrder = await FormPaymentStringAsync(purchaseId, token, price);
 
@@ -136,7 +178,7 @@ namespace Cheshan.Collection.Shop.Core.Services
             return payment;
         }
 
-        private async Task<(Guid orderId, string url)> FormPaymentStringAsync(Guid purchaseId, string token, int price)
+        private async Task<(Guid orderId, string url)> FormPaymentStringAsync(Guid purchaseId, string token, double price)
         {
             var paymentString = prodString + "?token=" + token + "&orderNumber=" + purchaseId.ToString() + "&amount=" + price + "&returnUrl=" + enpointUrl;
             var formedPaymentString = await GetFormUrlAsync(paymentString);

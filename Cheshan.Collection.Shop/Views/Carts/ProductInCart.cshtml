@@ -7,32 +7,32 @@
             <div class="brand-and-remove-button">
                 <span class="product-in-cart-brand text-regular-caps">@Model.Product.Brand</span>
                 <a><i class="icon remove-icon"></i></a>
-            </div>  
+            </div>
             <span class="product-in-cart-category text-small-caps">@Model.Product.Category</span>
             <span class="product-in-cart-sku text-very-small-caps">@Model.Product.SKU</span>
         </div>
 
-        <span class="product-in-cart-size text-small-caps">РАЗМЕР: @Model.Size</span>
+        
+            <span class="product-in-cart-size text-small-caps">РАЗМЕР: @Model.Size</span>
         @if (Model.Product.SalePrice != null)
         {
             <div class="sale-price-menu-wrapper">
-                <span class="product-in-cart-menu-sale-price text-regular-caps">@Model.Product.Price</span>
+                <span class="product-in-cart-menu-old-price text-regular-caps">@Model.Product.Price ₽</span>
             </div>
         }
-
         <div class="amount-and-sum-wrapper">
             <div class="product-in-cart-amount-wrapper">
-                <i class="icon minus-icon"></i>
-                <span id="product-in-cart-amount">(@Model.Amount)</span>
-                <i class="icon plus-icon"></i>
+                <a onclick="removeSingleItemFromCart(this)" data-itemid="@Model.Product.Id" data-size="@Model.Size"><i class="icon minus-icon"></i></a>
+                <span class="product-in-cart-amount text-regular-caps" data-amount="@Model.Amount">(@Model.Amount)</span>
+                <a onclick="increaseAmount(this)" data-itemid="@Model.Product.Id" data-size="@Model.Size"><i class="icon plus-icon"></i></a>
             </div>
             @if (Model.Product.SalePrice != null)
             {
-                <span class="product-in-cart-menu-price text-regular-caps">@Model.Product.SalePrice</span>
+                <span class="product-in-cart-menu-price text-regular-caps sale-price">@Model.Product.SalePrice ₽</span>
             }
             else
             {
-                <span class="product-in-cart-menu-price text-regular-caps">@Model.Product.Price</span>
+                <span class="product-in-cart-menu-price text-regular-caps" style="margin-top:20px">@Model.Product.Price ₽</span>
             }
         </div>
     </div>

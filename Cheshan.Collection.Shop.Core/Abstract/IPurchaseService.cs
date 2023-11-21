@@ -8,5 +8,7 @@ namespace Cheshan.Collection.Shop.Core.Abstract
 
         Task<string> CompletePurchaseAsync(Guid purchaseId);
 
+        Task<string> SaveCashPurchase(PurchaseModel purchase, Guid userId);
+
     }
 }

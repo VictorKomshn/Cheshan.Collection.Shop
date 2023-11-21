@@ -10,15 +10,7 @@ body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px;
-    margin: 16px;
-}
-
-.filter-icon {
-    background: url('../img/filters_icon.svg');
-}
-
-.category-with-icon-button:hover .filter-icon {
-    background: url('../img/filters_icon_white.svg');
+    margin: 10px;
 }
 
 .sort-icon {
@@ -57,7 +49,7 @@ body {
 .products-page-selector-wrapper {
     display: flex;
     text-align: center;
-    margin-top:50px;
+    margin-top: 50px;
 }
 
 .products-page-button {
@@ -77,7 +69,7 @@ body {
 /*filters menu*/
 #products-fitler-wrapper {
     display: none;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
@@ -86,28 +78,28 @@ body {
     background: rgba(0, 0, 0, 0.30);
 }
 
-    #products-fitler-wrapper .close-icon-wrapper{
-        position:absolute;
-        right:15px;
-        top:15px;
+    #products-fitler-wrapper .close-icon-wrapper {
+        margin: unset;
+        position: absolute;
+        right: 15px;
+        top: 15px;
     }
 
-    .products-filter-inner {
-        max-width: 403px;
-        width: -webkit-fill-available;
-        display: inline-flex;
-        padding: 20px;
-        position: relative;
-        padding-top: 80px;
-        flex-direction: column;
-        align-items: flex-start;
-        background: #fff;
-    }
+.products-filter-inner {
+    max-width: 403px;
+    width: -webkit-fill-available;
+    display: inline-flex;
+    padding: 10px;
+    position: relative;
+    padding-top: 80px;
+    flex-direction: column;
+    align-items: flex-start;
+    background: #fff;
+}
 
 .product-filters-buttons-wrapper {
     width: 100%;
     display: inline-block;
-    padding: 5px 15px;
 }
 
 .filters-information-rectangle {
@@ -116,10 +108,11 @@ body {
     color: #fff;
     display: inline-flex;
     gap: 10px;
+    align-items: center;
 }
 
 .remove-filters-button-wrapper {
-    margin-right:20px;
+    margin-right: 20px;
     height: 100%;
     align-items: center;
     float: right;
@@ -132,10 +125,6 @@ body {
 
 .filters-information-rectangle span {
     color: #fff;
-}
-
-.filters-filter-icon {
-    background: url('../img/filters_icon_white.svg');
 }
 
 #remove-filters-button {
@@ -153,26 +142,27 @@ body {
 }
 
 .products-filters-collabsiables {
-    margin-top:20px;
-    overflow-y:auto;
+    height: 100%;
+    margin-top: 20px;
+    overflow-y: auto;
     display: flex;
     padding: 20px;
     flex-direction: column;
     align-items: flex-start;
     gap: 20px;
     align-self: stretch;
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
 }
+
+    .products-filters-collabsiables::-webkit-scrollbar {
+        width: 0px;
+    }
 
     .products-filters-collabsiables .collapsible {
         margin: unset;
     }
 
-
-hr {
-    margin: 10px 0px 0px 0px;
-    color: #ababab;
-    width: 100%;
-}
 
 .sizes-inner {
     display: flex;
@@ -210,16 +200,21 @@ hr {
         color: #fff;
         background: #000;
     }
-        
+
 .selected {
     color: #fff;
     background: #000;
 }
 
     .selected:hover {
-        color: #fff !important;
-        background: #000 !important;
+        color: #fff;
+        background: #000;
     }
+
+.sale-button.selected {
+    background: #F00;
+    color: #fff;
+}
 
 
 .price-input-label {
@@ -258,42 +253,42 @@ hr {
         margin: 0;
     }
 
-.clothes-type-categories{
-    flex-direction:column;
-    padding-right:26px;
+.clothes-type-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    /*padding-right:26px;*/
 }
 
-    .clothes-type-categories .filter-wrapper{
-        padding-right:47px;
+    .clothes-type-categories .filter-wrapper {
+        padding-right: 47px;
     }
 
-.clothes-type-categories .footwear-categories-inner {
-    padding: unset !important;
-}
+    .clothes-type-categories .footwear-categories-inner {
+        padding: unset !important;
+    }
 
 .brands-filter {
-    display:none;
+    display: none;
     align-items: flex-start;
     align-content: flex-start;
     gap: 10px;
     flex-wrap: wrap;
-    padding-right:35px;
+    padding-right: 35px;
 }
 
-div.brands-filter.collapsible-active{
-    display:flex;
-    
+div.brands-filter.collapsible-active {
+    display: flex;
 }
 
 .apply-filters-wrapper {
     width: 100%;
-    margin-top:50px;
-    -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    padding: 0 20px;
+    margin: auto 0 0 0;
 }
 
 #apply-filters-button {
+    margin-top: 50px;
     width: 100%;
 }
 
@@ -363,14 +358,14 @@ div.brands-filter.collapsible-active{
     color: #000;
 }
 
-.empty-products-page{
-    width:100%;
-    display:flex;
-    height:100vh;
+.empty-products-page {
+    width: 100%;
+    display: flex;
+    height: 100vh;
 }
 
 .empty-products-message-wrapper {
-    margin:auto;
+    margin: auto;
     margin-top: 280px;
     box-sizing: border-box;
     display: inline-flex;
@@ -379,9 +374,9 @@ div.brands-filter.collapsible-active{
     gap: 30px;
 }
 
-.empty-products-message-wrapper button{
-    width:100%;
-}
+    .empty-products-message-wrapper button {
+        width: 100%;
+    }
 
 @media(max-width:1000px) {
     .products-inner {
@@ -390,6 +385,14 @@ div.brands-filter.collapsible-active{
 }
 
 @media(max-width: 768px) {
+
+    .categories-and-sort-inner {
+        margin: 0 16px;
+    }
+
+        .categories-and-sort-inner .category-with-icon-button {
+            padding: 5px 0px;
+        }
 
     .clothes-type-categories .filter-wrapper {
         padding-right: unset;
@@ -405,16 +408,29 @@ div.brands-filter.collapsible-active{
     }
 
     .products-filter-inner {
+        padding: 16px;
+        padding-top: 60px;
         max-width: unset;
     }
 
+    .remove-filters-button-wrapper {
+        margin-right: unset;
+    }
+
+    .products-filters-collabsiables {
+        padding: unset;
+    }
+
+    .brands-filter {
+        padding-right: unset;
+    }
+
     .products-inner {
+        margin: 16px;
         grid-template-columns: repeat(2, 1fr);
     }
 
     .footer-inner-grid {
-        display: block;
-        width: unset;
     }
 
     #mobile-menu-wrapper {

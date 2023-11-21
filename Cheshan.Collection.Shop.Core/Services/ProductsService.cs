@@ -2,6 +2,8 @@
 using Cheshan.Collection.Shop.Core.Mappers;
 using Cheshan.Collection.Shop.Core.Models;
 using Cheshan.Collection.Shop.Database.Abstract;
+using Cheshan.Collection.Shop.Database.Entities;
+using Cheshan.Collection.Shop.Database.Entities.Enums;
 
 namespace Cheshan.Collection.Shop.Core.Services
 {
@@ -9,6 +11,40 @@ namespace Cheshan.Collection.Shop.Core.Services
     {
 
         private readonly IProductsRepository _repository;
+
+        private readonly Dictionary<string, CategoryType> categoryGroups = new Dictionary<string, CategoryType>()
+        {
+            {"футболка",CategoryType.Clothes },
+            {"топ",CategoryType.Clothes },
+            {"жакет",CategoryType.Clothes },
+            {"толстовка",CategoryType.Clothes },
+            {"свитшот",CategoryType.Clothes },
+            {"свитер",CategoryType.Clothes },
+            {"джемпер",CategoryType.Clothes },
+            {"платье",CategoryType.Clothes },
+            {"юбка",CategoryType.Clothes },
+            {"рубашка",CategoryType.Clothes },
+            {"блуза",CategoryType.Clothes },
+            {"брюки",CategoryType.Clothes },
+            {"шорты",CategoryType.Clothes },
+            {"джинсы",CategoryType.Clothes },
+            {"sport",CategoryType.Clothes },
+            {"пляжная одежда",CategoryType.Clothes },
+            {"верхняя одежда",CategoryType.Clothes },
+            {"пиджак",CategoryType.Clothes },
+
+            {"кроссовки",CategoryType.Footwear },
+            {"кеды",CategoryType.Footwear },
+            {"ботинки",CategoryType.Footwear },
+            {"туфли",CategoryType.Footwear },
+            {"сандали",CategoryType.Footwear },
+
+
+            {"головной убор",CategoryType.Accessories },
+            {"сумка",CategoryType.Accessories},
+            {"украшение",CategoryType.Accessories },
+            {"аксессуар",CategoryType.Accessories },
+        };
 
         public ProductsService(IProductsRepository repository)
         {
@@ -41,6 +77,8 @@ namespace Cheshan.Collection.Shop.Core.Services
             }
         }
 
+
+
         public async Task<ProductModel> GetAsync(Guid id)
         {
             try
@@ -54,16 +92,35 @@ namespace Cheshan.Collection.Shop.Core.Services
             }
         }
 
-        public async Task<GetByConditionResultModel> GetByConditionAsync(ProductsCondition? condition, SortingType? sortType = null, bool getSugested = false)
+        public async Task<ICollection<ProductModel>> GetSuggestedForProduct(Guid productGuid)
         {
             try
             {
-                var productEntities = await _repository.GetByConditionAsync(condition.StartIndex, condition.IsMan, condition?.Brand?.Split(','), condition?.Category?.Split(','), condition?.LowestPrice, condition?.HighestPrice, condition.Sizes?.Split(','), null, condition.Take, getSugested, sortType);
+                var productSuggested = await _repository.GetProductsSuggested(productGuid);
+
+                return productSuggested.Select(x => x.ToModel()).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<GetByConditionResultModel> GetByConditionAsync(ProductsCondition? condition, SortingType? sortType = null)
+        {
+            try
+            {
+                var productEntities = await _repository.GetByConditionAsync(condition.StartIndex, condition.IsMan, condition?.Brand?.Split(','), condition?.Category?.Split(','), condition.CategoryType, condition?.LowestPrice, condition?.HighestPrice, condition.Sizes?.Split(','), null, condition.SearchString, sortType);
+
+                ICollection<ProductEntity> products = productEntities.Products.ToList();
+                var category = condition.Category?.Split(",").First();
+                CategoryType categoryType = condition.CategoryType ?? CategoryType.Default;
 
                 var result = new GetByConditionResultModel
                 {
-                    Products = productEntities.Products.Select(x => x.ToModel()),
-                    MaxAmount = productEntities.MaxAmount
+                    Products = products.Select(x => x.ToModel()).ToList(),
+                    MaxAmount = productEntities.MaxAmount,
+                    CategoryType = categoryType
 
                 };
                 return result;

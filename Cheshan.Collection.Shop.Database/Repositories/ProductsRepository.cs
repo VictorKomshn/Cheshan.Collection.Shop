@@ -1,7 +1,10 @@
 ﻿using Cheshan.Collection.Shop.Core.Models;
 using Cheshan.Collection.Shop.Database.Abstract;
+using Cheshan.Collection.Shop.Database.Comparers;
 using Cheshan.Collection.Shop.Database.Database;
 using Cheshan.Collection.Shop.Database.Entities;
+using Cheshan.Collection.Shop.Database.Entities.Enums;
+using Cheshan.Collection.Shop.Database.Extensions;
 using Cheshan.Collection.Shop.Database.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +14,9 @@ namespace Cheshan.Collection.Shop.Database.Repositories
     {
         private readonly DataContext _dataContext;
 
+        private readonly string[] existingCategories = { "футболк", "топ", "жакет", "толстовк", "свитшот", "свитер", "джемпер", "плать", "юбк", "рубашк", "блуз", "брюки", "шорты", "джинсы", "спортивн", "пляжная", "верхняя", "кроссовки", "ботинки", "туфли", "головные", "украшения", "аксессуары", "сумк", "пиджак" };
+
+        private readonly string[] existingBrands = { "Aquazzura", "Altea", "Premiata", "Peserico", "Palm Angels", "Bottega Veneta", "BY FAR", "Karl Lagerfeld", "Kiton", "Ermanno Scervino", "Etro", "Fabiana Filippi", "Dirk Bikkembergs", "Jil Sander", "Jacquemus", "Giuseppe di Morabito", "Giuseppe Zanotti", "Сult Gaia", "Panicale", "Sara Roka", "Balossa", "Khrisjoy", "Doucal's", "John Hatter&Co", "FENDI", "Moorer", "DOMREBEL" };
         public ProductsRepository(DataContext dataContext)
         {
             _dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext)); ;
@@ -48,10 +54,61 @@ namespace Cheshan.Collection.Shop.Database.Repositories
             }
         }
 
-        public async Task<ProductEntity> GetAsync(Guid id, bool noTrackin = false)
+        private IQueryable<ProductEntity> GetBySearchString(IQueryable<ProductEntity> query, string searchString)
+        {
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                string? category = null;
+                string? brand = null;
+
+                var splitString = searchString.Split(' ');
+                if (splitString.Length > 1)
+                {
+                    category = splitString.FirstOrDefault(x => existingCategories.Contains(x, new SearchComparer()));
+                    if (category == null)
+                    {
+                        category = existingCategories.FirstOrDefault(x => splitString.Any(y => x.Contains(y, StringComparison.InvariantCultureIgnoreCase)));
+                    }
+                    brand = splitString.FirstOrDefault(x => existingBrands.Contains(x, new SearchComparer()));
+
+                    if (brand == null)
+                    {
+                        brand = existingBrands.FirstOrDefault(x => splitString.Any(y => x.Contains(y, StringComparison.InvariantCultureIgnoreCase)));
+                    }
+                }
+                else
+                {
+                    category = existingCategories.FirstOrDefault(x => x.Contains(searchString, StringComparison.InvariantCultureIgnoreCase) || searchString.Contains(x, StringComparison.InvariantCultureIgnoreCase));
+
+                    brand = existingBrands.FirstOrDefault(x => x.Contains(searchString, StringComparison.InvariantCultureIgnoreCase) || searchString.Contains(x, StringComparison.InvariantCultureIgnoreCase));
+                }
+
+
+                if (category != null)
+                {
+                    query = query.Where(x => x.Category.Contains(category));
+                }
+                if (brand != null)
+                {
+                    query = query.Where(x => x.Brand.Contains(brand));
+                }
+
+                if (brand == null && category == null)
+                {
+                    query = query.Where(x => x.Name.Contains(searchString));
+                }
+
+                return query;
+            }
+
+            return query;
+
+        }
+
+        public async Task<ProductEntity> GetAsync(Guid id, bool noTracking = false)
         {
             ProductEntity? result = null;
-            if (noTrackin)
+            if (noTracking)
             {
                 result = await _dataContext.Products.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             }
@@ -62,39 +119,103 @@ namespace Cheshan.Collection.Shop.Database.Repositories
 
             if (result == null)
             {
-                throw new Exception("Product was not found");
+                throw new ArgumentException("Product was not found");
             }
 
             return result;
+        }
+
+
+        public async Task<IEnumerable<ProductEntity>> GetProductsSuggested(Guid productId)
+        {
+            var take = 4;
+
+            var product = await _dataContext.Products.FirstOrDefaultAsync(x => x.Id == productId);
+            var products = new List<ProductEntity>();
+            if (product != null)
+            {
+                var query = _dataContext.Products.AsQueryable();
+
+                query = query.Where(x => x.IsMan == product.IsMan);
+
+                var suggestedElementsAmount = await query.Where(x => x.Category == product.Category).CountAsync();
+                if (suggestedElementsAmount < 4)
+                {
+                    query = query.Where(x => x.CategoryType == product.CategoryType);
+                    suggestedElementsAmount = await query.CountAsync();
+                }
+                else
+                {
+                    query = query.Where(x => x.Category == product.Category);
+                }
+
+
+                Random rand = new Random();
+                int skipper = 0;
+                if (4 > suggestedElementsAmount)
+                {
+                    skipper = rand.Next(0, suggestedElementsAmount);
+                }
+                else
+                {
+                    skipper = rand.Next(0, suggestedElementsAmount - take);
+                }
+                var sortingGuid = Guid.NewGuid();
+                products = await query.OrderBy(product => sortingGuid)
+                                  .Skip(skipper)
+                                  .Take(take)
+                                  .ToListAsync();
+
+                var douplicateProduct = products.FirstOrDefault(x => x.Id == product.Id);
+                if (douplicateProduct != null)
+                {
+                    products.Remove(douplicateProduct);
+                }
+            }
+            return products;
         }
 
         public async Task<GetByConditionResult> GetByConditionAsync(int startIndex,
                                                                           bool? isMan,
                                                                           string[]? brandNames,
                                                                           string[]? categories,
+                                                                          CategoryType? categoryType,
                                                                           int? lowestPrice,
                                                                           int? highestPrice,
                                                                           string[]? sizes,
                                                                           string? color,
-                                                                          int? take = 16,
-                                                                          bool getSuggested = false,
-                                                                          SortingType? sortingType = null)
+                                                                          string? searchString = null,
+                                                                          SortingType? sortType = null)
         {
+
+            var take = 16;
             var query = _dataContext.Products.AsQueryable();
 
+            query = query.Where(x => x.SizesWithAmounts
+                                            .Select(x => x.Amount)
+                                            .Any(x => x > 0));
+
+            if (searchString != null)
+            {
+                query = GetBySearchString(query, searchString);
+            }
             if (brandNames != null && brandNames.Any())
             {
                 query = query.Where(x => brandNames.Contains(x.Brand.ToLower()));
             }
             if (categories != null && categories.Any())
             {
-                query = query.Where(x => categories.Contains(x.Category.ToLower()));
+                query = query.Where(x => categories.Contains(x.Category.ToLower()) || string.Join(',', categories).Contains(x.Category.ToLower()));
             }
-            if (lowestPrice != null)
+            else if (categoryType != null && categoryType != CategoryType.Default)
+            {
+                query = query.Where(x => x.CategoryType == categoryType);
+            }
+            if (lowestPrice != null && lowestPrice != double.MinValue)
             {
                 query = query.Where(x => x.Price >= lowestPrice);
             }
-            if (highestPrice != null)
+            if (highestPrice != null && highestPrice != double.MaxValue)
             {
                 query = query.Where(x => x.Price <= highestPrice || x.SalePrice <= highestPrice);
             }
@@ -105,60 +226,28 @@ namespace Cheshan.Collection.Shop.Database.Repositories
             }
             if (isMan != null)
             {
-                query = query.Where(x => x.IsMen == isMan);
+                query = query.Where(x => x.IsMan == isMan);
             }
 
-            var amount = await _dataContext.Products.CountAsync();
             var maxElementsAmount = await query.CountAsync();
-            List<ProductEntity> products = new List<ProductEntity>();
 
-            if (take > amount)
+            if (sortType.HasValue)
             {
-                products = await query.Skip(startIndex).Take(take.Value).ToListAsync();
+                query = query.Sort(sortType.Value);
             }
-            else if (take.HasValue && take != null && getSuggested)
-            {
-                Random rand = new Random();
-                int skipper = rand.Next(0, maxElementsAmount - take.Value);
-                var sortingGuid = Guid.NewGuid();
-                products = await query.OrderBy(product => sortingGuid)
-                                  .Skip(skipper)
-                                  .Take(take.Value)
-                                  .ToListAsync();
-            }
-            else
-            {
-                products = await query.Skip(startIndex).Take(16).ToListAsync();
-            }
+
+            var products = await query.Skip(startIndex).Take(take).ToListAsync();
 
             if (sizes != null)
             {
                 products = products.Where(x =>
                 {
-                    var sizeWithAmount = x.SizesWithAmounts.Where(x => x.Size != null && sizes.Contains(x.Size) && x.Amount > 0);
+                    var sizeWithAmount = x.SizesWithAmounts.Where(x => x.Size != null &&
+                                                                       (sizes.Contains(x.Size) || x.Size.Split(',').Any(y => sizes.Contains(y))) &&
+                                                                       x.Amount > 0);
                     return sizeWithAmount != null && sizeWithAmount.Any();
                 }).ToList();
             }
-
-            if (sortingType != null)
-            {
-                switch (sortingType)
-                {
-                    case SortingType.ByDate:
-                        products = products.OrderBy(x => x.DateAdded).ToList();
-                        break;
-                    case SortingType.ByPriceAscending:
-                        products = products.OrderBy(x => x.Price).ToList();
-                        break;
-                    case SortingType.ByPriceDescending:
-                        products = products.OrderByDescending(x => x.Price).ToList();
-                        break;
-                    case SortingType.BySale:
-                        products = products.OrderBy(x => x.SalePercent).ToList();
-                        break;
-                }
-            }
-
 
             var result = new GetByConditionResult
             {

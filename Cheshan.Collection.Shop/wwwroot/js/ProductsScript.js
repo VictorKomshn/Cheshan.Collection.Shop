@@ -17,7 +17,8 @@ const sortType = params.get('sort');
 const brandNames = params.get('brandNames');
 const isMan = params.get('isMan');
 
-const categoriesArray = []
+const categoriesArray = [];
+let allCategory = "-1";
 const sizesArray = [];
 const brandsArray = [];
 var minPrice = 0;
@@ -45,16 +46,21 @@ else {
 }
 
 if (sortType == null || sortType == 0) {
-    sortButtonText.textContent = "ПО НОВИЗНЕ"
+    sortButtonText.textContent = "ПО НОВИЗНЕ";
+    sortContent.children[0].style.display = "none";
 }
 else if (sortType == 1) {
     sortButtonText.textContent = "ПО УБЫВАНИЮ ЦЕНЫ"
+    sortContent.children[1].style.display = "none";
 }
 else if (sortType == 2) {
     sortButtonText.textContent = "ПО ВОЗРАСТАНИЮ ЦЕНЫ"
+    sortContent.children[2].style.display = "none";
 }
+
 else if (sortType == 3) {
     sortButtonText.textContent = "ПО СКИДКАМ"
+    sortContent.children[3].style.display = "none";
 }
 
 
@@ -124,6 +130,30 @@ function addCategoryToFilter(button) {
     }
 }
 
+let allCategoryButtons = document.getElementsByClassName("all-category")
+
+for (let i = 0; i < allCategoryButtons.length; i++) {
+    allCategoryButtons[i].onclick = function () {
+        addAllCategoryToFilter(allCategoryButtons[i]);
+    }
+}
+
+function addAllCategoryToFilter(button) {
+    let categoryName = button.dataset.category;
+
+    if (button.classList.contains("selected")) {
+        button.classList.remove("selected");
+        allCategory = "all";
+    }
+    else {
+        for (let i = 0; i < allCategoryButtons.length; i++) {
+            allCategoryButtons[i].classList.remove("selected");
+        }
+        button.classList.add("selected");
+        allCategory = categoryName;
+    }
+}
+
 function addBrandToFilter(button) {
     let brandName = button.dataset.brand;
 
@@ -162,6 +192,10 @@ applyFiltersButton.onclick = function () {
     }
     if (categoriesArray.length != 0) {
         location = addNewFilter(location, "categories", categoriesArray.toString());
+    }
+    else if (allCategory != "-1") {
+
+        location = addNewFilter(location, "categoryType", allCategory);
     }
     if ((selectedMinPrice != null && selectedMinPrice != undefined) || (minPrice != null && minPrice != undefined)) {
 
@@ -216,7 +250,6 @@ function sortProducts(button) {
     }
 }
 
-
 function removeFilters() {
     if (isMan != null) {
         window.location = location.origin + '/products/filter?isMan=' + isMan;
@@ -227,7 +260,6 @@ function removeFilters() {
 }
 
 const pageButtonsContent = document.getElementsByClassName("product-page-button-content");
-
 
 document.addEventListener('DOMContentLoaded', function () {
     let maxAmount = parseInt(document.getElementById("max-amount-counter")?.dataset.amount);
@@ -247,10 +279,10 @@ document.addEventListener('DOMContentLoaded', function () {
         pageIndex = (startIndex / 16) + 1;
     }
 
-    if (maxAmount < 16) {
+    if (maxAmount <= 16) {
         pageButtonsContent[0].parentElement.parentElement.style.display = "none";
     }
-    else if (maxAmount < 32) {
+    else if (maxAmount <= 32) {
         pageButtonsContent[3].parentElement.style.display = "none";
         pageButtonsContent[4].parentElement.style.display = "none";
 
@@ -270,7 +302,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         }
     }
-    else if (maxAmount < 48) {
+    else if (maxAmount <= 48) {
         pageButtonsContent[4].parentElement.style.display = "none";
 
         if (pageStartIndex + 16 >= maxAmount) {
@@ -359,7 +391,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 }, false);
 
-
 function moveToStartIndex(buttonPageStartIndex) {
     let location = window.location.href;
     let regex = /StartIndex=(\d+)/;
@@ -378,7 +409,6 @@ function moveToStartIndex(buttonPageStartIndex) {
     window.location = location;
 }
 
-
 function selectSex(sex) {
     let location = window.location.pathname;
 
@@ -395,7 +425,6 @@ function selectSex(sex) {
 
     window.location = location;
 }
-
 
 // price input
 minPriceInput.addEventListener("change", (element) => {

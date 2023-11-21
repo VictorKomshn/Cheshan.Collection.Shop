@@ -6,6 +6,8 @@
 
         public Guid UserId { get; set; }
 
+        public string PurchaseId { get; set; }
+
         public string Name { get; set; }
 
         public string SecondName { get; set; }

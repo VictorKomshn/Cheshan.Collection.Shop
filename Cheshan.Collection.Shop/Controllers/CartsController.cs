@@ -8,12 +8,12 @@ namespace Cheshan.Collection.Shop.Controllers
     [ApiController]
     public class CartsController : Controller
     {
-        private readonly ICartsService _service;
+        private readonly ICartsService _cartsService;
         private const string apiRoute = "https://alfa.rbsuat.com/payment/rest/register.do?";
 
         public CartsController(ICartsService service)
         {
-            _service = service ?? throw new ArgumentNullException(nameof(service));
+            _cartsService = service ?? throw new ArgumentNullException(nameof(service));
         }
 
 
@@ -22,11 +22,8 @@ namespace Cheshan.Collection.Shop.Controllers
             try
             {
                 var activeuser = Guid.Parse(Request.Cookies["ActiveUser"]);
-                var cart = await _service.GetAsync(activeuser);
-                var viewModel = new CartViewModel
-                {
-                    Products = cart?.Products,
-                };
+                var cart = await _cartsService.GetAsync(activeuser);
+                var viewModel = new CartViewModel(cart?.Products);
                 return View(viewModel);
             }
             catch (Exception ex)
@@ -48,7 +45,7 @@ namespace Cheshan.Collection.Shop.Controllers
             try
             {
                 var activeUser = Guid.Parse(Request.Cookies["ActiveUser"]);
-                await _service.AddToCartAsync(productId, size, activeUser);
+                await _cartsService.AddToCartAsync(productId, size, activeUser);
 
                 //Response.Redirect(Request.GetDisplayUrl());
                 //var a = Request.GetDisplayUrl();
@@ -57,7 +54,7 @@ namespace Cheshan.Collection.Shop.Controllers
             }
             catch (Exception ex)
             {
-                return 0; NotFound(ex);
+                return 0;
             }
         }
 
@@ -68,13 +65,13 @@ namespace Cheshan.Collection.Shop.Controllers
             try
             {
                 var activeUser = Guid.Parse(Request.Cookies["ActiveUser"]);
-                await _service.RemoveProductFromCartAsync(productId, size, activeUser);
+                await _cartsService.RemoveProductFromCartAsync(productId, size, activeUser);
                 return await GetAmountAsync();
 
             }
             catch (Exception ex)
             {
-                return 0; NotFound(ex);
+                return 0;
             }
         }
 
@@ -85,13 +82,13 @@ namespace Cheshan.Collection.Shop.Controllers
             try
             {
                 var activeUser = Guid.Parse(Request.Cookies["ActiveUser"]);
-                await _service.RemoveProductOneSizeFromCartAsync(productId, size, activeUser);
+                await _cartsService.RemoveProductOneSizeFromCartAsync(productId, size, activeUser);
                 return await GetAmountAsync();
 
             }
             catch (Exception ex)
             {
-                return 0; NotFound(ex);
+                return 0;
             }
         }
 
@@ -102,13 +99,13 @@ namespace Cheshan.Collection.Shop.Controllers
             try
             {
                 var activeUser = Guid.Parse(Request.Cookies["ActiveUser"]);
-                await _service.RemoveAllFromCartAsync(activeUser);
+                await _cartsService.RemoveAllFromCartAsync(activeUser);
                 return await GetAmountAsync();
 
             }
             catch (Exception ex)
             {
-                return 0; NotFound(ex);
+                return 0;
             }
         }
 
@@ -120,13 +117,10 @@ namespace Cheshan.Collection.Shop.Controllers
             try
             {
                 var activeUser = Guid.Parse(Request.Cookies["ActiveUser"]);
-                var cart = await _service.GetAsync(activeUser);
-
-
+                var cart = await _cartsService.GetAsync(activeUser);
             }
             catch (Exception ex)
             {
-                //NotFound(ex);
             }
         }
 
@@ -143,12 +137,19 @@ namespace Cheshan.Collection.Shop.Controllers
             try
             {
                 var activeuser = Guid.Parse(Request.Cookies["ActiveUser"]);
-                var cart = await _service.GetAsync(activeuser);
+                var cart = await _cartsService.GetAsync(activeuser);
                 return PartialView("ProductInCartMenu", cart?.Products);
             }
             catch (Exception ex)
             {
-                return NotFound(ex);
+                if (ex is ArgumentException)
+                {
+                    return View("NotFound");
+                }
+                else
+                {
+                    return View("ServerError");
+                }
             }
         }
 
@@ -159,7 +160,7 @@ namespace Cheshan.Collection.Shop.Controllers
             try
             {
                 var activeuser = Guid.Parse(Request.Cookies["ActiveUser"]);
-                var cart = await _service.GetAsync(activeuser);
+                var cart = await _cartsService.GetAsync(activeuser);
                 int productsAmount = 0;
                 foreach (var productAmount in cart.Products.Select(x => x.Amount))
                 {

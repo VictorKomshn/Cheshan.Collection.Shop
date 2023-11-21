@@ -9,14 +9,14 @@
     align-items: flex-start;
 }
 
-    .product-in-cart-wrapper .product-in-cart-size {
+     .product-in-cart-size {
         margin-top: 20px;
     }
 
 .product-in-cart-img {
     max-width: 95px;
     max-height: 138px;
-    align-self: stretch;
+    object-fit:contain
 }
 
 .product-in-cart-content-wrapper {
@@ -60,7 +60,7 @@
     background: url('../img/plus_icon.svg');
 }
 
-.product-in-cart-menu-sale-price {
+.product-in-cart-menu-old-price {
     color: #ababab;
     text-decoration-line: line-through;
 }

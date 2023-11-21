@@ -1,5 +1,6 @@
 ﻿using Cheshan.Collection.Shop.Core.Abstract;
 using Cheshan.Collection.Shop.Core.Models;
+using Cheshan.Collection.Shop.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cheshan.Collection.Shop.Controllers
@@ -14,15 +15,23 @@ namespace Cheshan.Collection.Shop.Controllers
         public PurchaseController(IPurchaseService purchaseService, ICartsService cartsService)
         {
             _purchaseService = purchaseService ?? throw new ArgumentNullException(nameof(purchaseService));
-            _cartsService= cartsService?? throw new ArgumentNullException(nameof(cartsService));
+            _cartsService = cartsService ?? throw new ArgumentNullException(nameof(cartsService));
         }
 
         [HttpPost]
-        public async Task<IActionResult> PurchaseProducts([FromForm] PurchaseModel purcahse)
+        public async Task<IActionResult> PurchaseProducts([FromForm] PurchaseModel purchase)
         {
             var activeUser = Guid.Parse(Request.Cookies["ActiveUser"]);
-            var paymentUri = await _purchaseService.CreatePurhcaseAsync(purcahse, activeUser);
-            return Redirect(paymentUri);
+            if (purchase.PaymentType == "cash")
+            {
+                var result = await _purchaseService.SaveCashPurchase(purchase, activeUser);
+                return Redirect("/purchase/success/"+result);
+            }
+            else
+            {
+                var paymentUri = await _purchaseService.CreatePurhcaseAsync(purchase, activeUser);
+                return Redirect(paymentUri);
+            }
         }
 
 
@@ -33,7 +42,7 @@ namespace Cheshan.Collection.Shop.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("complete")]
-        public async Task<IActionResult> CompletePayment( string orderId, string? lang)
+        public async Task<IActionResult> CompletePayment(string orderId, string? lang)
         {
             var purchaseGuid = Guid.Parse(orderId);
             var link = await _purchaseService.CompletePurchaseAsync(purchaseGuid);
@@ -42,14 +51,20 @@ namespace Cheshan.Collection.Shop.Controllers
 
         [HttpGet]
         [Route("success")]
-        public async Task<IActionResult> Success()
+        [Route("success/{id}")]
+        public async Task<IActionResult> Success(string id)
         {
             var activeUser = Guid.Parse(Request.Cookies["ActiveUser"]);
-            if(activeUser != null)
+            if (activeUser != null)
             {
                 await _cartsService.ClearCartProductsAsync(activeUser);
             }
-            return View("Success");
+
+            var viewModel = new SuccessViewModel()
+            {
+                PurchaseId = id,
+            };
+            return View("Success", viewModel);
         }
 
     }

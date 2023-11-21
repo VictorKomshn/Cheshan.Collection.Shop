@@ -1,5 +1,6 @@
 ﻿using Cheshan.Collection.Shop.Core.Abstract;
 using Cheshan.Collection.Shop.Core.Models;
+using Cheshan.Collection.Shop.Database.Entities.Enums;
 using Cheshan.Collection.Shop.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -45,54 +46,69 @@ namespace Cheshan.Collection.Shop.Controllers
             return View(result);
         }
 
+
         [HttpGet]
         [Route("brands/{brandName}")]
         public async Task<IActionResult> GetByBrandAsync(string brandName)
         {
-            var activeuser = Request.Cookies["ActiveUser"];
-            if (activeuser == null)
+            try
             {
-                var newUserGuid = Guid.NewGuid();
-                Response.Cookies.Append("ActiveUser", newUserGuid.ToString());
-                await _cartsService.CreateCartAsync(newUserGuid);
-            }
-
-            brandName = brandName.Replace('-', ' ');
-            var condition = new ProductsCondition
-            {
-                Brand = brandName
-            };
-
-            var products = await _productsService.GetByConditionAsync(condition);
-
-            var brand = await _brandService.GetAsync(brandName);
-
-            ProductsViewModel viewModel = null;
-
-            if (brand == null)
-            {
-                viewModel = new ProductsViewModel
+                var activeuser = Request.Cookies["ActiveUser"];
+                if (activeuser == null)
                 {
-                    Products = Array.Empty<ProductModel>(),
-                    MaxAmount = 0,
-                };
-            }
-            else
-            {
-                viewModel = new ProductsViewModel
+                    var newUserGuid = Guid.NewGuid();
+                    Response.Cookies.Append("ActiveUser", newUserGuid.ToString());
+                    await _cartsService.CreateCartAsync(newUserGuid);
+                }
+
+                brandName = brandName.Replace('-', ' ');
+                var condition = new ProductsCondition
                 {
-                    Brand = brand,
-                    MaxAmount = products.MaxAmount,
-                    Products = products.Products.ToArray()
+                    Brand = brandName
                 };
+
+                var products = await _productsService.GetByConditionAsync(condition);
+
+                var brand = await _brandService.GetAsync(brandName);
+
+                ProductsViewModel viewModel = null;
+
+                if (brand == null)
+                {
+                    viewModel = new ProductsViewModel
+                    {
+                        Products = Array.Empty<ProductModel>(),
+                        MaxAmount = 0,
+                    };
+                }
+                else
+                {
+                    viewModel = new ProductsViewModel
+                    {
+                        Brand = brand,
+                        MaxAmount = products.MaxAmount,
+                        Products = products.Products.ToArray()
+                    };
+                }
+                return View("Index", viewModel);
             }
-            return View("Index", viewModel);
+            catch (Exception ex)
+            {
+                if (ex is ArgumentException)
+                {
+                    return View("NotFound");
+                }
+                else
+                {
+                    return View("ServerError");
+                }
+            }
         }
 
         [HttpGet]
         [Route("filter")]
         [Route("brands/{brandName}/filter")]
-        public async Task<IActionResult> GetByConditionAsync(bool? isMan, string? brandNames, string? categories = null, int startIndex = 0, int? highestPrice = int.MaxValue, int? lowestPrice = 0, string? sizes = null, int? sort = null)
+        public async Task<IActionResult> GetByConditionAsync(bool? isMan, string? brandNames, string? categories = null, int? categoryType = 0, int startIndex = 0, int? highestPrice = null, int? lowestPrice = null, string? sizes = null, int? sort = null, string? searchString = null)
         {
             try
             {
@@ -105,10 +121,12 @@ namespace Cheshan.Collection.Shop.Controllers
                     LowestPrice = lowestPrice,
                     Sizes = sizes,
                     Brand = brandNames,
+                    SearchString = searchString,
+                    CategoryType = (CategoryType)categoryType
                 };
 
                 var products = await _productsService.GetByConditionAsync(condition, (SortingType?)sort);
-                ProductsViewModel viewModel = null;
+                ProductsViewModel? viewModel = null;
 
                 if (string.IsNullOrEmpty(brandNames) || brandNames.Length > 1)
                 {
@@ -116,6 +134,7 @@ namespace Cheshan.Collection.Shop.Controllers
                     {
                         Products = products.Products.ToArray(),
                         MaxAmount = products.MaxAmount,
+                        CategoryType = products.CategoryType
                     };
                 }
                 else
@@ -128,6 +147,7 @@ namespace Cheshan.Collection.Shop.Controllers
                         {
                             Products = Array.Empty<ProductModel>(),
                             MaxAmount = 0,
+                            CategoryType = products.CategoryType
                         };
                     }
                     else
@@ -137,7 +157,9 @@ namespace Cheshan.Collection.Shop.Controllers
                         {
                             Brand = brand,
                             MaxAmount = products.MaxAmount,
-                            Products = products.Products.ToArray()
+                            Products = products.Products.ToArray(),
+                            CategoryType = products.CategoryType
+
                         };
                     }
                 }
@@ -145,7 +167,14 @@ namespace Cheshan.Collection.Shop.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound();
+                if (ex is ArgumentException)
+                {
+                    return View("NotFound");
+                }
+                else
+                {
+                    return View("ServerError");
+                }
             }
         }
 
@@ -163,24 +192,25 @@ namespace Cheshan.Collection.Shop.Controllers
             {
                 var product = await _productsService.GetAsync(id);
 
-                var suggestedCondition = new ProductsCondition
-                {
-                    Category = product.Category,
-                    Take = 4,
-                };
+                var suggestedProducts = await _productsService.GetSuggestedForProduct(id);
 
-                product.Brand = "fabiana filippi";
-                var suggestedProducts = await _productsService.GetByConditionAsync(suggestedCondition, null, true);
                 var viewModel = new ProductViewModel
                 {
                     Product = product,
-                    SuggestedProducts = suggestedProducts.Products
+                    SuggestedProducts = suggestedProducts
                 };
                 return View("Product", viewModel);
             }
             catch (Exception ex)
             {
-                return NotFound();
+                if (ex is ArgumentException)
+                {
+                    return View("NotFound");
+                }
+                else
+                {
+                    return View("ServerError");
+                };
             }
         }
 

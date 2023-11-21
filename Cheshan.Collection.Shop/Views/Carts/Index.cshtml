@@ -46,31 +46,31 @@
                 <span class="personal-data-header text-small-caps">ПЕРСОНАЛЬНЫЕ ДАННЫЕ</span>
 
                 <div class="input-with-label-wrapper">
-                    <label for="Name">ИМЯ</label>
-                    <input id="name-input" name="Name" type="text" />
+                    <label for="Name" class="required">ИМЯ</label>
+                    <input id="name-input" name="Name" type="text" onfocusout="checkField(this,'')" />
                 </div>
 
                 <div class="input-with-label-wrapper">
-                    <label for="SecondName">ФАМИЛИЯ</label>
-                    <input id="secondname-input" name="SecondName" type="text" />
+                    <label for="SecondName" class="required">ФАМИЛИЯ</label>
+                    <input id="secondname-input" name="SecondName" type="text" onfocusout="checkField(this,'')" />
                 </div>
 
                 <div class="input-with-label-wrapper">
-                    <label for="Email">EMAIL</label>
-                    <input id="email-input" name="Email" type="text" />
+                    <label for="Email" class="required">EMAIL</label>
+                    <input id="email-input" name="Email" type="text" onfocusout="checkField(this,'email')" />
                 </div>
 
                 <div class="input-with-label-wrapper">
                     <label for="Phone">ТЕЛЕФОН</label>
-                    <input id="phone-input" name="Phone" type="text" />
+                    <input id="phone-input" name="Phone" type="text" onfocusout="checkField(this,'phone')" />
                 </div>
             </div>
             <div class="delivery-options-wrapper">
                 <span class="delivery-options-header text-small-caps">ДОСТАВКА</span>
                 <div class="delivery-options-buttons-inner">
                     <input type="button" class="delivery-button cart-button text-medium-cart" value="КУРЬЕР" data-deliverytype="courier" onclick="selectDelivery(this)" />
-                    <input type="button" class="delivery-button cart-button text-medium-cart" value="СДЭК" data-deliverytype="sdek" onclick="selectDelivery(this)" />
-                    <input type="button" class="delivery-button cart-button text-medium-cart selected-button" value="САМОВЫВОЗ" data-deliverytype="selfpickup" onclick="selectDelivery(this)" />
+                    @*   УБРАЛ СДЭК ДО ДОГОВОРЕННОСТИ <input type="button" class="delivery-button cart-button text-medium-cart" value="СДЭК" data-deliverytype="sdek" onclick="selectDelivery(this)" />
+                *@                    <input type="button" class="delivery-button cart-button text-medium-cart selected-button" value="САМОВЫВОЗ" data-deliverytype="selfpickup" onclick="selectDelivery(this)" />
                 </div>
                 <div class="self-pick-up-options-wrapper">
                     <div class="self-pick-up-option">
@@ -90,7 +90,13 @@
                         </label>
                     </div>
                 </div>
-                <div class="adress-input-wrapper"></div>
+                <div class="adress-input-wrapper">
+                    <span class="adress-input-notification text-regular-small">Доставка курьером доступна только в пределах Челябинска</span>
+                    <div class="input-with-label-wrapper">
+                        <label for="Adress" class="required">АДРЕС</label>
+                        <input id="adress-input" name="Adress" type="text" onfocusout="checkField(this,'')" />
+                    </div>
+                </div>
             </div>
             <input id="delivery-type-input" name="DeliveryType" type="hidden" value="selfpickup">
 
@@ -101,24 +107,38 @@
                     <input type="button" class="promocode-button text-regular-caps" value="АКТИВИРОВАТЬ" />
                 </div>
             </div>
-
-            <div class="payment-type-wrapper">
-                <span class="payment-type-header text-small-caps">СПОСОБ ОПЛАТЫ</span>
-                <div class="payment-type-initial">
-                    <div class="payment-type-radio-button">
-                        <input id="cash-payment-radio-button" name="PaymentType" type="radio" class="cart-button text-regular-caps" value="НАЛИЧНЫМИ" data-paymenttype="cash" />
-                        <label for="cash-payment-radio-button" class="text-regular-caps">НАЛИЧНЫМИ</label>
-                    </div>
-                    <div class="payment-type-radio-button">
-                        <input id="online-payment-radio-button" name="PaymentType" type="radio" class="cart-button text-regular-caps selected-button" value="ОНЛАЙН(СБП)" data-paymenttype="online" />
-                        <label for="online-payment-radio-button" class="text-regular-caps">ОНЛАЙН(СБП)</label>
+            <div class="payment-module-wrapper">
+                <div class="payment-type-wrapper">
+                    <span class="payment-type-header text-small-caps">СПОСОБ ОПЛАТЫ</span>
+                    <div class="payment-type-initial">
+                        <div class="payment-type-radio-button">
+                            <input id="cash-payment-radio-button" name="PaymentType" type="radio" class="cart-button text-regular-caps" value="cash" data-paymenttype="cash" />
+                            <label for="cash-payment-radio-button" class="text-regular-caps">НАЛИЧНЫМИ</label>
+                        </div>
+                        <div class="payment-type-radio-button">
+                            <input id="online-payment-radio-button" name="PaymentType" type="radio" class="cart-button text-regular-caps selected-button" value="online" data-paymenttype="online" checked="checked" />
+                            <label for="online-payment-radio-button" class="text-regular-caps">ОНЛАЙН(СБП)</label>
+                        </div>
                     </div>
                 </div>
+
+                <input id="payment-type-input" type="hidden" name="PaymentType" value="online" />
+
+                <div class="payment-notification">
+                    <span class="text-regular-small"> <span class="text-regular-small" style="color:#f00">Внимание!</span> По техническим причинам, Ваш платеж будет разделен на две части:</span>
+                    <span id="first-payment-sum-notificaiton" class="text-regular-small">1) @Model.PriceForSP1 </span>
+                    <span id="second-payment-sum-notificaiton" class="text-regular-small">2) @Model.PriceForSP2 </span>
+                </div>
+
+                <input id="submitPurchaseButton" class="action-button  text-regular-caps inactive-button" type="submit" value="ПЕРЕЙТИ К ОПЛАТЕ" disabled="disabled" />
+
+                <div class="confidentiality-policy-notification-wrapper">
+                    <span class="text-regular-small">
+                        Нажимая на кнопку "перейти к оплате" Вы соглашаетесь с
+                        <a class="text-regular-small" href="/info/delivery-and-payment" style="cursor:pointer;">Политикой конфиденциальности</a>
+                    </span>
+                </div>
             </div>
-
-            <input id="payment-type-input" type="hidden" name="PaymentType" value="online" />
-
-            <input id="submitPurchaseButton" class="action-button  text-regular-caps" type="submit" value="ЗАКАЗАТЬ" />
         }
     </div>
     <div class="cart-info-wrapper">
@@ -130,7 +150,7 @@
                             <span class="sum-price-label text-small-caps">СУММА ЗАКАЗА:</span>
                         </div>
                         <div class="sum-price-wrapper">
-                            <span id="sum-price" class="text-small-caps">@Model.SumPrice</span>
+                            <span id="desktop-sum-price" class="text-small-caps">@Model.SumPrice ₽</span>
                         </div>
                     </div>
                     <div class="sum-price-info-wrapper">
@@ -151,10 +171,10 @@
                     </div>
                 </div>
                 <div class="result-sum-wrapper">
-                    <span id="result-sum" class="text-medium">ИТОГОВАЯ СУММА: @Model.SumPrice ₽</span>
+                    <span id="desktop-result-sum" class="text-medium">ИТОГОВАЯ СУММА: @Model.SumPrice ₽</span>
                 </div>
             </div>
-            <div class="products-in-cart-wrapper">
+            <div id="cart-page-products-wrapper" class="products-in-cart-wrapper">
                 @for (int i = 0; i < Model.Products.Count(); i++)
                 {
                     await Html.RenderPartialAsync("ProductInCart", Model.Products.ElementAt(i));
@@ -167,4 +187,4 @@
 <script src="~/js/CartScript.js"></script>
 
 <link href="~/css/CartStyle.css" rel="stylesheet" />
-<link href="~/css/ProductInCartMenStyle.css rel="stylesheet" />
+<link href="~/css/ProductInCartStyle.css" rel="stylesheet" />

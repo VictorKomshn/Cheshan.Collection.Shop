@@ -4,9 +4,8 @@ const sideMenu = document.getElementById("side-menu-wrapper");
 const sideMenuCategory = document.getElementById("side-menu-buttons");
 const filtersInner = document.getElementById("filters-inner");
 const brandsInner = document.getElementById("brands-wrapper");
-var cartMenuWrapper = document.getElementById("cart-menu-wrapper");
+const cartMenuWrapper = document.getElementById("cart-menu-wrapper");
 const html = document.getElementsByTagName('html')[0];
-
 
 
 window.onload = function () {
@@ -32,25 +31,102 @@ window.onload = function () {
             $("#cart-menu-content").html(res);
         }
     });
+};
+
+$(window).click(function () {
+    hideSearchInput();
+});
+
+function hideSearchInput() {
+    let searchInput = document.getElementById("search-input-wrapper");
+
+    if (searchInput.style.display == "flex") {
+        searchInput.style.display = "none";
+        let searchButton = document.getElementById("search-button");
+        searchButton.style.display = "inline-flex";
+
+        let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+        if (width < 1920) {
+            document.getElementsByClassName("logo-container")[0].style.display = "initial";
+        }
+
+    }
 }
+
+$('#search-button').click(function (event) {
+    event.stopPropagation();
+    this.style.display = "none";
+    let width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    if (width < 1920) {
+        document.getElementsByClassName("logo-container")[0].style.display = "none";
+    }
+
+    let searchInput = document.getElementById("search-input-wrapper");
+    searchInput.style.display = "flex";
+});
+
+$('#search-input-wrapper').click(function (event) {
+    event.stopPropagation();
+});
+
+function applySearch() {
+    applySearch(inputText);
+}
+
+function applySearch(searchString) {
+
+    if (searchString == undefined) {
+        searchString = document.getElementById("search-input").value;
+        if (searchString == "" || searchString == null || searchString == undefined) {
+            searchString = document.getElementById("search-input-mobile").value;
+        }
+    }
+    let location = window.location;
+
+    if (location.href.includes("filter")) {
+        window.location = location += "&searchString=" + searchString;
+    }
+    else {
+        window.location = location += "products/filter?searchString=" + searchString;
+    }
+}
+
+$('#search-input').keyup(function (event) {
+    if (event.keyCode === 13) {
+        applySearch(this.value);
+    }
+});
+
+$('#search-input-mobile').keyup(function (event) {
+    if (event.keyCode === 13) {
+        applySearch(this.value);
+    }
+});
 
 const sideMenuManCategoriesButtons = document.getElementById("filters-mobile-men-inner").getElementsByClassName("filter-button");
 const sideMenuWomanCategoriesButtons = document.getElementById("filters-mobile-women-inner").getElementsByClassName("filter-button");
+const sideMenuCategoriesButtonsDesktop = document.getElementById("filters-inner").getElementsByClassName("filter-button");
+
+for (let i = 0; i < sideMenuCategoriesButtonsDesktop.length; i++) {
+    sideMenuCategoriesButtonsDesktop[i].onclick = function () {
+        filterCategory(sideMenuCategoriesButtonsDesktop[i]);
+    };
+}
 
 for (let i = 0; i < sideMenuManCategoriesButtons.length; i++) {
     sideMenuManCategoriesButtons[i].onclick = function () {
         filterCategory(sideMenuManCategoriesButtons[i]);
-    }
+    };
 }
 
 for (let i = 0; i < sideMenuWomanCategoriesButtons.length; i++) {
     sideMenuWomanCategoriesButtons[i].onclick = function () {
         filterCategory(sideMenuWomanCategoriesButtons[i]);
-    }
+    };
 }
 
 function getSideCartSumPrice() {
-    let productsInCart = document.getElementsByClassName("product-in-cart-wrapper");
+    let productsInCart = document.getElementById("cart-menu-wrapper").getElementsByClassName("product-in-cart-wrapper");
     let sumPrice = 0;
     for (let i = 0; i < productsInCart.length; i++) {
         let price = parseInt(productsInCart[i].getElementsByClassName('product-in-cart-menu-price')[0].textContent);
@@ -66,11 +142,26 @@ function getSideCartSumPrice() {
     else {
         document.getElementById("cart-menu-sumprice").style.display = "none";
     }
+
+    let emptyCartNotification = document.getElementById("empty-cart-notification");
+    if (sumPrice != 0) {
+        emptyCartNotification.style.display = "none";
+    }
+    else {
+        emptyCartNotification.style.display = "block";
+    }
 }
 
 for (let i = 0; i < closeIcons.length; i++) {
     closeIcons[i].onclick = function () {
         let elementToCloseId = this.dataset.close;
+        let containers = document.getElementsByClassName("widget-mobile-container");
+        if (elementToCloseId == "notifications-wrapper") {
+            containers[0].style.display = "none";
+        }
+        else if (elementToCloseId == "help-wrapper") {
+            containers[1].style.display = "none";
+        }
         let elementToClose = document.getElementById(elementToCloseId);
         elementToClose.classList.remove("active");
         elementToClose.style.display = "none";
@@ -80,12 +171,20 @@ for (let i = 0; i < closeIcons.length; i++) {
             mainElement.style.display = "unset";
         }
         clearActive();
-    }
+    };
 }
 
 function openSideMenu(buttonOpener) {
-    cartMenuWrapper.style.display = "none"
+    cartMenuWrapper.style.display = "none";
+    brandsInner.style.display = "none";
+    let manInner = document.getElementById("man-categories-inner");
+    let womanInner = document.getElementById("woman-categories-inner");
+    manInner.style.display = "none";
+    womanInner.style.display = "none";
+    clearActive();
+
     sideMenu.style.display = "inline-flex";
+
     let buttonToOpenName = "filter-button-" + buttonOpener.dataset.buttonName;
     let buttonToOpen = document.getElementById(buttonToOpenName);
     let categoryToOpen = buttonOpener.dataset.buttonName;
@@ -95,10 +194,10 @@ function openSideMenu(buttonOpener) {
     else {
         filtersInner.style.display = "block";
         if (categoryToOpen == "woman") {
-            document.getElementById("woman-categories-inner").style.display = "flex";
+            womanInner.style.display = "flex";
         }
         else {
-            document.getElementById("man-categories-inner").style.display = "flex";
+            manInner.style.display = "flex";
         }
     }
     sideMenuCategory.dataset.selectedcategory = buttonOpener.dataset.buttonName;
@@ -111,7 +210,7 @@ function openCartMenu() {
     cartMenuWrapper.style.display = "inline-flex";
     html.style.overflowY = "hidden";
 
-    var proceedToCartButton = document.getElementById("proceed-to-cart-button");
+    let proceedToCartButton = document.getElementById("proceed-to-cart-button");
     if (cartCounters[0].dataset.amount == null || cartCounters[0].dataset.amount == "0") {
         proceedToCartButton.style.display = "none";
     }
@@ -126,7 +225,7 @@ function clearActive() {
     let filterCategoryButtons = document.getElementsByClassName("filter-category-button");
     for (let i = 0; i < filterCategoryButtons.length; i++) {
         if (filterCategoryButtons[i].classList.contains("button-active")) {
-            filterCategoryButtons[i].classList.remove("button-active")
+            filterCategoryButtons[i].classList.remove("button-active");
         }
     }
 }
@@ -158,6 +257,7 @@ function selectCategory(buttonActivator) {
 
 function filterCategory(button) {
     let categoryName = button.dataset.category;
+    let categoryType = button.parentNode.dataset.categorytype;
     let selectedCategory = sideMenuCategory.dataset.selectedcategory;
 
     let isMan = "";
@@ -178,13 +278,13 @@ function filterCategory(button) {
         window.location = '/products/filter?isMan=' + isMan;
     }
     else if (categoryName == "new") {
-        window.location = '/products/filter?isMan=' + isMan + "&sort=0";;
+        window.location = '/products/filter?isMan=' + isMan + "&sort=0";
     }
     else if (categoryName == "sale") {
         window.location = '/products/filter?isMan=' + isMan + "&sort=3";
     }
     else {
-        window.location = '/products/filter?isMan=' + isMan + "&categories=" + categoryName;
+        window.location = '/products/filter?isMan=' + isMan + "&categories=" + categoryName + "&categoryType=" + categoryType;
     }
 }
 
@@ -197,7 +297,7 @@ function closeOnClick(elementName) {
 
 
 //collapsibles
-var coll = document.getElementsByClassName("collapsible-button");
+let coll = document.getElementsByClassName("collapsible-button");
 
 for (let j = 0; j < coll.length; j++) {
     coll[j].addEventListener("click", function () {
@@ -213,7 +313,13 @@ for (let j = 0; j < coll.length; j++) {
     });
 }
 
-function subscribeOnNotifications() {
+function subscribeOnNotifications(buttonInitiator) {
+
+    let buttonValid = checkButtonValidity(buttonInitiator);
+    if (buttonValid == false) {
+        return;
+    }
+
     let name = document.getElementById("notifications-subscriber-name-input").value;
     let email = document.getElementById("notifications-subscriber-email-input").value;
 
@@ -239,13 +345,20 @@ function subscribeOnNotifications() {
 }
 
 
-function requestHelp() {
+function requestHelp(buttonInitiator) {
+
+    let buttonValid = checkButtonValidity(buttonInitiator);
+    if (buttonValid == false) {
+        return;
+    }
+
+
     let name = document.getElementById("help-name-input").value;
     let email = document.getElementById("help-email-input").value;
     let phone = document.getElementById("help-phone-input").value;
     let helpMessage = document.getElementById("help-text-input").value;
 
-    var data = JSON.stringify({
+    let data = JSON.stringify({
         'name': name,
         'email': email,
         'phone': phone,
@@ -275,6 +388,13 @@ function requestHelp() {
 
 function openWindow(windowId, display) {
     document.getElementById(windowId).style.display = display;
+    let containers = document.getElementsByClassName("widget-mobile-container");
+    if (windowId == "notifications-wrapper") {
+        containers[0].style.display = "initial";
+    }
+    else if (windowId == "help-wrapper") {
+        containers[1].style.display = "initial";
+    }
 }
 
 function removeItemFromCart(element) {
@@ -303,10 +423,14 @@ function removeItemFromCart(element) {
                 success: function (res) {
                     $("#cart-menu-content").html(res);
                     getSideCartSumPrice();
+                    if ($("#cart-page-products-wrapper") != null) {
+                        $("#cart-page-products-wrapper").html(res);
+                        getCartPageSumPrice();
+                    }
                 }
             });
         }
-    })
+    });
 }
 
 function clearCart() {
@@ -345,5 +469,142 @@ function openMobileMenu() {
     if (mainElement != null && mainElement != undefined) {
 
         mainElement.style.display = "none";
+    }
+}
+
+
+
+//incative-button
+
+function checkButtonValidity(buttonInitiator) {
+    if (buttonInitiator.classList.contains("inactive-button")) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+
+function removeInactiveButton(button) {
+    if (button.classList.contains("inactive-button")) {
+        button.classList.remove("inactive-button");
+    }
+}
+
+function addInactiveButton(button) {
+    if (!button.classList.contains("inactive-button")) {
+        button.classList.add("inactive-button");
+    }
+}
+
+
+// notification buttons
+let notificationNameInputValid = false;
+let notificationEmailInputValid = false;
+
+document.getElementById("notifications-subscriber-name-input").addEventListener("input", function (e) {
+    let button = document.getElementsByClassName("subscribe-to-notifications-button")[0];
+
+    if (this.value != "") {
+        notificationNameInputValid = true;
+    }
+    else {
+        notificationNameInputValid = false;
+    }
+
+    if (notificationEmailInputValid == true && notificationNameInputValid == true) {
+        removeInactiveButton(button);
+    }
+    else {
+        addInactiveButton(button);
+    }
+});
+
+document.getElementById("notifications-subscriber-email-input").addEventListener("input", function (e) {
+    let button = document.getElementsByClassName("subscribe-to-notifications-button")[0];
+
+    if (isEmailValid(this.value)) {
+        notificationEmailInputValid = true;
+    }
+    else {
+        notificationEmailInputValid = false;
+    }
+
+    if (notificationEmailInputValid == true && notificationNameInputValid == true) {
+        removeInactiveButton(button);
+    }
+    else {
+        addInactiveButton(button);
+    }
+});
+
+
+// help buttons
+
+let helpNameInputValid = false;
+let helpEmailInputValid = false;
+let helpPhoneInputValid = false;
+let helpTextInputValid = false;
+
+
+document.getElementById("help-name-input").addEventListener("input", function (e) {
+
+    if (this.value != "") {
+        helpNameInputValid = true;
+    }
+    else {
+        helpNameInputValid = false;
+    }
+
+    validateHelpInput();
+});
+
+document.getElementById("help-email-input").addEventListener("input", function (e) {
+
+    if (isEmailValid(this.value)) {
+        helpEmailInputValid = true;
+    }
+    else {
+        helpEmailInputValid = false;
+    }
+
+    validateHelpInput();
+});
+
+document.getElementById("help-phone-input").addEventListener("input", function (e) {
+    if (isPhoneValid(this.value)) {
+        helpPhoneInputValid = true;
+    }
+    else {
+        helpPhoneInputValid = false;
+    }
+
+    validateHelpInput();
+});
+
+document.getElementById("help-text-input").addEventListener("input", function (e) {
+
+    if (this.value != "") {
+        helpTextInputValid = true;
+    }
+    else {
+        helpTextInputValid = false;
+    }
+
+    validateHelpInput();
+});
+
+
+function validateHelpInput() {
+    let button = document.getElementsByClassName("help-request-button")[0];
+
+    if (helpNameInputValid == true &&
+        helpEmailInputValid == true &&
+        helpTextInputValid == true) {
+        removeInactiveButton(button);
+    }
+    else {
+        addInactiveButton(button);
     }
 }

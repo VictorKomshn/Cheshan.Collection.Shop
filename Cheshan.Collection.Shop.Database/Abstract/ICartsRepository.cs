@@ -5,6 +5,8 @@ namespace Cheshan.Collection.Shop.Database.Abstract
 {
     public interface ICartsRepository
     {
+        Task ClearOldCarts();
+
         Task<CartEntity> GetAsync(Guid userId);
 
         Task<Guid> CreateCartAsync(Guid userId);

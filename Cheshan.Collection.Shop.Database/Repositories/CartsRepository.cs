@@ -3,7 +3,6 @@ using Cheshan.Collection.Shop.Database.Database;
 using Cheshan.Collection.Shop.Database.Entities;
 using Cheshan.Collection.Shop.Database.Enums;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
 
 namespace Cheshan.Collection.Shop.Database.Repositories
 {
@@ -16,20 +15,28 @@ namespace Cheshan.Collection.Shop.Database.Repositories
             _dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
         }
 
+        public async Task ClearOldCarts()
+        {
+            var query = await _dataContext.Carts.Where(x=> (DateTime.UtcNow -  x.Created) > TimeSpan.FromDays(1)).ToArrayAsync();
+
+
+            _dataContext.Carts.RemoveRange();
+        }
+
         public async Task<int> AddToCartAsync(Guid productId, string size, Guid userId)
         {
             var cart = await GetAsync(userId);
 
             if (cart == null)
             {
-                throw new Exception("Cart was not found");
+                throw new ArgumentException("Cart was not found");
             }
 
             var product = await _dataContext.Products.FirstOrDefaultAsync(x => x.Id == productId);
 
             if (product == null)
             {
-                throw new Exception("Product was not found");
+                throw new ArgumentException("Product was not found");
             }
             if (cart.Products == null)
             {
@@ -74,7 +81,8 @@ namespace Cheshan.Collection.Shop.Database.Repositories
             {
                 Id = Guid.NewGuid(),
                 UserId = userId,
-                Products = new List<SizeWithAmountEntity>()
+                Products = new List<SizeWithAmountEntity>(),
+                Created = DateTime.UtcNow
             };
 
             await _dataContext.Carts.AddAsync(cart);
@@ -122,21 +130,21 @@ namespace Cheshan.Collection.Shop.Database.Repositories
 
         public async Task<int> DecreaseAmountOfProductInCartAsync(Guid productId, string size, Guid userId, DecreaseAmount amount)
         {
-            var cart = await GetAsync(userId) ?? throw new Exception("Cart was not found");
+            var cart = await GetAsync(userId) ?? throw new ArgumentException("Cart was not found");
             
 
             var product = await _dataContext.Products.FirstOrDefaultAsync(x => x.Id == productId);
 
             if (product == null)
             {
-                throw new Exception("Product was not found");
+                throw new ArgumentException("Product was not found");
             }
 
             var itemToDecrease = cart?.Products.FirstOrDefault(x => x.Product.Id == productId && x.Size == size);
 
             if (itemToDecrease == null)
             {
-                throw new Exception("Cart does not contain this product");
+                throw new ArgumentException("Cart does not contain this product");
             }
 
             if (amount == DecreaseAmount.All)

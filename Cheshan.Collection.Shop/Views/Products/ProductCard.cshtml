@@ -1,20 +1,48 @@
 ﻿@model ProductModel
 
-<a class="product-card-inner" href="/products/@Model.Id">
-    <img src="~/img/@Model.MainPhoto" />
-    <div class="product-info">
-        <span class="brand text-regular-caps">@Model.Brand</span>
-        <span class="name text-regular-small">@Model.Name</span>
-        <div class="prices-inner">
-            @if (Model.SalePrice != null && Model.SalePrice != 0 && Model.SalePrice < Model.Price)
-            {
-                <span class="price text-regular-small">@Model.SalePrice ₽</span>
-                <span class="old-price">@Model.Price ₽</span>
-            }
-            else
-            {
-                <span class="price text-regular-small">@Model.Price ₽</span>
-            }
+@if (Model.CategoryType == CategoryType.Footwear || Model.CategoryType == CategoryType.Accessories)
+{
+    <a class="product-card-inner" href="/products/@Model.Id" >
+        <div class="product-card-accessories-footwear-image-wrapper">
+            <img src="~/img/@Model.MainPhoto" />
         </div>
-    </div>
-</a>
+        <div class="product-info">
+            <span class="brand text-regular-caps">@Model.Brand</span>
+            <span class="name text-regular-small">@Model.Name</span>
+            <div class="prices-inner">
+                @if (Model.SalePrice != null && Model.SalePrice != 0 && Model.SalePrice < Model.Price)
+                {
+                    <span class="price text-regular-small sale-price">@Model.SalePrice ₽</span>
+                    <span class="old-price">@Model.Price ₽</span>
+                }
+                else
+                {
+                    <span class="price text-regular-small">@Model.Price ₽</span>
+                }
+            </div>
+        </div>
+    </a>
+}
+else
+{
+    <a class="product-card-inner" href="/products/@Model.Id">
+        <div class="product-card-image-wrapper">
+            <img src="~/img/@Model.MainPhoto" />
+        </div>
+        <div class="product-info">
+            <span class="brand text-regular-caps">@Model.Brand</span>
+            <span class="name text-regular-small">@Model.Name</span>
+            <div class="prices-inner">
+                @if (Model.SalePrice != null && Model.SalePrice != 0 && Model.SalePrice < Model.Price)
+                {
+                    <span class="price text-regular-small sale-price">@Model.SalePrice ₽</span>
+                    <span class="old-price">@Model.Price ₽</span>
+                }
+                else
+                {
+                    <span class="price text-regular-small">@Model.Price ₽</span>
+                }
+            </div>
+        </div>
+    </a>
+}

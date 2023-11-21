@@ -1,0 +1,65 @@
+﻿body {
+}
+
+.error-container {
+}
+
+.error-wrapper {
+    max-width: 386px;
+    margin: auto;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 35vw;
+}
+
+.server-error-code {
+    margin: 0 30px;
+    color: #000;
+    text-align: center;
+    font-family: Roboto Condensed;
+    font-size: 200px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    letter-spacing: 16px;
+    text-transform: uppercase;
+}
+
+.server-error-info {
+    text-wrap: nowrap;
+    color: #000;
+    text-align: center;
+    font-family: Roboto Condensed;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 1.44px;
+}
+
+.error-wrapper button {
+    margin: 30px 40px;
+    margin-bottom: 0;
+}
+
+@media(max-width:768px) {
+    .error-container {
+        margin: 16px;
+    }
+
+    .server-error-code {
+        margin: unset;
+    }
+
+    .error-wrapper button {
+        margin: unset;
+        margin-top: 30px;
+    }
+}
+
+@media(max-width:480px) {
+    .server-error-info {
+        text-wrap: unset;
+    }
+}

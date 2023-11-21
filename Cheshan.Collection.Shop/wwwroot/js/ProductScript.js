@@ -15,6 +15,8 @@ const subscribeOnProductButton = document.getElementById("subscribe-on-product-b
 for (let i = 0; i < sizeButtons.length; i++) {
     sizeButtons[i].addEventListener('click', function () {
         addActive(sizeButtons[i], sizeInfo);
+
+        removeInactiveButton(addToCartButton);
     });
 }
 
@@ -23,7 +25,6 @@ for (let i = 0; i < notificationSizeWrappers.length; i++) {
         saveSizeForNotification(notificationSizeWrappers[i]);
     });
 }
-
 
 function addActive(sizeButton, sizeInfo) {
     if (sizeButton != null) {
@@ -48,9 +49,12 @@ function addSelectionMark(sizeButton, sizeButtonsArray) {
     sizeButton.classList.add('selected-size');
 }
 
-
-
 addToCartButton.onclick = function () {
+
+    let buttonIsActive = checkButtonValidity(this)
+    if (buttonIsActive == false) {
+        return
+    }
     if (this.dataset.size != null && this.dataset.size != "") {
 
         return jQuery.ajax({
@@ -153,11 +157,8 @@ function checkDirection() {
     }
 }
 
-if (anySizes != undefined) {
-    sizeswindow.style.width = "470px";
 
-}
-else if (brand.textContent.toLowerCase() == "cult gaia") {
+if (brand.textContent.toLowerCase() == "cult gaia") {
     sizeswindow.style.width = "235px";
 }
 else if (brand.textContent.toLowerCase() == "jil sander" ||

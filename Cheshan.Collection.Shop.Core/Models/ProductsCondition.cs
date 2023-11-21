@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Cheshan.Collection.Shop.Database.Entities.Enums;
 
 namespace Cheshan.Collection.Shop.Core.Models
 {
@@ -8,9 +8,9 @@ namespace Cheshan.Collection.Shop.Core.Models
 
         //public string? Color { get; set; }
 
-        public int? HighestPrice { get; set; } = int.MaxValue;
+        public int? HighestPrice { get; set; }
 
-        public int? LowestPrice { get; set; } = 0;
+        public int? LowestPrice { get; set; }
 
         public bool? IsMan { get; set; }
 
@@ -20,6 +20,8 @@ namespace Cheshan.Collection.Shop.Core.Models
 
         public string? Sizes { get; set; } = null;
 
-        public int? Take { get; set; } = 32;
+        public string? SearchString { get; set; } = null;
+
+        public CategoryType? CategoryType { get; set; }
     }
 }

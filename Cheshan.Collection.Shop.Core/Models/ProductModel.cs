@@ -1,4 +1,6 @@
-﻿namespace Cheshan.Collection.Shop.Core.Models
+﻿using Cheshan.Collection.Shop.Database.Entities.Enums;
+
+namespace Cheshan.Collection.Shop.Core.Models
 {
     public class ProductModel
     {
@@ -10,15 +12,19 @@
 
         public string Brand { get; set; }
 
+        public IEnumerable<string>? Details { get; set; }
+
+        public string ModelParameters { get; set; }
+
         public string Material { get; set; }
 
         public string Description { get; set; }
 
-        public int Price { get; set; }
+        public double Price { get; set; }
 
         public string SKU { get; set; }
 
-        public int? SalePrice { get; set; }
+        public double? SalePrice { get; set; }
 
         public int? SalePercent { get; set; }
 
@@ -30,9 +36,13 @@
 
         public string Category { get; set; }
 
-        public bool? IsMen { get; set; }
+        public CategoryType CategoryType { get; set; }
+
+        public bool? IsMan { get; set; }
 
         public string[] Colours { get; set; }
+
+        public string SEO { get; set; }
 
         public bool IsAvailable()
         {

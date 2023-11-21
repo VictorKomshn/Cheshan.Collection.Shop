@@ -15,6 +15,8 @@ namespace Cheshan.Collection.Shop.Core
             services.AddScoped<IBrandService, BrandService>();
             services.AddScoped<IHelpService, HelpService>();
 
+            services.AddHostedService<ClearCartsBackgroundService>();
+
             return services;
         }
     }

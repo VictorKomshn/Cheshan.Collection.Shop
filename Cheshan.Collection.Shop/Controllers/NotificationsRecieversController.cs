@@ -1,7 +1,6 @@
 ﻿using Cheshan.Collection.Shop.Core.Abstract;
 using Cheshan.Collection.Shop.Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.CompilerServices;
 
 namespace Cheshan.Collection.Shop.Controllers
 {
@@ -66,7 +65,7 @@ namespace Cheshan.Collection.Shop.Controllers
             }
             catch
             {
-                NotFound();
+                Redirect("NotFound");
             }
         }
     }

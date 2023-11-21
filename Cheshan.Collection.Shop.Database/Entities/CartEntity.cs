@@ -7,5 +7,7 @@
         public Guid UserId { get; set; }
 
         public virtual ICollection<SizeWithAmountEntity> Products { get; set; }
+
+        public DateTime Created { get; set; }
     }
 }

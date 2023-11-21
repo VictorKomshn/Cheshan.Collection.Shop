@@ -20,7 +20,7 @@ namespace Cheshan.Collection.Shop.Database.Repositories
 
             if (purchase == null)
             {
-                throw new Exception("purchase with such id was not found");
+                throw new ArgumentException("Purchase with such id was not found");
             }
 
             purchase.IsComplited = purchaseComplited;

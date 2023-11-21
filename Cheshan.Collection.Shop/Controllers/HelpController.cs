@@ -26,7 +26,7 @@ namespace Cheshan.Collection.Shop.Controllers
             }
             catch(Exception ex)
             {
-                return false  ;
+                return false ;
             }
         }
     }

@@ -1,6 +1,5 @@
 ﻿using Cheshan.Collection.Shop.Core.Models;
 using Cheshan.Collection.Shop.Database.Entities;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Cheshan.Collection.Shop.Core.Mappers
 {
@@ -22,9 +21,12 @@ namespace Cheshan.Collection.Shop.Core.Mappers
                 MainPhoto = model.MainPhoto,
                 Photos = model.Photos.ToArray(),
                 Colours = model.Colours.ToArray(),
-                IsMen = model.IsMen,
+                IsMan = model.IsMan,
                 Category = model.Category,
                 SP = model.SP,
+                SEO = model.SEO,
+                Details = model.Details?.ToArray(),
+                ModelParameters = model.ModelParameters
             };
 
             result.SizesWithAmounts = model.SizesWithAmounts.Select(x => x.ToEntity(result)).ToArray();
@@ -48,9 +50,13 @@ namespace Cheshan.Collection.Shop.Core.Mappers
                 MainPhoto = entity.MainPhoto,
                 Photos = entity.Photos,
                 Category = entity.Category,
-                IsMen = entity.IsMen,
+                CategoryType = entity.CategoryType,
+                IsMan = entity.IsMan,
                 SP = entity.SP,
                 Colours = entity.Colours.ToArray(),
+                SEO = entity.SEO,
+                Details = entity.Details,
+                ModelParameters = entity.ModelParameters
             };
 
             model.SizesWithAmounts = entity.SizesWithAmounts.Select(x => x.ToModel(model)).ToList();
@@ -82,6 +88,10 @@ namespace Cheshan.Collection.Shop.Core.Mappers
             if (size.StartsWith("size="))
             {
                 size = size.Substring(5);
+            }
+            if (size.Split(',').Length >= 2)
+            {
+                size = string.Join('-', size.Split(','));
             }
             var model = new SizeWithAmountModel
             {
