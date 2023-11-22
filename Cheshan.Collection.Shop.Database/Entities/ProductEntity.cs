@@ -12,7 +12,7 @@ namespace Cheshan.Collection.Shop.Database.Entities
 
         public string Brand { get; set; }
 
-        public virtual ICollection<string>? Details { get; set; }
+        public virtual ICollection<string> Details { get; set; }
 
         public string? ModelParameters { get; set; }
 
