@@ -219,11 +219,6 @@ namespace Cheshan.Collection.Shop.Database.Repositories
             {
                 query = query.Where(x => x.Price <= highestPrice || x.SalePrice <= highestPrice);
             }
-            if (color != null)
-            {
-                query = query.Where(x => x.Colours.Contains(color));
-
-            }
             if (isMan != null)
             {
                 query = query.Where(x => x.IsMan == isMan);

@@ -20,7 +20,6 @@ namespace Cheshan.Collection.Shop.Core.Mappers
                 SKU = model.SKU,
                 MainPhoto = model.MainPhoto,
                 Photos = model.Photos.ToArray(),
-                Colours = model.Colours.ToArray(),
                 IsMan = model.IsMan,
                 Category = model.Category,
                 SP = model.SP,
@@ -53,7 +52,6 @@ namespace Cheshan.Collection.Shop.Core.Mappers
                 CategoryType = entity.CategoryType,
                 IsMan = entity.IsMan,
                 SP = entity.SP,
-                Colours = entity.Colours.ToArray(),
                 SEO = entity.SEO,
                 Details = entity.Details,
                 ModelParameters = entity.ModelParameters

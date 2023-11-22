@@ -40,8 +40,6 @@ namespace Cheshan.Collection.Shop.Core.Models
 
         public bool? IsMan { get; set; }
 
-        public string[] Colours { get; set; }
-
         public string SEO { get; set; }
 
         public bool IsAvailable()
