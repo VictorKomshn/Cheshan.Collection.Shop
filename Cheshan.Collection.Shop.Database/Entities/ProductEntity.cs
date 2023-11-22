@@ -40,10 +40,7 @@ namespace Cheshan.Collection.Shop.Database.Entities
 
         public bool? IsMan { get; set; }
 
-        public string[] Colours { get; set; }
-
         public DateTime DateAdded { get; set; }
-
 
         public string SEO { get; set; }
     }
