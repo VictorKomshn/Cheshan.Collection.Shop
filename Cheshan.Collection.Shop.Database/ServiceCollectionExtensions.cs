@@ -31,8 +31,8 @@ namespace Cheshan.Collection.Shop.Database
                 };
 
                 var builder = new DbContextOptionsBuilder<DataContext>()
-                    //.UseNpgsql(connectionBuilder.ToString()).EnableSensitiveDataLogging();
-                    .UseSqlServer(connectionBuilder.ToString()).EnableSensitiveDataLogging();
+                    .UseNpgsql(connectionBuilder.ToString()).EnableSensitiveDataLogging();
+                //.UseSqlServer(connectionBuilder.ToString()).EnableSensitiveDataLogging();
 
                 return builder.Options;
             });
