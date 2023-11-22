@@ -12,7 +12,7 @@ namespace Cheshan.Collection.Shop.Core.Models
 
         public string Brand { get; set; }
 
-        public IEnumerable<string>? Details { get; set; }
+        public string[]? Details { get; set; }
 
         public string ModelParameters { get; set; }
 
@@ -32,7 +32,7 @@ namespace Cheshan.Collection.Shop.Core.Models
 
         public string MainPhoto { get; set; }
 
-        public IEnumerable<string> Photos { get; set; }
+        public string[] Photos { get; set; }
 
         public string Category { get; set; }
 

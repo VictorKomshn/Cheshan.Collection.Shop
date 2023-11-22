@@ -47,13 +47,13 @@ namespace Cheshan.Collection.Shop.Core.Mappers
                 SalePrice = entity.SalePrice,
                 SKU = entity.SKU,
                 MainPhoto = entity.MainPhoto,
-                Photos = entity.Photos,
+                Photos = entity.Photos.ToArray(),
                 Category = entity.Category,
                 CategoryType = entity.CategoryType,
                 IsMan = entity.IsMan,
                 SP = entity.SP,
                 SEO = entity.SEO,
-                Details = entity.Details,
+                Details = entity.Details.ToArray(),
                 ModelParameters = entity.ModelParameters
             };
 

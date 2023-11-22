@@ -12,9 +12,9 @@ namespace Cheshan.Collection.Shop.Database.Entities
 
         public string Brand { get; set; }
 
-        public string[]? Details { get; set; }
+        public ICollection<string>? Details { get; set; }
 
-        public string? ModelParameters{ get; set; }
+        public string? ModelParameters { get; set; }
 
         public string Material { get; set; }
 
@@ -32,7 +32,7 @@ namespace Cheshan.Collection.Shop.Database.Entities
 
         public string MainPhoto { get; set; }
 
-        public string[] Photos { get; set; }
+        public ICollection<string> Photos { get; set; }
 
         public string Category { get; set; }
 
