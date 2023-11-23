@@ -88,48 +88,47 @@
             <p class="product-description text-regular-small">@Model.Product.Description</p>
             <div class="collapsible-wrapper">
                 <div class="collapsible">
-                    @if (Model.Product.Material != null)
-                    {
+                    @{
+                        if (Model.Product.Material != null)
+                        {
 
-                        <button class="collapsible-button">
-                            <span class="collapsible-name text-small-caps">СОСТАВ</span>
-                            <i class="collapsible-icon"></i>
-                        </button>
-                        <div class="collapsible-content text-regular-small">
-                            @Model.Product.Material
-                        </div>
-                        <hr />
+                            <button class="collapsible-button">
+                                <span class="collapsible-name text-small-caps">СОСТАВ</span>
+                                <i class="collapsible-icon"></i>
+                            </button>
+                            <div class="collapsible-content text-regular-small">
+                                @Model.Product.Material
+                            </div>
+                            <hr />
 
+                        }
+
+                        if (Model.Product.Details != null)
+                        {
+
+                            <button class="collapsible-button">
+                                <span class="collapsible-name text-small-caps">ДЕТАЛИ</span>
+                                <i class="collapsible-icon"></i>
+                            </button>
+                            <div class="collapsible-content text-regular-small">
+                                <ul>
+                                </ul>
+                            </div>
+                            <hr />
+                        }
+
+                        if (Model.Product.ModelParameters != null)
+                        {
+
+                            <button class="collapsible-button">
+                                <span class="collapsible-name text-small-caps">ПАРАМЕТРЫ МОДЕЛИ</span>
+                                <i class="collapsible-icon"></i>
+                            </button>
+                            <div class="collapsible-content text-regular-small">
+                            </div>
+                            <hr />
+                        }
                     }
-
-                    @if(Model.Product.Details != null){
-
-                    <button class="collapsible-button">
-                        <span class="collapsible-name text-small-caps">ДЕТАЛИ</span>
-                        <i class="collapsible-icon"></i>
-                    </button>
-                    <div class="collapsible-content text-regular-small">
-                        <ul>
-                            <li>свободный крой</li>
-                            <li>боковые карманы</li>
-                            <li>скрытая молния</li>
-                        </ul>
-                    </div>
-                    <hr />
-                    }
-
-                    @if(Model.Product.ModelParameters != null){
-
-                    <button class="collapsible-button">
-                        <span class="collapsible-name text-small-caps">ПАРАМЕТРЫ МОДЕЛИ</span>
-                        <i class="collapsible-icon"></i>
-                    </button>
-                    <div class="collapsible-content text-regular-small">
-                        81–58–87, размер 40
-                    </div>
-                    <hr />
-                    }
-
                 </div>
             </div>
         </div>
