@@ -53,7 +53,7 @@ namespace Cheshan.Collection.Shop.Core.Mappers
                 IsMan = entity.IsMan,
                 SP = entity.SP,
                 SEO = entity.SEO,
-                Details = entity.Details.ToArray(),
+                Details = entity.Details?.ToArray(),
                 ModelParameters = entity.ModelParameters
             };
 

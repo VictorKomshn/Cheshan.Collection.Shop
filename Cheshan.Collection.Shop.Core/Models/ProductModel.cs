@@ -14,7 +14,7 @@ namespace Cheshan.Collection.Shop.Core.Models
 
         public string[]? Details { get; set; }
 
-        public string ModelParameters { get; set; }
+        public string? ModelParameters { get; set; }
 
         public string Material { get; set; }
 
