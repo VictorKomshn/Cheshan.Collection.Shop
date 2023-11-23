@@ -102,7 +102,7 @@
 
                     }
 
-                    if(@Model.Product.Details != null){
+                    @if(Model.Product.Details != null){
 
                     <button class="collapsible-button">
                         <span class="collapsible-name text-small-caps">ДЕТАЛИ</span>
@@ -118,7 +118,7 @@
                     <hr />
                     }
 
-                    if(@Model.Product.ModelParameters != null){
+                    @if(Model.Product.ModelParameters != null){
 
                     <button class="collapsible-button">
                         <span class="collapsible-name text-small-caps">ПАРАМЕТРЫ МОДЕЛИ</span>
