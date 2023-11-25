@@ -1270,6 +1270,16 @@ hr {
 
 @media(max-width: 768px) {
 
+    button:hover {
+        background: #fff !important;
+        color: #000 !important;
+    }
+
+    .sale-button:hover {
+        background: #FFF !important;
+        color: #F00 !important;
+    }
+
     .widget-mobile-container {
         top: 0;
         left: 0;

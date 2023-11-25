@@ -408,8 +408,16 @@ div.brands-filter.collapsible-active {
             padding: 5px 0px;
         }
 
+    .category-with-icon-button:hover .sort-icon {
+        background: url('../img/sort_icon.svg');
+    }
+
     .clothes-type-categories .filter-wrapper {
         padding-right: unset;
+    }
+
+    #sort-button-current-span{
+        color:#000 !important;
     }
 
     #sort-dropdown-content {
