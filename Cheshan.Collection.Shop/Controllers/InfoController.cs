@@ -50,11 +50,11 @@ namespace Cheshan.Collection.Shop.Controllers
             return View();
         }
 
-        [HttpGet]
-        [Route("sizes")]
-        public IActionResult Sizes()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //[Route("sizes")]
+        //public IActionResult Sizes()
+        //{
+        //    return View();
+        //}
     }
 }

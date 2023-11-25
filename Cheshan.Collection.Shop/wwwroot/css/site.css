@@ -371,7 +371,7 @@ button, input[type="reset"] {
 .category-with-icon-button {
     display: inline-flex;
     min-width: 20px;
-    padding: 5px 20px;
+    padding: 5px 15px;
     justify-content: center;
     align-items: center;
     gap: 10px;

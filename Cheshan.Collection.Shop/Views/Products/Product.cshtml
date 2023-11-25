@@ -6,7 +6,7 @@
             <div class="product-photo">
                 <img src="~/img/@Model.Product.MainPhoto" />
             </div>
-            @foreach (var photo in Model.Product.Photos)
+            @foreach (var photo in Model.Product.Photos.Skip(1))
             {
                 <div class="product-photo">
                     <img src="~/img/@photo" />
@@ -18,7 +18,7 @@
                 <div class="slider-photo-wrapper">
                     <img src="~/img/@Model.Product.MainPhoto" />
                 </div>
-                @foreach (var photo in Model.Product.Photos)
+                @foreach (var photo in Model.Product.Photos.Skip(1))
                 {
                     <div class="slider-photo-wrapper">
                         <img src="~/img/@photo" />

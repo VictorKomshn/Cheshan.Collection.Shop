@@ -7,13 +7,13 @@
 }
 
 .brand-info-inner {
-    margin-bottom: 30px;
+    margin: 40px 0;
 }
 
 .brand-logo {
     display: flex;
     justify-content: center;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 .brand-info-inner img {
@@ -21,7 +21,7 @@
 }
 
 .brand-description-wrapper {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .brand-description {
@@ -40,11 +40,14 @@
 @media(max-width:768px) {
 
     .brand-info-inner {
-        margin: 16px;
-        margin-bottom: 30px;
+        margin: 20px 16px 40px 16px;
     }
 
     .sex-buttons-wrapper {
         flex-direction: column;
+    }
+
+    .brand-logo {
+        margin-bottom: 20px;
     }
 }

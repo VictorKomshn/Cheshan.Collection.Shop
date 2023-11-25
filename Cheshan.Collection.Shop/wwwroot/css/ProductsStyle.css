@@ -341,7 +341,7 @@ div.brands-filter.collapsible-active {
     min-width: 215px;
     right: 0;
     z-index: 1;
-    padding: 5px 15px;
+    padding: 14px;
     flex-direction: column;
     justify-content: center;
     align-items: flex-end;
@@ -353,10 +353,24 @@ div.brands-filter.collapsible-active {
     display: flex;
 }
 
-#sort-dropdown-content button:hover {
-    background: #fff;
-    color: #000;
+#sort-dropdown-content button {
+    display: flex;
+    min-width: 20px;
+    padding: 5px 15px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
+
+#sort-dropdown-content .sale-button {
+    color: #f00;
+    border:none;
+}
+
+    #sort-dropdown-content .sale-button:hover {
+        background: #F00 !important;
+        color: #fff !important;
+    }
 
 .empty-products-page {
     width: 100%;

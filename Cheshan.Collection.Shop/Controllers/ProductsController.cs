@@ -107,7 +107,7 @@ namespace Cheshan.Collection.Shop.Controllers
 
         [HttpGet]
         [Route("filter")]
-        [Route("brands/{brandName}/filter")]
+        [Route("brands/{brandNames}/filter")]
         public async Task<IActionResult> GetByConditionAsync(bool? isMan, string? brandNames, string? categories = null, int? categoryType = 0, int startIndex = 0, int? highestPrice = null, int? lowestPrice = null, string? sizes = null, int? sort = null, string? searchString = null)
         {
             try

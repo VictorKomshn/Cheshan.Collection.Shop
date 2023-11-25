@@ -124,11 +124,14 @@
 
                 <input id="payment-type-input" type="hidden" name="PaymentType" value="online" />
 
-                <div class="payment-notification">
-                    <span class="text-regular-small"> <span class="text-regular-small" style="color:#f00">Внимание!</span> По техническим причинам, Ваш платеж будет разделен на две части:</span>
-                    <span id="first-payment-sum-notificaiton" class="text-regular-small">1) @Model.PriceForSP1 </span>
-                    <span id="second-payment-sum-notificaiton" class="text-regular-small">2) @Model.PriceForSP2 </span>
-                </div>
+                @if (Model.PriceForSP1 != 0 && Model.PriceForSP2 != 0)
+                {
+                    <div class="payment-notification">
+                        <span class="text-regular-small"> <span class="text-regular-small" style="color:#f00">Внимание!</span> По техническим причинам, Ваш платеж будет разделен на две части:</span>
+                        <span id="first-payment-sum-notificaiton" class="text-regular-small">1) @Model.PriceForSP1 </span>
+                        <span id="second-payment-sum-notificaiton" class="text-regular-small">2) @Model.PriceForSP2 </span>
+                    </div>
+                }
 
                 <input id="submitPurchaseButton" class="action-button  text-regular-caps inactive-button" type="submit" value="ПЕРЕЙТИ К ОПЛАТЕ" disabled="disabled" />
 
