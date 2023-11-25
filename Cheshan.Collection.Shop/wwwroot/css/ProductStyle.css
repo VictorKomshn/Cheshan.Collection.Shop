@@ -22,11 +22,18 @@ body {
 
     .product-photo img {
         width: 100%;
+        height:100%;
+        object-fit:cover;
     }
 
 .product-photos-wrapper {
     width: 50%;
     gap: 10px;
+}
+
+.photos-desktop-wrapper{
+    display:grid;
+    grid-auto-rows:1fr;
 }
 
 .product-info-wrapper {
@@ -445,6 +452,7 @@ ul {
     }
 
     .product-info-wrapper {
+        margin-top:10px;
         width: unset;
         max-width: unset;
         margin-left: unset;
