@@ -4,7 +4,7 @@ namespace Cheshan.Collection.Shop.Core.Abstract
 {
     public interface ICartsService
     {
-        Task<CartModel> GetAsync(Guid userId);
+        Task<CartModel> GetAsync(Guid userId, bool asNoTracking = false);
 
         Task<int> AddToCartAsync(Guid productId, string size, Guid userId);
 

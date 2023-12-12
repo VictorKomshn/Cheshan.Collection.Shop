@@ -9,8 +9,6 @@ namespace Cheshan.Collection.Shop.Controllers
     public class CartsController : Controller
     {
         private readonly ICartsService _cartsService;
-        private const string apiRoute = "https://alfa.rbsuat.com/payment/rest/register.do?";
-
         public CartsController(ICartsService service)
         {
             _cartsService = service ?? throw new ArgumentNullException(nameof(service));
@@ -45,11 +43,12 @@ namespace Cheshan.Collection.Shop.Controllers
             try
             {
                 var activeUser = Guid.Parse(Request.Cookies["ActiveUser"]);
+                if (size.Contains('-'))
+                {
+                    size = size.Replace('-', ',');
+                }
                 await _cartsService.AddToCartAsync(productId, size, activeUser);
 
-                //Response.Redirect(Request.GetDisplayUrl());
-                //var a = Request.GetDisplayUrl();
-                //return Redirect($"~/products"/*/{productId.ToString()}*/);
                 return await GetAmountAsync();
             }
             catch (Exception ex)
@@ -124,11 +123,6 @@ namespace Cheshan.Collection.Shop.Controllers
             }
         }
 
-        //private string BuildPaymentString(CartModel cart)
-        //{
-        //    var productsForFurstSP = ""
-        //    var productsForSecondSP
-        //}
 
         [HttpGet]
         [Route("products")]

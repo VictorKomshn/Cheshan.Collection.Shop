@@ -9,14 +9,18 @@ namespace Cheshan.Collection.Shop.Database.Repositories
     {
         private readonly DataContext _context;
 
+
+        private readonly TimeSpan _purchasesThresold;
+
         public PurchasesRepository(DataContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _purchasesThresold = TimeSpan.FromDays(1);
         }
 
         public async Task CompletePurchaseAsync(Guid purchaseId, bool purchaseComplited)
         {
-            var purchase = _context.Purchases.FirstOrDefault(x => x.Id == purchaseId);
+            var purchase = await _context.Purchases.Include(x => x.PaymentLinksWithPurchase).Include(x => x.PurchasedProducts).FirstOrDefaultAsync(x => x.Id == purchaseId);
 
             if (purchase == null)
             {
@@ -38,14 +42,14 @@ namespace Cheshan.Collection.Shop.Database.Repositories
         public async Task CreatePurchaseAsync(PurchaseEntity purchase)
         {
             purchase.IsComplited = false;
-
+            purchase.Created = DateTime.UtcNow;
             await _context.AddAsync(purchase);
             await _context.SaveChangesAsync();
         }
 
         public async Task<PurchaseEntity?> GetByPaymentIdAsync(Guid paymentId)
         {
-            var purchase = await _context.Purchases.Include(x=> x.PaymentLinksWithPurchase).FirstOrDefaultAsync(x => x.PaymentLinksWithPurchase.FirstOrDefault(x => x.Id == paymentId) != null);
+            var purchase = await _context.Purchases.Include(x => x.PaymentLinksWithPurchase).FirstOrDefaultAsync(x => x.PaymentLinksWithPurchase.FirstOrDefault(x => x.Id == paymentId) != null);
 
             if (purchase != null)
             {
@@ -54,6 +58,28 @@ namespace Cheshan.Collection.Shop.Database.Repositories
             else
             {
                 return null;
+            }
+        }
+
+        public async Task<PurchaseEntity?> GetByIdAsync(Guid purchaseId)
+        {
+            var purchase = await _context.Purchases.Include(x => x.PaymentLinksWithPurchase).Include(x => x.PurchasedProducts).FirstOrDefaultAsync(x => x.Id == purchaseId);
+
+            return purchase;
+        }
+
+        public async Task<IEnumerable<PurchaseEntity>> GetIncompleteRecent()
+        {
+            try
+            {
+                var recentIncomplete = await _context.Purchases.Include(x => x.PaymentLinksWithPurchase).Include(x => x.PurchasedProducts).Where(x => x.Created > (DateTime.UtcNow - _purchasesThresold) && x.IsComplited == false && x.PaymentType != "cash").ToListAsync();
+
+                return recentIncomplete;
+            }
+            catch (Exception ex)
+            {
+                var oshibka = ex.Message;
+                return Array.Empty<PurchaseEntity>();
             }
         }
     }

@@ -4,6 +4,8 @@
     {
         public Guid Id { get; set; }
 
+        public string SP { get; set; }
+
         public string PaymentLink { get; set; }
 
         public bool IsCompleted { get; set; }

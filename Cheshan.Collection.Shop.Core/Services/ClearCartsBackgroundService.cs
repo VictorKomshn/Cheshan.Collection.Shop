@@ -17,10 +17,8 @@ namespace Cheshan.Collection.Shop.Core.Services
 
         public ClearCartsBackgroundService(IServiceProvider services)
         {
-            using (var scope = services.CreateScope())
-            {
-                _repository = new CartsRepository(scope.ServiceProvider.GetService<DataContext>());
-            }
+            var scope = services.CreateScope();
+            _repository = new CartsRepository(scope.ServiceProvider.GetService<DataContext>());
 
             lastUpdate = DateTime.UtcNow;
         }

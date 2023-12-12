@@ -3,8 +3,6 @@ using Cheshan.Collection.Shop.Core.Mappers;
 using Cheshan.Collection.Shop.Core.Models;
 using Cheshan.Collection.Shop.Database.Abstract;
 using Cheshan.Collection.Shop.Database.Entities;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Cheshan.Collection.Shop.Core.Services
 {
@@ -12,10 +10,10 @@ namespace Cheshan.Collection.Shop.Core.Services
     {
         private readonly ICartsService _cartsService;
         private readonly IPurchasesRepository _repository;
+        private readonly IEmailService _emailService;
+        private readonly IAlfaBankService _alfabankService;
 
-        private readonly string prodString = "https://payment.alfabank.ru/payment/rest/register.do";
         private readonly string devString = "https://alfa.rbsuat.com/payment/rest/register.do";
-        private readonly string enpointUrl = "https://localhost:44352/purchase/complete";
 
         private const string SP1Name = "745100194346";
         private const string SP2Name = "745100227337";
@@ -25,22 +23,21 @@ namespace Cheshan.Collection.Shop.Core.Services
 
         private const string SuccessString = "/purchase/success";
 
-
-
-        private readonly HttpClient client;
-
-        public PurchaseService(ICartsService cartsService, IPurchasesRepository repository)
+        public PurchaseService(ICartsService cartsService,
+                               IEmailService emailService,
+                               IPurchasesRepository repository,
+                               IAlfaBankService alfabankService)
         {
-            _cartsService = cartsService;
-            _repository = repository;
-            client = new HttpClient();
+            _cartsService = cartsService ?? throw new ArgumentNullException(nameof(cartsService));
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
+            _alfabankService = alfabankService ?? throw new ArgumentNullException(nameof(alfabankService));
         }
 
         public async Task<string> SaveCashPurchase(PurchaseModel purchase, Guid userId)
         {
             try
             {
-
                 var productsFromCart = await _cartsService.GetAsync(userId);
                 var prices = GetPrices(productsFromCart);
 
@@ -51,10 +48,34 @@ namespace Cheshan.Collection.Shop.Core.Services
                 purchaseEntity.PaymentLinksWithPurchase = new List<PaymentLinkEntity>();
                 purchaseEntity.Id = Guid.NewGuid();
 
-                var hash = purchaseEntity.GetHashCode();
-                purchaseEntity.PurchaseId = hash.ToString();
+                var purchaseId = purchaseEntity.GetHashCode();
+                purchaseEntity.PurchaseId = purchaseId.ToString();
+
+
+                var purchasedProducts = productsFromCart.Products.Select(x => new PurchasedProductEntity
+                {
+                    Amount = x.Amount,
+                    Id = Guid.NewGuid(),
+                    Name = x.Product.Name,
+                    Photo = x.Product.MainPhoto,
+                    ProductId = x.Product.Id,
+                    Size = x.Size,
+                    SKU = x.Product.SKU,
+                    Price = x.Product.SalePrice ?? x.Product.Price
+                }).ToArray();
+
+                purchaseEntity.PurchasedProducts = purchasedProducts;
+
                 await _repository.CreatePurchaseAsync(purchaseEntity);
-                return hash.ToString();
+
+                await _emailService.SendPurchaseNotificationToCustomer(purchase.Email, purchase.Name, purchase.Phone, purchaseId.ToString(), purchase.DeliveryAdress, purchase.DeliveryType, purchase.PaymentType, purchasedProducts);
+
+                await _emailService.SendPurchaseNotificationToAdministration(purchase.Email, purchase.Name, purchase.Phone, purchaseId.ToString(), purchase.DeliveryAdress, purchase.DeliveryType, purchase.PaymentType, purchasedProducts);
+
+                await _cartsService.ClearCartProductsAsync(userId);
+
+
+                return SuccessString + "/" + purchaseId.ToString();
             }
             catch
             {
@@ -71,7 +92,8 @@ namespace Cheshan.Collection.Shop.Core.Services
                 var paymentLink = purchase?.PaymentLinksWithPurchase.FirstOrDefault(x => x.Id == purchaseId);
                 if (paymentLink != null)
                 {
-                    paymentLink.IsCompleted = true;
+                    var status = await _alfabankService.GetStatusAsync(paymentLink.SP, paymentLink.Id.ToString());
+                    paymentLink.IsCompleted = status;
                 }
             }
 
@@ -85,39 +107,59 @@ namespace Cheshan.Collection.Shop.Core.Services
                 }
             }
 
-            await _repository.CompletePurchaseAsync(purchase.Id, true);
-
-
-            return SuccessString;
+            return SuccessString + "/" + purchase.PurchaseId;
         }
 
+
+        /// <summary>
+        /// Создание объекта заказа
+        /// </summary>
+        /// <param name="purchase"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<string> CreatePurhcaseAsync(PurchaseModel purchase, Guid userId)
         {
-            var productsFromCart = await _cartsService.GetAsync(userId);
+            var productsFromCart = await _cartsService.GetAsync(userId, true);
             var prices = GetPrices(productsFromCart);
 
             var priceForSP1 = prices.priceForSp1;
             var priceForSP2 = prices.priceForSp2;
 
             var purchaseEntity = purchase.ToEntity(userId, priceForSP1, priceForSP2);
+
+            purchaseEntity.PurchasedProducts = productsFromCart.Products.Select(x => new PurchasedProductEntity
+            {
+                Amount = x.Amount,
+                Id = Guid.NewGuid(),
+                Name = x.Product.Name,
+                Photo = x.Product.MainPhoto,
+                ProductId = x.Product.Id,
+                Size = x.Size,
+                SKU = x.Product.SKU,
+                Price = x.Product.SalePrice ?? x.Product.Price
+            }).ToArray();
+
             purchaseEntity.PaymentLinksWithPurchase = new List<PaymentLinkEntity>();
             purchaseEntity.Id = Guid.NewGuid();
+
             PaymentLinkEntity payment1 = null;
             PaymentLinkEntity payment2 = null;
 
             if (priceForSP1 != 0)
             {
-                payment1 = await GetPaymentEntity(purchaseEntity.Id, SP1Token, priceForSP1);
+                payment1 = await _alfabankService.GetPaymentEntityAsync(purchaseEntity.Id, SP1Token, priceForSP1, "1");
                 purchaseEntity.PaymentLinksWithPurchase.Add(payment1);
             }
             if (priceForSP2 != 0)
             {
-                payment2 = await GetPaymentEntity(purchaseEntity.Id, SP2Token, priceForSP2);
+                payment2 = await _alfabankService.GetPaymentEntityAsync(purchaseEntity.Id, SP2Token, priceForSP2, "2");
                 purchaseEntity.PaymentLinksWithPurchase.Add(payment2);
             }
 
             purchaseEntity.PurchaseId = purchaseEntity.GetHashCode().ToString();
+
             await _repository.CreatePurchaseAsync(purchaseEntity);
+
             if (priceForSP1 != 0)
             {
                 return payment1.PaymentLink;
@@ -162,36 +204,6 @@ namespace Cheshan.Collection.Shop.Core.Services
             priceForSP2 = priceForSP2 * 100;
 
             return new(priceForSP1, priceForSP2);
-        }
-
-        private async Task<PaymentLinkEntity> GetPaymentEntity(Guid purchaseId, string token, double price)
-        {
-            var paymentStringWithOrder = await FormPaymentStringAsync(purchaseId, token, price);
-
-            var payment = new PaymentLinkEntity
-            {
-                Id = paymentStringWithOrder.orderId,
-                PaymentLink = paymentStringWithOrder.url,
-                IsCompleted = false,
-            };
-
-            return payment;
-        }
-
-        private async Task<(Guid orderId, string url)> FormPaymentStringAsync(Guid purchaseId, string token, double price)
-        {
-            var paymentString = prodString + "?token=" + token + "&orderNumber=" + purchaseId.ToString() + "&amount=" + price + "&returnUrl=" + enpointUrl;
-            var formedPaymentString = await GetFormUrlAsync(paymentString);
-            return formedPaymentString;
-        }
-
-        private async Task<(Guid orderId, string url)> GetFormUrlAsync(string paymentLink)
-        {
-            var requestResult = await client.GetStringAsync(paymentLink);
-            var requestResultJson = (JObject)JsonConvert.DeserializeObject(requestResult);
-            string formUrl = requestResultJson["formUrl"].Value<string>();
-            var orderId = Guid.Parse(requestResultJson["orderId"].Value<string>());
-            return (orderId, formUrl);
         }
     }
 }

@@ -32,7 +32,6 @@ namespace Cheshan.Collection.Shop.Database
 
                 var builder = new DbContextOptionsBuilder<DataContext>()
                     .UseNpgsql(connectionBuilder.ToString()).EnableSensitiveDataLogging();
-                //.UseSqlServer(connectionBuilder.ToString()).EnableSensitiveDataLogging();
 
                 return builder.Options;
             });
@@ -41,7 +40,7 @@ namespace Cheshan.Collection.Shop.Database
             services.AddTransient<ICartsRepository, CartsRepository>();
             services.AddScoped<IProductsRepository, ProductsRepository>();
             services.AddScoped<INotificationRecieversRepository, NotificationRecieversRepository>();
-            services.AddScoped<IPurchasesRepository, PurchasesRepository>();
+            services.AddTransient<IPurchasesRepository, PurchasesRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
 
 

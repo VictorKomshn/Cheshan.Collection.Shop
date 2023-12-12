@@ -33,6 +33,9 @@ let manCategoriesButtons = manFiltersWrapper.getElementsByClassName("filter-butt
 
 let brandButtons = document.getElementsByClassName("brands-filter")[0].getElementsByClassName("filter-button");
 
+let productsGrid = document.getElementsByClassName("products-inner")[0];
+
+
 if (isMan == undefined) {
     // СТРАНИЦА БЕЗ ПОЛА, ЧТО ДЕЛАТЬ?
 }

@@ -11,12 +11,11 @@ namespace Cheshan.Collection.Shop.Database.Abstract
 
         Task<IEnumerable<ProductEntity>> GetProductsSuggested(Guid productId);
 
-        Task<ProductEntity> GetAsync(Guid id, bool noTrackin = false);
+        Task<ProductEntity> GetAsync(Guid id, bool noTracking = false);
 
         Task<ProductEntity> UpdateAsync(Guid id, ProductEntity newEntity);
 
         Task CreateAsync(ProductEntity newEntity);
-
 
         Task DeleteAsync(Guid id);
 

@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Roboto" />
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css?family=Roboto" type="text/css" />
+    <!--<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">-->
+
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" type="text/css" />
+    </noscript>
+
+
+    <style type="text/css">
+
+        span {
+            font-family: Roboto;
+        }
+
+        .gratitude-wrapper span {
+            margin: 0 auto;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 120%; /* 16.8px */
+            font-variant: all-small-caps;
+            letter-spacing: 1.12px;
+            margin-bottom: 20px;
+        }
+
+        .purchase-datails img {
+            max-width: 95px;
+            max-height: 138px;
+            object-fit: contain;
+        }
+
+        .delivery-info-text {
+            font-size: 15px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 120%; /* 16.8px */
+            letter-spacing: 0.5px;
+        }
+
+        .warning-text {
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+        }
+
+        .gratitude-text {
+            margin-top: 20px;
+            display: flex;
+        }
+
+        .text-header-small {
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 120%; /* 16.8px */
+            font-variant: all-small-caps;
+            letter-spacing: 1.12px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body style="width:auto !important; background-color:#ffffff">
+    <div class="logo-header-wrapper" style=" width: auto; margin: 30px 0px; max-height: 160px; display: flex;">
+        <a href="https://collectionchel.ru" style=" width: auto; margin: 30px 0px; max-height: 80px; display: flex;">
+            <img style=" object-fit: contain; margin: 0 auto; overflow:auto" src="https://collectionchel.ru/img/logo-home.png" />
+        </a>
+    </div>
+    <div class="main-content-wrapper" style="width: auto; padding: 16px;">
+        <div class="gratitude-wrapper" style=" width: auto; display: grid;">
+            <span>Благодарим за покупку!</span>
+            <span>Номер Вашего заказа {purchaseId}</span>
+        </div>
+        <div class="header-wrapper" style=" width: auto; display: flex;">
+            <span class="text-header-small"> Информация о заказе</span>
+        </div>
+
+        <div class="purchase-datails-wrapper" style="display:grid">
+            {purchasedProducts}
+        </div>
+
+        <div style="display: block;">
+            <div class="header-wrapper" style=" width: auto; text-align:center;">
+                <span class="text-header-small"> Информация о доставке</span>
+            </div>
+            <span class="delivery-type delivery-info-text" style="display: block; margin: 10px 0;">Тип доставки: {deliveryType}</span>
+            <span class="delivery-adress delivery-info-text" style="display: block; margin: 10px 0;">Адрес: {deliveryAdress}</span>
+            <span class="payment-type delivery-info-text" style="display: block; margin: 10px 0;">Тип оплаты: {paymentType}</span>
+            <span class="contant-name-details delivery-info-text" style="display: block; margin: 10px 0;">Получатель: {userName}</span>
+            <span class="contant-phone-details delivery-info-text" style="display: block; margin: 10px 0;">Контактный номер: {phone}</span>
+            <span class="contant-email-details delivery-info-text" style="display: block; margin: 10px 0;">Контактный email: {email}</span>
+        </div>
+        <div class="warning-wrapper" style=" margin-top: 20px; width: auto; display: flex;">
+            <span class="warning-text">В случае, если информация о заказе или информация о доставке указана неверно, пожалуйста обратитесь к нам на почту collection.chel@gmail.com.</span>
+        </div>
+        <span class="gratitude-text">С уважением, <br /> Команда Collectionchel</span>
+    </div>
+</body>
+
+</html>

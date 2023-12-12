@@ -17,7 +17,7 @@ namespace Cheshan.Collection.Shop.Database.Repositories
 
         public async Task ClearOldCarts()
         {
-            var query = await _dataContext.Carts.Where(x=> (DateTime.UtcNow -  x.Created) > TimeSpan.FromDays(1)).ToArrayAsync();
+            var query = await _dataContext.Carts.Where(x => (DateTime.UtcNow - x.Created) > TimeSpan.FromDays(1)).ToArrayAsync();
 
 
             _dataContext.Carts.RemoveRange();
@@ -90,9 +90,17 @@ namespace Cheshan.Collection.Shop.Database.Repositories
             return cart.Id;
         }
 
-        public async Task<CartEntity> GetAsync(Guid userId)
+        public async Task<CartEntity> GetAsync(Guid userId, bool asNoTracking = false)
         {
-            var cart = _dataContext.Carts.Include(x => x.Products).ThenInclude(x => x.Product).FirstOrDefault(x => x.UserId == userId);
+            CartEntity? cart = null;
+            if (asNoTracking)
+            {
+                cart = await _dataContext.Carts.Include(x => x.Products).ThenInclude(x => x.Product).AsNoTracking().FirstOrDefaultAsync(x => x.UserId == userId);
+            }
+            else
+            {
+                cart = await _dataContext.Carts.Include(x => x.Products).ThenInclude(x => x.Product).FirstOrDefaultAsync(x => x.UserId == userId);
+            }
 
             if (cart == null)
             {
@@ -117,10 +125,9 @@ namespace Cheshan.Collection.Shop.Database.Repositories
 
             foreach (var productInCart in cart.Products)
             {
-
                 var product = await _dataContext.Products.FirstOrDefaultAsync(x => x.Id == productInCart.Product.Id);
                 var sizeWithAmount = product?.SizesWithAmounts.FirstOrDefault(x => string.Equals(x.Size, productInCart.Size, StringComparison.OrdinalIgnoreCase));
-                sizeWithAmount.Amount--;
+                sizeWithAmount.Amount = sizeWithAmount.Amount - productInCart.Amount;
 
                 _dataContext.Update(product);
             }
@@ -131,7 +138,7 @@ namespace Cheshan.Collection.Shop.Database.Repositories
         public async Task<int> DecreaseAmountOfProductInCartAsync(Guid productId, string size, Guid userId, DecreaseAmount amount)
         {
             var cart = await GetAsync(userId) ?? throw new ArgumentException("Cart was not found");
-            
+
 
             var product = await _dataContext.Products.FirstOrDefaultAsync(x => x.Id == productId);
 

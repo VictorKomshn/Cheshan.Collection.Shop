@@ -12,5 +12,9 @@ namespace Cheshan.Collection.Shop.Database.Abstract
 
         Task<PurchaseEntity?> GetByPaymentIdAsync(Guid paymentId);
 
+        Task<PurchaseEntity?> GetByIdAsync(Guid purchaseId);
+
+        Task<IEnumerable<PurchaseEntity>> GetIncompleteRecent();
+
     }
 }

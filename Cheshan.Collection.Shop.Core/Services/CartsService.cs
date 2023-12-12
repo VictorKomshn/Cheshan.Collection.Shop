@@ -34,12 +34,13 @@ namespace Cheshan.Collection.Shop.Core.Services
             return createdCartGuid;
         }
 
-        public async Task<CartModel> GetAsync(Guid userId)
+        public async Task<CartModel> GetAsync(Guid userId, bool asNoTracking = false)
         {
             try
             {
-                var cartEntity = await _repository.GetAsync(userId);
+                var cartEntity = await _repository.GetAsync(userId, asNoTracking);
                 return cartEntity.ToModel();
+
             }
             catch
             {
@@ -63,7 +64,7 @@ namespace Cheshan.Collection.Shop.Core.Services
         {
             try
             {
-                var newAmount = await _repository.DecreaseAmountOfProductInCartAsync(productId, size, userId,Database.Enums.DecreaseAmount.All);
+                var newAmount = await _repository.DecreaseAmountOfProductInCartAsync(productId, size, userId, Database.Enums.DecreaseAmount.All);
                 return newAmount;
 
             }

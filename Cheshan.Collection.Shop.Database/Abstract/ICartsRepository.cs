@@ -7,7 +7,7 @@ namespace Cheshan.Collection.Shop.Database.Abstract
     {
         Task ClearOldCarts();
 
-        Task<CartEntity> GetAsync(Guid userId);
+        Task<CartEntity> GetAsync(Guid userId, bool asNoTracking = false);
 
         Task<Guid> CreateCartAsync(Guid userId);
 

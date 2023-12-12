@@ -22,16 +22,17 @@ namespace Cheshan.Collection.Shop.Controllers
         public async Task<IActionResult> PurchaseProducts([FromForm] PurchaseModel purchase)
         {
             var activeUser = Guid.Parse(Request.Cookies["ActiveUser"]);
+            var redirectUri = string.Empty;
             if (purchase.PaymentType == "cash")
             {
-                var result = await _purchaseService.SaveCashPurchase(purchase, activeUser);
-                return Redirect("/purchase/success/"+result);
+                redirectUri = await _purchaseService.SaveCashPurchase(purchase, activeUser);
             }
             else
             {
-                var paymentUri = await _purchaseService.CreatePurhcaseAsync(purchase, activeUser);
-                return Redirect(paymentUri);
+                redirectUri = await _purchaseService.CreatePurhcaseAsync(purchase, activeUser);
             }
+
+            return Redirect(redirectUri);
         }
 
 
@@ -55,10 +56,6 @@ namespace Cheshan.Collection.Shop.Controllers
         public async Task<IActionResult> Success(string id)
         {
             var activeUser = Guid.Parse(Request.Cookies["ActiveUser"]);
-            if (activeUser != null)
-            {
-                await _cartsService.ClearCartProductsAsync(activeUser);
-            }
 
             var viewModel = new SuccessViewModel()
             {

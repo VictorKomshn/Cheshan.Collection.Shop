@@ -16,13 +16,14 @@ namespace Cheshan.Collection.Shop.Database.Database
 
         public DbSet<ProductNotificationRecieverEntity> ProductNotifications { get; set; }
 
-        public DbSet<BrandEntity> Brands { get; set; }
-
         public DbSet<PurchaseEntity> Purchases { get; set; }
+
+        public DbSet<BrandEntity> Brands { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
             Database.EnsureCreated();
+            
             //try
             //{
             //    var databaseCreator = (Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator);
@@ -44,7 +45,7 @@ namespace Cheshan.Collection.Shop.Database.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.LogTo(Console.WriteLine);
+            //optionsBuilder.LogTo(Console.WriteLine);
             base.OnConfiguring(optionsBuilder);
         }
     }
