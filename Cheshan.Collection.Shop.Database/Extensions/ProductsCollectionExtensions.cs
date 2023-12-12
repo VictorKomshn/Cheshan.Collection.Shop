@@ -23,7 +23,7 @@ namespace Cheshan.Collection.Shop.Database.Extensions
                         products = products.OrderByDescending(x => x.SalePrice != null ? x.SalePrice : x.Price);
                         break;
                     case SortingType.BySale:
-                        products = products.OrderBy(x => x.SalePercent);
+                        products = products.OrderByDescending(x => x.SalePercent);
                         break;
                 }
             }
