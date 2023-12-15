@@ -40,6 +40,10 @@
     text-decoration: none;
 }
 
+.product-card-inner:hover{
+    text-decoration:none !important;
+}
+
 .prices-inner {
     padding: 5px 0 0 0;
 }
