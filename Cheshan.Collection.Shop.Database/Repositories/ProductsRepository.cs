@@ -187,6 +187,8 @@ namespace Cheshan.Collection.Shop.Database.Repositories
                                                                           string? searchString = null,
                                                                           SortingType? sortType = null)
         {
+            var valuesToReplace = new []{ ',', '-', '/' };
+            brandNames = brandNames?.Select(x => x.Replace(valuesToReplace,' ')).ToArray();
 
             var take = 16;
             var query = _dataContext.Products.AsQueryable();
