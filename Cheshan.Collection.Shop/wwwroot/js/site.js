@@ -275,7 +275,7 @@ function filterCategory(button) {
     }
 
     if (categoryName == "all") {
-        window.location = '/products/filter?isMan=' + isMan;
+        window.location = '/products/filter?isMan=' + isMan + "&sort=0";
     }
     else if (categoryName == "new") {
         window.location = '/products/filter?isMan=' + isMan + "&sort=0";

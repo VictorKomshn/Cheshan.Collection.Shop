@@ -1,5 +1,6 @@
 ﻿using Cheshan.Collection.Shop.Core.Abstract;
 using Cheshan.Collection.Shop.Core.Models;
+using Cheshan.Collection.Shop.Core.Extensions;
 using Cheshan.Collection.Shop.Database.Entities.Enums;
 using Cheshan.Collection.Shop.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -128,7 +129,7 @@ namespace Cheshan.Collection.Shop.Controllers
                 var products = await _productsService.GetByConditionAsync(condition, (SortingType?)sort);
                 ProductsViewModel? viewModel = null;
 
-                if (string.IsNullOrEmpty(brandNames) || brandNames.Length > 1)
+                if (string.IsNullOrEmpty(brandNames) || brandNames.Split(',').Length > 1)
                 {
                     viewModel = new ProductsViewModel
                     {
@@ -139,7 +140,7 @@ namespace Cheshan.Collection.Shop.Controllers
                 }
                 else
                 {
-                    var brand = await _brandService.GetAsync(brandNames);
+                    var brand = await _brandService.GetAsync(brandNames.Replace('-', ' '));
 
                     if (brand == null)
                     {

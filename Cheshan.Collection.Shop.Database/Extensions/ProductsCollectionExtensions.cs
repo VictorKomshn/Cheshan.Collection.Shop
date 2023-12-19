@@ -14,7 +14,7 @@ namespace Cheshan.Collection.Shop.Database.Extensions
                 switch (sortingType)
                 {
                     case SortingType.ByDate:
-                        products = products.OrderBy(x => x.DateAdded);
+                        products = products.OrderByDescending(x => x.DateAdded);
                         break;
                     case SortingType.ByPriceAscending:
                         products = products.OrderBy(x => x.SalePrice != null ? x.SalePrice : x.Price);
