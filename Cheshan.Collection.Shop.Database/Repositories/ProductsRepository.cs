@@ -137,6 +137,9 @@ namespace Cheshan.Collection.Shop.Database.Repositories
                 var query = _dataContext.Products.AsQueryable();
 
                 query = query.Where(x => x.IsMan == product.IsMan);
+                query = query.Where(x => x.SizesWithAmounts
+                                            .Select(x => x.Amount)
+                                            .Any(x => x > 0));
 
                 var suggestedElementsAmount = await query.Where(x => x.Category == product.Category).CountAsync();
                 if (suggestedElementsAmount < 4)
