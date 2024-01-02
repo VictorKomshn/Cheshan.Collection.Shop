@@ -177,22 +177,13 @@ function addBrandToFilter(button) {
 
 applyFiltersButton.onclick = function () {
     let sex = "";
-    if (isMan != null) {
-        sex = isMan;
-    }
 
-    let location = window.location.pathname;
+    let location = window.location.pathname + window.location.search;
 
     if (!location.includes('filter')) {
         location += '/filter?';
     }
-    else {
-        location += '?';
-    }
-    if (sex != "" && sex != null) {
 
-        location += 'isMan=' + sex;
-    }
     if (categoriesArray.length != 0) {
         location = addNewFilter(location, "categories", categoriesArray.toString());
     }
@@ -200,7 +191,8 @@ applyFiltersButton.onclick = function () {
 
         location = addNewFilter(location, "categoryType", allCategory);
     }
-    if ((selectedMinPrice != null && selectedMinPrice != undefined) || (minPrice != null && minPrice != undefined)) {
+
+    if ((selectedMinPrice != null && selectedMinPrice != undefined) || (minPrice != null && minPrice != undefined && minPrice != 0)) {
 
         let newMinPrice = selectedMinPrice;
         if (minPrice != newMinPrice) {
@@ -208,7 +200,7 @@ applyFiltersButton.onclick = function () {
         }
         location = addNewFilter(location, "LowestPrice", newMinPrice);
     }
-    if ((selectedMaxPrice != null && selectedMaxPrice != undefined) || (maxPrice != null && maxPrice != undefined)) {
+    if ((selectedMaxPrice != null && selectedMaxPrice != undefined) || (maxPrice != null && maxPrice != undefined && maxPrice != 99999999)) {
         let newMaxPrice = selectedMaxPrice;
         if (maxPrice != newMaxPrice) {
             newMaxPrice = maxPrice;
@@ -223,13 +215,21 @@ applyFiltersButton.onclick = function () {
         location = addNewFilter(location, "StartIndex", startIndexValue);
     }
     if (brandsArray.length != 0) {
-        location = addNewFilter(location, "brandNames", brandsArray.toString());
+        if (location.includes('filter')) {
+            let brandLocation = brandsArray.toString();
+            brandLocation = brandLocation.replace('\\', '');
+            location = location.replace('filter', 'brands/' + brandLocation + '/filter');
+        }
     }
 
     window.location = location;
 }
 
 function addNewFilter(location, filterName, filterValue) {
+
+    if (location.includes(filterName)) {
+        location = location.replace(/filterName=*&/gi, filterName + "=" + filterValue + "&");
+    }
     if (location.endsWith("?")) {
         location += filterName + '=' + filterValue;
     }
