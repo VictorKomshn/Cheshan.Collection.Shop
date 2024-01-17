@@ -282,7 +282,7 @@ div.brands-filter.collapsible-active {
 .apply-filters-wrapper {
     width: 100%;
     box-sizing: border-box;
-    margin: auto 0 100px 0;
+    margin: auto 0 0 0;
 }
 
 #apply-filters-button {
@@ -460,5 +460,9 @@ div.brands-filter.collapsible-active {
 
     .product-filters-buttons-wrapper {
         margin-top: 0px;
+    }
+
+    .apply-filters-wrapper {
+        margin: auto 0 100px 0;
     }
 }
