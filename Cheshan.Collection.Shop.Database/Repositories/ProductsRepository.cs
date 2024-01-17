@@ -179,19 +179,19 @@ namespace Cheshan.Collection.Shop.Database.Repositories
         }
 
         public async Task<GetByConditionResult> GetByConditionAsync(int startIndex,
-                                                                          bool? isMan,
-                                                                          string[]? brandNames,
-                                                                          string[]? categories,
-                                                                          CategoryType? categoryType,
-                                                                          int? lowestPrice,
-                                                                          int? highestPrice,
-                                                                          string[]? sizes,
-                                                                          string? color,
-                                                                          string? searchString = null,
-                                                                          SortingType? sortType = null)
+                                                                    bool? isMan,
+                                                                    string[]? brandNames,
+                                                                    string[]? categories,
+                                                                    CategoryType? categoryType,
+                                                                    int? lowestPrice,
+                                                                    int? highestPrice,
+                                                                    string[]? sizes,
+                                                                    string? color,
+                                                                    string? searchString = null,
+                                                                    SortingType? sortType = null)
         {
-            var valuesToReplace = new []{ ',', '-', '/' };
-            brandNames = brandNames?.Select(x => x.Replace(valuesToReplace,' ')).ToArray();
+            var valuesToReplace = new[] { ',', '-', '/' };
+            brandNames = brandNames?.Select(x => x.Replace(valuesToReplace, ' ')).ToArray();
 
             var take = 16;
             var query = _dataContext.Products.AsQueryable();
@@ -210,7 +210,9 @@ namespace Cheshan.Collection.Shop.Database.Repositories
             }
             if (categories != null && categories.Any())
             {
-                query = query.Where(x => categories.Contains(x.Category.ToLower()) || string.Join(',', categories).Contains(x.Category.ToLower()));
+                query = query.Where(x => categories.Contains(x.Category.ToLower()) ||
+                                         string.Join(',', categories).Contains(x.Category.ToLower()) ||
+                                         x.Category.ToLower().Contains(string.Join(',', categories)));
             }
             else if (categoryType != null && categoryType != CategoryType.Default)
             {
