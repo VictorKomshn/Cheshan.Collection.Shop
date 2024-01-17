@@ -158,6 +158,49 @@
                             </div>
                         }
                     </div>
+                    <div id="brand-filter-categories" class="clothes-type-categories">
+                        @if (Model.CategoryType == Database.Entities.Enums.CategoryType.Default)
+                        {
+                            <div class="all-categories-inner filter-wrapper">
+                                <button class="filter-button all-category" data-category="1">ОДЕЖДА</button>
+                                <button class="filter-button all-category" data-category="2">ОБУВЬ</button>
+                                <button class="filter-button all-category" data-category="3">АКСЕССУАРЫ</button>
+                            </div>
+                        }
+                        else if (Model.CategoryType == Database.Entities.Enums.CategoryType.Clothes)
+                        {
+                            <div class="clothes-categories-inner filter-wrapper">
+                                <button class="filter-button" data-category="футболка">ФУТБОЛКИ</button>
+                                <button class="filter-button" data-category="рубашка">РУБАШКИ</button>
+                                <button class="filter-button" data-category="толстовка,свитшот">ТОЛСТОВКИ И СВИТШОТЫ</button>
+                                <button class="filter-button" data-category="свитер,джемпер">СВИТЕРЫ И ДЖЕМПЕРЫ</button>
+                                <button class="filter-button" data-category="пиджак">ПИДЖАКИ</button>
+                                <button class="filter-button" data-category="брюки,шорты">БРЮКИ И ШОРТЫ</button>
+                                <button class="filter-button" data-category="джинсы">ДЖИНСЫ</button>
+                                <button class="filter-button" data-category="sport">СПОРТИВНАЯ ОДЕЖДА</button>
+                                <button class="filter-button" data-category="верхняя одежда">ВЕРХНЯЯ ОДЕЖДА</button>
+
+                            </div>
+                        }
+                        else if (Model.CategoryType == Database.Entities.Enums.CategoryType.Footwear)
+                        {
+                            <div class="footwear-categories-inner filter-wrapper">
+                                <button class="filter-button" data-category="кроссовки">КРОССОВКИ</button>
+                                <button class="filter-button" data-category="ботинки">БОТИНКИ</button>
+                                <button class="filter-button" data-category="кеды">КЕДЫ</button>
+                                <button class="filter-button" data-category="сандали">САНДАЛИ</button>
+                                <button class="filter-button" data-category="туфли">ТУФЛИ</button>
+
+                            </div>
+                        }
+                        else if (Model.CategoryType == Database.Entities.Enums.CategoryType.Accessories)
+                        {
+                            <div class="accessories-categories-inner filter-wrapper">
+                                <button class="filter-button" data-category="сумка">СУМКИ</button>
+                                <button class="filter-button" data-category="аксессуар">АКСЕССУАРЫ</button>
+                            </div>
+                        }
+                    </div>
                 </div>
                 <hr />
             </div>
@@ -230,13 +273,15 @@
                 </div>
                 <hr />
             </div>
-            <div class="collapsible">
-                <button class="collapsible-button">
-                    <span class="collapsible-name text-small-caps">БРЕНД</span>
-                    <i class="collapsible-icon"></i>
-                </button>
-                <div class="collapsible-content text-regular-small brands-filter">
-                    <button class="filter-button" data-brand="altea">ALTEA</button>
+            @if (Model.Brand == null)
+            {
+                <div class="collapsible">
+                    <button class="collapsible-button">
+                        <span class="collapsible-name text-small-caps">БРЕНД</span>
+                        <i class="collapsible-icon"></i>
+                    </button>
+                    <div id="brands-filter-collapsible-wrappper" class="collapsible-content text-regular-small brands-filter">
+                        @*<button class="filter-button" data-brand="altea">ALTEA</button>
                     <button class="filter-button" data-brand="acne studios">ACNE STUDIOS</button>
                     <button class="filter-button" data-brand="autry">AUTRY</button>
                     <button class="filter-button" data-brand="botega veneta">BOTTEGA VENETA</button>
@@ -264,10 +309,11 @@
                     <button class="filter-button" data-brand="doucal\'s">DOUCAL'S</button>
                     <button class="filter-button" data-brand="balossa">BALOSSA</button>
                     <button class="filter-button" data-brand="domrebel">DOMREBEL</button>
-                    <button class="filter-button" data-brand="parajumpers">PARAJUMPERS</button>
+                    <button class="filter-button" data-brand="parajumpers">PARAJUMPERS</button>*@
+                    </div>
+                    <hr />
                 </div>
-                <hr />
-            </div>
+            }
             <div class="apply-filters-wrapper">
                 <button class="action-button" id="apply-filters-button"><span class="text-regular">ПОКАЗАТЬ</span></button>
             </div>

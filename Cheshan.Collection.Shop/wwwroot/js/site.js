@@ -31,6 +31,24 @@ window.onload = function () {
             $("#cart-menu-content").html(res);
         }
     });
+
+
+    $.ajax({
+        url: "/brands/false",
+        type: "GET",
+        success: function (res) {
+            $("#brands-wrapper").html(res);
+        }
+    });
+
+
+    $.ajax({
+        url: "/brands/false",
+        type: "GET",
+        success: function (res) {
+            $("#brands-collapsible-wrapper").html(res);
+        }
+    });
 };
 
 $(window).click(function () {

@@ -16,9 +16,29 @@ namespace Cheshan.Collection.Shop.Core.Services
 
         public async Task<BrandModel?> GetAsync(string name)
         {
-            var brand = await _brandRepository.GetAsync(name);
+            try
+            {
+                var brand = await _brandRepository.GetAsync(name);
 
-            return brand?.ToModel();
+                return brand?.ToModel();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<BrandModel>> GetAllAsync()
+        {
+            try
+            {
+                var brandEntities = await _brandRepository.GetAllBrands();
+                return brandEntities.Select(x => x.ToModel());
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

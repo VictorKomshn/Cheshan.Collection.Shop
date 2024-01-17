@@ -1,0 +1,17 @@
+﻿@model BrandsViewModel
+
+@if (!Model.IsForFilter)
+{
+    @foreach (var brand in Model.Brands)
+    {
+        var name = brand.Name.Contains('\'') ? brand.Name.Replace("\'", "\\\'") : brand.Name;
+        <button class="filter-button" onclick="location.href = '/products/brands/@name.ToLower()';">@brand.Name.ToUpper()</button>
+    }
+}
+else
+{
+    @foreach (var brand in Model.Brands)
+    {
+        <button class="filter-button" data-brand="@brand.Name.ToLower()">@brand.Name.ToUpper()</button>
+    }
+}

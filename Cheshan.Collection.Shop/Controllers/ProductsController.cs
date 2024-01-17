@@ -1,6 +1,5 @@
 ﻿using Cheshan.Collection.Shop.Core.Abstract;
 using Cheshan.Collection.Shop.Core.Models;
-using Cheshan.Collection.Shop.Core.Extensions;
 using Cheshan.Collection.Shop.Database.Entities.Enums;
 using Cheshan.Collection.Shop.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +19,7 @@ namespace Cheshan.Collection.Shop.Controllers
         {
             _productsService = service ?? throw new ArgumentNullException(nameof(service));
             _cartsService = carts ?? throw new ArgumentNullException(nameof(carts));
-            _brandService = brandService ?? throw new ArgumentNullException(nameof(carts));
+            _brandService = brandService ?? throw new ArgumentNullException(nameof(brandService));
         }
 
         [HttpGet]
@@ -46,7 +45,6 @@ namespace Cheshan.Collection.Shop.Controllers
             };
             return View(result);
         }
-
 
         [HttpGet]
         [Route("brands/{brandName}")]
@@ -215,44 +213,44 @@ namespace Cheshan.Collection.Shop.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("create")]
-        public async Task<IActionResult> CreateAsync(ProductModel model)
-        {
-            var newModelGuid = await _productsService.CreateAsync(model);
-            return View(newModelGuid);
-        }
+        //[HttpPost]
+        //[Route("create")]
+        //public async Task<IActionResult> CreateAsync(ProductModel model)
+        //{
+        //    var newModelGuid = await _productsService.CreateAsync(model);
+        //    return View(newModelGuid);
+        //}
 
 
-        [HttpDelete]
-        [Route("{id}")]
-        public async Task<IActionResult> DeleteAsync(Guid id)
-        {
-            try
-            {
-                await _productsService.DeleteAsync(id);
-                return View();
-            }
-            catch (Exception ex)
-            {
-                return NotFound();
-            }
-        }
+        //[HttpDelete]
+        //[Route("{id}")]
+        //public async Task<IActionResult> DeleteAsync(Guid id)
+        //{
+        //    try
+        //    {
+        //        await _productsService.DeleteAsync(id);
+        //        return View();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return NotFound();
+        //    }
+        //}
 
-        [HttpPut]
-        [Route("{id}")]
-        public async Task<IActionResult> UpdateAsync(Guid id, ProductModel updatedMode)
-        {
-            try
-            {
-                var result = await _productsService.UpdateAsync(id, updatedMode);
-                return View(result);
-            }
-            catch (Exception ex)
-            {
-                return NotFound();
-            }
-        }
+        //[HttpPut]
+        //[Route("{id}")]
+        //public async Task<IActionResult> UpdateAsync(Guid id, ProductModel updatedMode)
+        //{
+        //    try
+        //    {
+        //        var result = await _productsService.UpdateAsync(id, updatedMode);
+        //        return View(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return NotFound();
+        //    }
+        //}
 
     }
 }

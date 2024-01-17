@@ -27,25 +27,71 @@ var maxPrice = 99999999;
 
 let womanFiltersWrapper = document.getElementById("woman-filter-categories");
 let manFiltersWrapper = document.getElementById("man-filter-categories");
+let brandFiltersWrapper = document.getElementById("brand-filter-categories");
 
-let womanCategoriesButtons = womanFiltersWrapper.getElementsByClassName("filter-button");
-let manCategoriesButtons = manFiltersWrapper.getElementsByClassName("filter-button");
 
-let brandButtons = document.getElementsByClassName("brands-filter")[0].getElementsByClassName("filter-button");
+let womanCategoriesButtons = [];
+let manCategoriesButtons = [];
+let brandCategoriesButtons = [];
+if (womanFiltersWrapper != null) {
+    womanCategoriesButtons = womanFiltersWrapper.getElementsByClassName("filter-button");
+}
+
+if (manFiltersWrapper != null) {
+    manCategoriesButtons = manFiltersWrapper.getElementsByClassName("filter-button");
+}
+
+if (brandFiltersWrapper != null) {
+    brandCategoriesButtons = brandFiltersWrapper.getElementsByClassName("filter-button");
+}
 
 let productsGrid = document.getElementsByClassName("products-inner")[0];
 
+window.addEventListener ?
+    window.addEventListener("load", downloadBrandsForFilter, false) :
+    window.attachEvent && window.attachEvent("onload", downloadBrandsForFilter);
 
-if (isMan == undefined) {
-    // СТРАНИЦА БЕЗ ПОЛА, ЧТО ДЕЛАТЬ?
+function downloadBrandsForFilter() {
+
+    $.ajax({
+        url: "/brands/true",
+        type: "GET",
+        success: function (res) {
+            $("#brands-filter-collapsible-wrappper").html(res);
+
+            var brandsFilterWrapper = document.getElementsByClassName("brands-filter")[0];
+            if (brandsFilterWrapper != null) {
+
+                let brandButtons = brandsFilterWrapper.getElementsByClassName("filter-button");
+
+                for (let i = 0; i < brandButtons.length; i++) {
+                    brandButtons[i].onclick = function () {
+                        addBrandToFilter(brandButtons[i])
+                    }
+                }
+            }
+        }
+    })
+};
+
+
+
+if (isMan == undefined || isMan == null) {
+    manFiltersWrapper.style.display = "none";
+    womanFiltersWrapper.style.display = "none";
+    brandFiltersWrapper.style.display = "flex";
 }
 else if (isMan === "true") {
     manFiltersWrapper.style.display = "flex";
     womanFiltersWrapper.style.display = "none";
+    brandFiltersWrapper.style.display = "none";
+
 }
 else {
     womanFiltersWrapper.style.display = "flex";
     manFiltersWrapper.style.display = "none";
+    brandFiltersWrapper.style.display = "none";
+
 }
 
 if (sortType == null || sortType == 0) {
@@ -86,17 +132,18 @@ if (isMan === "true") {
         }
     }
 }
-else {
+else if (isMan == "false") {
     for (let i = 0; i < womanCategoriesButtons.length; i++) {
         womanCategoriesButtons[i].onclick = function () {
             addCategoryToFilter(womanCategoriesButtons[i]);
         }
     }
 }
-
-for (let i = 0; i < brandButtons.length; i++) {
-    brandButtons[i].onclick = function () {
-        addBrandToFilter(brandButtons[i])
+else {
+    for (let i = 0; i < brandCategoriesButtons.length; i++) {
+        brandCategoriesButtons[i].onclick = function () {
+            addCategoryToFilter(brandCategoriesButtons[i]);
+        }
     }
 }
 
@@ -176,12 +223,22 @@ function addBrandToFilter(button) {
 
 
 applyFiltersButton.onclick = function () {
-    let sex = "";
 
-    let location = window.location.pathname + window.location.search;
+    let location = window.location.pathname;
 
     if (!location.includes('filter')) {
         location += '/filter?';
+    }
+    else {
+        location += '?';
+    }
+
+    if (isMan != null) {
+        location = addNewFilter(location, "isMan", isMan);
+    }
+
+    if (sortType != null) {
+        location = addNewFilter(location, "sortType", sortType);
     }
 
     if (categoriesArray.length != 0) {
@@ -209,10 +266,6 @@ applyFiltersButton.onclick = function () {
     }
     if (sizesArray.length != 0) {
         location = addNewFilter(location, "Sizes", sizesArray.toString());
-    }
-    if (startIndex != null) {
-        let startIndexValue = (parseInt(startIndex) + 16).toString();
-        location = addNewFilter(location, "StartIndex", startIndexValue);
     }
     if (brandsArray.length != 0) {
         if (location.includes('filter')) {

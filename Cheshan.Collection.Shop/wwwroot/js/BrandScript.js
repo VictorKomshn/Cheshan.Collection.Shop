@@ -9,11 +9,11 @@ function selectBrandSex(brandSex) {
         location += '/filter';
     }
     if (brandSex == "man") {
-        location += "?IsMan=true";
+        location += "?isMan=true";
 
     }
     else {
-        location += "?IsMan=false";
+        location += "?isMan=false";
     }
 
     window.location = location;
