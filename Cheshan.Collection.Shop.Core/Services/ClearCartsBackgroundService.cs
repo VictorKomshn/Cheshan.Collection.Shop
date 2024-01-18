@@ -1,4 +1,4 @@
-﻿using Cheshan.Collection.Shop.Database.Abstract;
+﻿ using Cheshan.Collection.Shop.Database.Abstract;
 using Cheshan.Collection.Shop.Database.Database;
 using Cheshan.Collection.Shop.Database.Repositories;
 using Microsoft.Extensions.DependencyInjection;

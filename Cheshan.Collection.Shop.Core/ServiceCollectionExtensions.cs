@@ -13,10 +13,19 @@ namespace Cheshan.Collection.Shop.Core
             services.AddScoped<IProductsService, ProductsService>();
             services.AddScoped<INotificationRecieversService, NotificationRecieversService>();
             services.AddScoped<IPurchaseService, PurchaseService>();
-            services.AddScoped<IBrandService, BrandService>();
             services.AddScoped<IHelpService, HelpService>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IAlfaBankService, AlfaBankService>();
+            services.AddSingleton<IBrandsBackgroundService, BrandsBackgroundService>();
+            services.AddHostedService(x => x.GetRequiredService<IBrandsBackgroundService>() as BrandsBackgroundService);
+
+            services.AddTransient<IBrandService, BrandService>(x =>
+            {
+                var backgroundService = x.GetRequiredService<IBrandsBackgroundService>();
+                var database = x.GetRequiredService<IBrandRepository>();
+
+                return new BrandService(database, backgroundService);
+            });
 
 
             services.AddTransient<IPurchaseService, PurchaseService>(x =>

@@ -1,5 +1,4 @@
 ﻿using Cheshan.Collection.Shop.Core.Abstract;
-using Cheshan.Collection.Shop.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cheshan.Collection.Shop.Controllers

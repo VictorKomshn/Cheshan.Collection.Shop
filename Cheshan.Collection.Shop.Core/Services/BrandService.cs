@@ -9,9 +9,12 @@ namespace Cheshan.Collection.Shop.Core.Services
     {
         private readonly IBrandRepository _brandRepository;
 
-        public BrandService(IBrandRepository brandRepository)
+        private readonly IBrandsBackgroundService _brandsBackgroundService;
+
+        public BrandService(IBrandRepository brandRepository, IBrandsBackgroundService brandsBackgroundService)
         {
             _brandRepository = brandRepository ?? throw new ArgumentNullException(nameof(brandRepository));
+            _brandsBackgroundService = brandsBackgroundService;
         }
 
         public async Task<BrandModel?> GetAsync(string name)
@@ -28,12 +31,11 @@ namespace Cheshan.Collection.Shop.Core.Services
             }
         }
 
-        public async Task<IEnumerable<BrandModel>> GetAllAsync()
+        public IEnumerable<BrandModel> GetAll()
         {
             try
             {
-                var brandEntities = await _brandRepository.GetAllBrands();
-                return brandEntities.Select(x => x.ToModel());
+                return _brandsBackgroundService.GetBrands();
             }
             catch
             {

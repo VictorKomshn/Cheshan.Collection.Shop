@@ -21,7 +21,7 @@ namespace Cheshan.Collection.Shop.Controllers
         {
             try
             {
-                var brands = await _brandService.GetAllAsync();
+                var brands = _brandService.GetAll();
                 var viewModel = new BrandsViewModel
                 {
                     Brands = brands,

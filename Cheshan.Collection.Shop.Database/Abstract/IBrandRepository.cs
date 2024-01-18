@@ -6,6 +6,6 @@ namespace Cheshan.Collection.Shop.Database.Abstract
     {
         Task<BrandEntity?> GetAsync(string name);
 
-        Task<IEnumerable<BrandEntity>> GetAllBrands();
+        Task<IEnumerable<BrandEntity>> GetAllBrandsAsync();
     }
 }

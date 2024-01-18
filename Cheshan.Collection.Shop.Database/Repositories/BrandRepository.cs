@@ -79,7 +79,7 @@ namespace Cheshan.Collection.Shop.Database.Repositories
             return brand;
         }
 
-        public async Task<IEnumerable<BrandEntity>> GetAllBrands()
+        public async Task<IEnumerable<BrandEntity>> GetAllBrandsAsync()
         {
             return await _dataContext.Brands.ToListAsync();
         }

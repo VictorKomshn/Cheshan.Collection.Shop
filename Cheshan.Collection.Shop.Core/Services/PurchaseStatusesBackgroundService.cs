@@ -4,8 +4,6 @@ using Cheshan.Collection.Shop.Database.Database;
 using Cheshan.Collection.Shop.Database.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 
 namespace Cheshan.Collection.Shop.Core.Services
