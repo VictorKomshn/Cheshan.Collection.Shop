@@ -65,7 +65,11 @@
                        Model.Product.Brand.ToLower() == "sara roca" ||
                        Model.Product.Brand.ToLower() == "cult gaia" ||
                        Model.Product.Brand.ToLower() == "jil sander" ||
-                       Model.Product.Brand.ToLower() == "karl lagerfeld") &&
+                       Model.Product.Brand.ToLower() == "karl lagerfeld" ||
+                       Model.Product.Brand.ToLower() == "domrebel" ||
+                       Model.Product.Brand.ToLower() == "khrisjoy" ||
+                       (Model.Product.Brand.ToLower() == "giuseppe di morabito" && Model.Product.IsMan == false) ||
+                       (Model.Product.Brand.ToLower() == "zimmermann" && Model.Product.IsMan == false)) &&
                        Model.Product.CategoryType == CategoryType.Clothes)
                         {
 
@@ -192,7 +196,16 @@
                     <span class="text-regular">RUS</span>
                     <span class="text-regular">EU</span>
                 </div>
-
+            }
+            else if (Model.Product.Brand.ToLower() == "domrebel" ||
+            Model.Product.Brand.ToLower() == "khrisjoy" ||
+            (Model.Product.Brand.ToLower() == "giuseppe di morabito" && Model.Product.IsMan == false) ||
+            (Model.Product.Brand.ToLower() == "zimmermann" && Model.Product.IsMan == false))
+            {
+                <div class="header-row short-header">
+                    <span class="text-regular">RUS</span>
+                    <span class="text-regular">EU</span>
+                </div>
             }
             <div class="sizes-content-wrapper">
                 @if (Model.Product.Brand.ToLower() == "fabiana filippi" ||
@@ -341,6 +354,123 @@
                         <span class="left-element text-regular">50</span>
                         <span class="right-element text-regular">XL</span>
                     </div>
+                }
+                else if (Model.Product.Brand.ToLower() == "domrebel" ||
+                Model.Product.Brand.ToLower() == "khrisjoy" ||
+                (Model.Product.Brand.ToLower() == "giuseppe di morabito" && Model.Product.IsMan == false) ||
+                (Model.Product.Brand.ToLower() == "zimmermann" && Model.Product.IsMan == false))
+                {
+                    @if (Model.Product.IsMan == false)
+                    {
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">38</span>
+                            <span class="right-element text-regular">XXS</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">40</span>
+                            <span class="right-element text-regular">XS</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">42</span>
+                            <span class="right-element text-regular">S</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">44-46</span>
+                            <span class="right-element text-regular">M</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">48-50</span>
+                            <span class="right-element text-regular">L</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">52</span>
+                            <span class="right-element text-regular">XL</span>
+                        </div>
+                        <div class="content-row row-shorten" style="border:none">
+                            <span class="left-element text-regular">54-56</span>
+                            <span class="right-element text-regular">XXL</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">44</span>
+                            <span class="right-element text-regular">XS</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">46</span>
+                            <span class="right-element text-regular">S</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">48</span>
+                            <span class="right-element text-regular">M</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">50</span>
+                            <span class="right-element text-regular">L</span>
+                        </div>
+                        <div class="content-row row-shorten" style="border:none">
+                            <span class="left-element text-regular">52</span>
+                            <span class="right-element text-regular">XL</span>
+                        </div>
+                    }
+                }
+                else if (Model.Product.Brand.ToLower() == "khrisjoy")
+                {
+                    @if (Model.Product.IsMan == false)
+                    {
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">38</span>
+                            <span class="right-element text-regular">XXS</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">40</span>
+                            <span class="right-element text-regular">XS</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">42</span>
+                            <span class="right-element text-regular">S</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">44-46</span>
+                            <span class="right-element text-regular">M</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">48-50</span>
+                            <span class="right-element text-regular">L</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">52</span>
+                            <span class="right-element text-regular">XL</span>
+                        </div>
+                        <div class="content-row row-shorten" style="border:none">
+                            <span class="left-element text-regular">54-56</span>
+                            <span class="right-element text-regular">XXL</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">44</span>
+                            <span class="right-element text-regular">XS</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">46</span>
+                            <span class="right-element text-regular">S</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">48</span>
+                            <span class="right-element text-regular">M</span>
+                        </div>
+                        <div class="content-row row-shorten">
+                            <span class="left-element text-regular">50</span>
+                            <span class="right-element text-regular">L</span>
+                        </div>
+                        <div class="content-row row-shorten" style="border:none">
+                            <span class="left-element text-regular">52</span>
+                            <span class="right-element text-regular">XL</span>
+                        </div>
+                    }
                 }
             </div>
         </div>

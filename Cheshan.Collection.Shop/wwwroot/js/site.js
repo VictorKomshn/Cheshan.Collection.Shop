@@ -280,7 +280,7 @@ function filterCategory(button) {
 
     let isMan = "";
     if (selectCategory == null || selectCategory == "" || selectedCategory == undefined) {
-        selectedCategory = button.parentNode.parentNode.dataset.sex;
+        selectedCategory = button.parentNode.parentNode.parentNode.dataset.sex;
     }
     if (selectedCategory == "man") {
         isMan = true;
