@@ -238,7 +238,7 @@ applyFiltersButton.onclick = function () {
     }
 
     if (sortType != null) {
-        location = addNewFilter(location, "sortType", sortType);
+        location = addNewFilter(location, "sort", sortType);
     }
 
     if (categoriesArray.length != 0) {
@@ -294,15 +294,24 @@ function addNewFilter(location, filterName, filterValue) {
 }
 
 function sortProducts(button) {
-    if (sortType != null) {
-        params.set('sort', button.dataset.sortoptions);
-        window.location = location.origin + location.pathname + '?' + params.toString();
-    }
-    else if (window.location.toString().endsWith("products")) {
-        window.location = currentLocation + "?&sort=" + button.dataset.sortoptions;
+    let location = window.location.pathname;
+
+    if (!location.includes('filter')) {
+        location += '/filter?';
     }
     else {
-        window.location = currentLocation + "&sort=" + button.dataset.sortoptions;
+        location +="?"
+    }
+
+    if (sortType != null) {
+        params.set('sort', button.dataset.sortoptions);
+        window.location = location + params.toString();
+    }
+    else if (params.size >0) {
+        window.location = location + params.toString() + "&sort=" + button.dataset.sortoptions;
+    }
+    else {
+        window.location = location + "sort=" + button.dataset.sortoptions;
     }
 }
 
