@@ -210,8 +210,6 @@
             <div class="sizes-content-wrapper">
                 @if (Model.Product.Brand.ToLower() == "fabiana filippi" ||
                 Model.Product.Brand.ToLower() == "peserico" ||
-                Model.Product.Brand.ToLower() == "panicale" ||
-                Model.Product.Brand.ToLower() == "etro" ||
                 Model.Product.Brand.ToLower() == "ermano scervino" ||
                 Model.Product.Brand.ToLower() == "sara roca")
                 {
@@ -267,6 +265,144 @@
                         </div>
                         <div class="content-row">
                             <span class="left-element text-regular">50-52</span>
+                            <span class="text-regular">L</span>
+                            <span class="right-element text-regular">48</span>
+                        </div>
+                        <div class="content-row">
+                            <span class="left-element text-regular">54</span>
+                            <span class="text-regular">XL</span>
+                            <span class="right-element text-regular">50</span>
+                        </div>
+                        <div class="content-row" style="border:none">
+                            <span class="left-element text-regular">56</span>
+                            <span class="text-regular">XXL</span>
+                            <span class="right-element text-regular">52-54</span>
+                        </div>
+                    }
+                }
+                else if( Model.Product.Brand.ToLower() == "panicale")
+                {
+                    @if (Model.Product.IsMan == false)
+                    {
+                        <div class="content-row">
+                            <span class="left-element text-regular">40</span>
+                            <span class="text-regular">XS</span>
+                            <span class="right-element text-regular">36</span>
+                        </div>
+                        <div class="content-row">
+                            <span class="left-element text-regular">42</span>
+                            <span class="text-regular">S</span>
+                            <span class="right-element text-regular">38</span>
+                        </div>
+                        <div class="content-row">
+                            <span class="left-element text-regular">44-46</span>
+                            <span class="text-regular">M</span>
+                            <span class="right-element text-regular">40</span>
+                        </div>
+                        <div class="content-row">
+                            <span class="left-element text-regular">48-50</span>
+                            <span class="text-regular">L</span>
+                            <span class="right-element text-regular">42-44</span>
+                        </div>
+                        <div class="content-row">
+                            <span class="left-element text-regular">52</span>
+                            <span class="text-regular">XL</span>
+                            <span class="right-element text-regular">46-48</span>
+                        </div>
+                        <div class="content-row" style="border:none">
+                            <span class="left-element text-regular">54-60</span>
+                            <span class="text-regular">XXL</span>
+                            <span class="right-element text-regular">50</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="content-row">
+                            <span class="left-element text-regular">44</span>
+                            <span class="text-regular">XS</span>
+                            <span class="right-element text-regular">42</span>
+                        </div>
+                        <div class="content-row">
+                            <span class="left-element text-regular">46</span>
+                            <span class="text-regular">S</span>
+                            <span class="right-element text-regular">44</span>
+                        </div>
+                        <div class="content-row">
+                            <span class="left-element text-regular">48</span>
+                            <span class="text-regular">M</span>
+                            <span class="right-element text-regular">46</span>
+                        </div>
+                        <div class="content-row">
+                            <span class="left-element text-regular">50-52</span>
+                            <span class="text-regular">L</span>
+                            <span class="right-element text-regular">48</span>
+                        </div>
+                        <div class="content-row">
+                            <span class="left-element text-regular">54</span>
+                            <span class="text-regular">XL</span>
+                            <span class="right-element text-regular">50</span>
+                        </div>
+                        <div class="content-row" style="border:none">
+                            <span class="left-element text-regular">56</span>
+                            <span class="text-regular">XXL</span>
+                            <span class="right-element text-regular">52-54</span>
+                        </div>
+                    }
+                }
+                else if(Model.Product.Brand.ToLower() == "etro")
+                {
+                    @if (Model.Product.IsMan == false)
+                    {
+                        <div class="content-row">
+                            <span class="left-element text-regular">40</span>
+                            <span class="text-regular">XS</span>
+                            <span class="right-element text-regular">36</span>
+                        </div>
+                        <div class="content-row">
+                            <span class="left-element text-regular">42</span>
+                            <span class="text-regular">S</span>
+                            <span class="right-element text-regular">38</span>
+                        </div>
+                        <div class="content-row">
+                            <span class="left-element text-regular">44</span>
+                            <span class="text-regular">M</span>
+                            <span class="right-element text-regular">40</span>
+                        </div>
+                        <div class="content-row">
+                            <span class="left-element text-regular">46-48</span>
+                            <span class="text-regular">L</span>
+                            <span class="right-element text-regular">42-44</span>
+                        </div>
+                        <div class="content-row">
+                            <span class="left-element text-regular">50-52</span>
+                            <span class="text-regular">XL</span>
+                            <span class="right-element text-regular">46-48</span>
+                        </div>
+                        <div class="content-row" style="border:none">
+                            <span class="left-element text-regular">52-54</span>
+                            <span class="text-regular">XXL</span>
+                            <span class="right-element text-regular">50</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="content-row">
+                            <span class="left-element text-regular">44</span>
+                            <span class="text-regular">XS</span>
+                            <span class="right-element text-regular">42</span>
+                        </div>
+                        <div class="content-row">
+                            <span class="left-element text-regular">46</span>
+                            <span class="text-regular">S</span>
+                            <span class="right-element text-regular">44</span>
+                        </div>
+                        <div class="content-row">
+                            <span class="left-element text-regular">48</span>
+                            <span class="text-regular">M</span>
+                            <span class="right-element text-regular">46</span>
+                        </div>
+                        <div class="content-row">
+                            <span class="left-element text-regular">50</span>
                             <span class="text-regular">L</span>
                             <span class="right-element text-regular">48</span>
                         </div>
