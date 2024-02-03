@@ -109,9 +109,9 @@ namespace Cheshan.Collection.Shop.Core.Services
                 })
             };
 
-            string template = File.ReadAllText("C:\\SCOUT\\work\\Cheshan.Collection.Shop\\Cheshan.Collection.Shop.Core\\EmailCompositions\\AdminMessage.html");
+            string template = File.ReadAllText(@"..\\Cheshan.Collection.Shop.Core\\EmailCompositions\\AdminMessage.html");
 
-            string productTemplate = File.ReadAllText("C:\\SCOUT\\work\\Cheshan.Collection.Shop\\Cheshan.Collection.Shop.Core\\EmailCompositions\\PurchasedProductElement.html");
+            string productTemplate = File.ReadAllText(@"..\\Cheshan.Collection.Shop.Core\\\\EmailCompositions\\PurchasedProductElement.html");
             string purchasedProducts = string.Empty;
             foreach (var product in model.Products)
             {

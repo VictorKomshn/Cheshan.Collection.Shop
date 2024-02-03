@@ -136,9 +136,11 @@ namespace Cheshan.Collection.Shop.Controllers
             }
             catch (Exception ex)
             {
+                await System.IO.File.AppendAllLinesAsync(@"../Cheshan.Collection.Shop/cartsControllerErrors.txt", new[] { $"{DateTime.UtcNow} error:\t" + ex.Message });
                 if (ex is ArgumentException)
                 {
                     return View("NotFound");
+
                 }
                 else
                 {
