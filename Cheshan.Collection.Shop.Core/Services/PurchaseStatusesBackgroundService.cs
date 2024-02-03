@@ -17,9 +17,9 @@ namespace Cheshan.Collection.Shop.Core.Services
 
         private readonly IEmailService _emailService;
 
-        private readonly TimeSpan _statusThreshold = TimeSpan.FromMilliseconds(500);
+        private readonly TimeSpan _statusThreshold = TimeSpan.FromMilliseconds(1000);
 
-        private readonly TimeSpan _purchaseThreshold = TimeSpan.FromMilliseconds(500);
+        private readonly TimeSpan _purchaseThreshold = TimeSpan.FromMilliseconds(1000);
 
         public PurchaseStatusesBackgroundService(IServiceProvider services,
                                                  IEmailService emailService,
