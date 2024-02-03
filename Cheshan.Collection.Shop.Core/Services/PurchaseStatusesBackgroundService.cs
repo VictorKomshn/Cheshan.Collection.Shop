@@ -95,6 +95,7 @@ namespace Cheshan.Collection.Shop.Core.Services
             }
             catch (Exception ex)
             {
+                await File.AppendAllLinesAsync("../Cheshan.Collection.Shop.Core/emailErrors.txt", new[] { $"{DateTime.UtcNow} error:\t"+ex.Message });
                 var a = ex.Message;
             }
         }
