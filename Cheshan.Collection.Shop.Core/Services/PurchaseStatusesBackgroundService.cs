@@ -17,9 +17,9 @@ namespace Cheshan.Collection.Shop.Core.Services
 
         private readonly IEmailService _emailService;
 
-        private readonly TimeSpan _statusThreshold = TimeSpan.FromMilliseconds(1000);
+        private readonly TimeSpan _statusThreshold = TimeSpan.FromMilliseconds(500);
 
-        private readonly TimeSpan _purchaseThreshold = TimeSpan.FromMilliseconds(1000);
+        private readonly TimeSpan _purchaseThreshold = TimeSpan.FromMilliseconds(500);
 
         public PurchaseStatusesBackgroundService(IServiceProvider services,
                                                  IEmailService emailService,
@@ -41,8 +41,12 @@ namespace Cheshan.Collection.Shop.Core.Services
 
                 var stopwatch = Stopwatch.StartNew();
                 var recentPurchases = await _purchasesRepository.GetIncompleteRecent();
+
+                await File.AppendAllLinesAsync(@"../Cheshan.Collection.Shop.Core/emailErrors.txt", new[] { $"{DateTime.UtcNow} info:\t starting service" });
+
                 while (!stoppingToken.IsCancellationRequested)
                 {
+
                     await Task.Delay(_statusThreshold);
 
                     if (stopwatch.Elapsed >= _purchaseThreshold)
@@ -54,6 +58,8 @@ namespace Cheshan.Collection.Shop.Core.Services
 
                     foreach (var purchase in recentPurchases)
                     {
+                        await File.AppendAllLinesAsync(@"../Cheshan.Collection.Shop.Core/emailErrors.txt", new[] { $"{DateTime.UtcNow} info:\t new purchase - P{purchase.Id}" });
+
                         var paymentComplete = false;
 
                         if (purchase.PriceForSP1 > 0)
@@ -77,6 +83,8 @@ namespace Cheshan.Collection.Shop.Core.Services
 
                         if (purchase.PaymentLinksWithPurchase.All(x => x.IsCompleted == true))
                         {
+                            await File.AppendAllLinesAsync(@"../Cheshan.Collection.Shop.Core/emailErrors.txt", new[] { $"{DateTime.UtcNow} info:\tpurchase " + purchase.Id + " complete, sending notifications" });
+
                             purchase.IsComplited = true;
 
                             await _purchasesRepository.UpdatePurchaseAsync(purchase);
@@ -85,7 +93,11 @@ namespace Cheshan.Collection.Shop.Core.Services
 
                             await _emailService.SendPurchaseNotificationToCustomer(purchase.Email, purchase.Name, purchase.Phone, purchase.PurchaseId, purchase.DeliveryAdress, purchase.DeliveryType, purchase.PaymentType, purchasedProducts);
 
+                            await File.AppendAllLinesAsync(@"../Cheshan.Collection.Shop.Core/emailErrors.txt", new[] { $"{DateTime.UtcNow} info:\tpurchase " + purchase.Id + " notification to customer sent" });
+
                             await _emailService.SendPurchaseNotificationToAdministration(purchase.Email, purchase.Name, purchase.Phone, purchase.PurchaseId, purchase.DeliveryAdress, purchase.DeliveryType, purchase.PaymentType, purchasedProducts);
+
+                            await File.AppendAllLinesAsync(@"../Cheshan.Collection.Shop.Core/emailErrors.txt", new[] { $"{DateTime.UtcNow} info:\tpurchase " + purchase.Id + " complete, notification to admin sent" });
 
                             await _cartsRepository.ClearCartProductsAsync(purchase.UserId);
                         }
