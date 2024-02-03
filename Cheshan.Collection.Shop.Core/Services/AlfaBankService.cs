@@ -9,7 +9,7 @@ namespace Cheshan.Collection.Shop.Core.Services
     {
         private readonly string prodRegisterString = "https://payment.alfabank.ru/payment/rest/register.do";
 
-        private readonly string enpointUrl = "https://localhost:44352/purchase/complete";
+        private readonly string enpointUrl = "https://collectionchel.ru/purchase/complete";
 
         private readonly string prodGetStatusLink = "https://payment.alfabank.ru/payment/rest/getOrderStatus.do";
 
