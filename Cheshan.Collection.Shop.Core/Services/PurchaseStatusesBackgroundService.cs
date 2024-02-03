@@ -17,9 +17,9 @@ namespace Cheshan.Collection.Shop.Core.Services
 
         private readonly IEmailService _emailService;
 
-        private readonly TimeSpan _statusThreshold = TimeSpan.FromMilliseconds(5000);
+        private readonly TimeSpan _statusThreshold = TimeSpan.FromMilliseconds(1000);
 
-        private readonly TimeSpan _purchaseThreshold = TimeSpan.FromMilliseconds(10000);
+        private readonly TimeSpan _purchaseThreshold = TimeSpan.FromMilliseconds(1000);
 
         public PurchaseStatusesBackgroundService(IServiceProvider services,
                                                  IEmailService emailService,
@@ -30,9 +30,8 @@ namespace Cheshan.Collection.Shop.Core.Services
             _purchasesRepository = new PurchasesRepository(scope.ServiceProvider.GetService<DataContext>());
             _cartsRepository = new CartsRepository(scope.ServiceProvider.GetService<DataContext>());
 
-
             _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
-            _alfaBankService = alfaBankService ?? throw new ArgumentNullException(nameof(alfaBankService)) ;
+            _alfaBankService = alfaBankService ?? throw new ArgumentNullException(nameof(alfaBankService));
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

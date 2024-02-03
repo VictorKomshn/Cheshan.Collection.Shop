@@ -72,7 +72,12 @@ namespace Cheshan.Collection.Shop.Database.Repositories
         {
             try
             {
-                var recentIncomplete = await _context.Purchases.Include(x => x.PaymentLinksWithPurchase).Include(x => x.PurchasedProducts).Where(x => x.Created > (DateTime.UtcNow - _purchasesThresold) && x.IsComplited == false && x.PaymentType != "cash").ToListAsync();
+                var recentIncomplete = await _context.Purchases.Include(x => x.PaymentLinksWithPurchase)
+                                                               .Include(x => x.PurchasedProducts)
+                                                               .Where(x => x.Created > (DateTime.UtcNow - _purchasesThresold) &&
+                                                                           x.IsComplited == false &&
+                                                                           x.PaymentType != "cash")
+                                                               .ToListAsync();
 
                 return recentIncomplete;
             }
