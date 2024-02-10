@@ -42,6 +42,7 @@ namespace Cheshan.Collection.Shop.Controllers
             {
                 Products = products.Products.ToArray(),
                 MaxAmount = products.MaxAmount,
+                AllBrands = _brandService.GetAll()
             };
             return View(result);
         }
@@ -78,6 +79,7 @@ namespace Cheshan.Collection.Shop.Controllers
                     {
                         Products = Array.Empty<ProductModel>(),
                         MaxAmount = 0,
+                        AllBrands = _brandService.GetAll()
                     };
                 }
                 else
@@ -86,7 +88,8 @@ namespace Cheshan.Collection.Shop.Controllers
                     {
                         Brand = brand,
                         MaxAmount = products.MaxAmount,
-                        Products = products.Products.ToArray()
+                        Products = products.Products.ToArray(),
+                        AllBrands = _brandService.GetAll()
                     };
                 }
                 return View("Index", viewModel);
@@ -133,7 +136,8 @@ namespace Cheshan.Collection.Shop.Controllers
                     {
                         Products = products.Products.ToArray(),
                         MaxAmount = products.MaxAmount,
-                        CategoryType = products.CategoryType
+                        CategoryType = products.CategoryType,
+                        AllBrands = _brandService.GetAll()
                     };
                 }
                 else
@@ -146,7 +150,8 @@ namespace Cheshan.Collection.Shop.Controllers
                         {
                             Products = Array.Empty<ProductModel>(),
                             MaxAmount = 0,
-                            CategoryType = products.CategoryType
+                            CategoryType = products.CategoryType,
+                            AllBrands = _brandService.GetAll()
                         };
                     }
                     else
@@ -157,7 +162,8 @@ namespace Cheshan.Collection.Shop.Controllers
                             Brand = brand,
                             MaxAmount = products.MaxAmount,
                             Products = products.Products.ToArray(),
-                            CategoryType = products.CategoryType
+                            CategoryType = products.CategoryType,
+                            AllBrands = _brandService.GetAll()
 
                         };
                     }
@@ -196,7 +202,8 @@ namespace Cheshan.Collection.Shop.Controllers
                 var viewModel = new ProductViewModel
                 {
                     Product = product,
-                    SuggestedProducts = suggestedProducts
+                    SuggestedProducts = suggestedProducts,
+                    AllBrands = _brandService.GetAll()
                 };
                 return View("Product", viewModel);
             }

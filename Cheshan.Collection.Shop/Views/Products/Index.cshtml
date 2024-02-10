@@ -307,6 +307,10 @@
                     <button class="filter-button" data-brand="balossa">BALOSSA</button>
                     <button class="filter-button" data-brand="domrebel">DOMREBEL</button>
                     <button class="filter-button" data-brand="parajumpers">PARAJUMPERS</button>*@
+                        @foreach (var brand in Model.AllBrands)
+                        {
+                            <button class="filter-button" data-brand="@brand.Name.ToLower()">@brand.Name.ToUpper()</button>
+                        }
                     </div>
                     <hr />
                 </div>

@@ -8,7 +8,8 @@ const cartMenuWrapper = document.getElementById("cart-menu-wrapper");
 const html = document.getElementsByTagName('html')[0];
 
 
-window.onload = function () {
+window.onload = function ()
+{
     $.ajaxSetup({ cache: false });
     $.ajax({
         url: "/cart/count",
@@ -22,7 +23,6 @@ window.onload = function () {
         }
     });
 
-
     $.ajax({
         url: "/cart/products",
         type: "GET",
@@ -33,22 +33,22 @@ window.onload = function () {
     });
 
 
-    $.ajax({
-        url: "/brands/false",
-        type: "GET",
-        success: function (res) {
-            $("#brands-wrapper").html(res);
-        }
-    });
+    //$.ajax({
+    //    url: "/brands/false",
+    //    type: "GET",
+    //    success: function (res) {
+    //        $("#brands-wrapper").html(res);
+    //    }
+    //});
 
 
-    $.ajax({
-        url: "/brands/false",
-        type: "GET",
-        success: function (res) {
-            $("#brands-collapsible-wrapper").html(res);
-        }
-    });
+    //$.ajax({
+    //    url: "/brands/false",
+    //    type: "GET",
+    //    success: function (res) {
+    //        $("#brands-collapsible-wrapper").html(res);
+    //    }
+    //});
 };
 
 $(window).click(function () {
@@ -148,7 +148,7 @@ function getSideCartSumPrice() {
     let sumPrice = 0;
     for (let i = 0; i < productsInCart.length; i++) {
         let price = parseInt(productsInCart[i].getElementsByClassName('product-in-cart-menu-price')[0].textContent);
-        let amount = parseInt(productsInCart[i].getElementsByClassName('product-in-cart-amount')[0].dataset.amount);
+        let amount = 1;//parseInt(productsInCart[i].getElementsByClassName('product-in-cart-amount')[0].dataset.amount);
 
         sumPrice += (price * amount);
     }
@@ -306,13 +306,11 @@ function filterCategory(button) {
     }
 }
 
-
 function closeOnClick(elementName) {
     let element = document.getElementById(elementName);
     element.style.display = "none";
     html.style.overflowY = "initial";
 }
-
 
 //collapsibles
 let coll = document.getElementsByClassName("collapsible-button");
@@ -624,5 +622,14 @@ function validateHelpInput() {
     }
     else {
         addInactiveButton(button);
+    }
+}
+
+function instagramLink() {
+    if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+        window.location = "instagram://user?username=collectionchel";
+    }
+    else {
+        window.location = "http://instagram.com/_u/collectionchel/";
     }
 }

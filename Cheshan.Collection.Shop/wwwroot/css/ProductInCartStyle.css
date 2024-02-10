@@ -9,14 +9,11 @@
     align-items: flex-start;
 }
 
-     .product-in-cart-size {
-        margin-top: 20px;
-    }
 
 .product-in-cart-img {
     max-width: 95px;
     max-height: 138px;
-    object-fit:contain
+    object-fit: contain
 }
 
 .product-in-cart-content-wrapper {
@@ -38,7 +35,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    align-self: stretch;
+    gap:20px;
 }
 
 .product-in-cart-amount-wrapper {

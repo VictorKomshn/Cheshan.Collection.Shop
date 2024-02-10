@@ -2,7 +2,7 @@
 
 namespace Cheshan.Collection.Shop.ViewModels
 {
-    public class ProductViewModel
+    public class ProductViewModel : BaseViewModel
     {
         public ProductModel Product { get; set; }
 

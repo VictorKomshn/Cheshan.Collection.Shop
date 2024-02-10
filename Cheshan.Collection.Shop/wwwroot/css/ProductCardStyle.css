@@ -6,18 +6,19 @@
     height: 100%;
 }
 
-    .product-card-accessories-footwear-image-wrapper img{
-        height:100%;
-        object-fit:contain !important;
+    .product-card-accessories-footwear-image-wrapper img {
+        height: 100%;
+        object-fit: contain !important;
     }
 
-    .product-card-image-wrapper {
-    }
+.product-card-image-wrapper {
+    border: 1px solid #fff;
+}
 
 .product-card-inner img {
     width: 100%;
-    height:100%;
-    object-fit:cover;
+    height: 100%;
+    object-fit: cover;
     align-self: stretch;
 }
 
@@ -40,9 +41,13 @@
     text-decoration: none;
 }
 
-.product-card-inner:hover{
-    text-decoration:none !important;
-}
+    .product-card-inner:hover > .product-card-image-wrapper {
+        border: 1px solid #000;
+    }
+
+    .product-card-inner:hover {
+        text-decoration: none !important;
+    }
 
 .prices-inner {
     padding: 5px 0 0 0;

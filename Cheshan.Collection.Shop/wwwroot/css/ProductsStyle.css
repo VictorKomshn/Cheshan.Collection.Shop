@@ -13,6 +13,10 @@ body {
     margin: 10px;
 }
 
+/*.products-inner-sizer {
+    width: 1fr;
+}*/
+
 .sort-icon {
     background: url('../img/sort_icon.svg');
 }
@@ -362,7 +366,7 @@ div.brands-filter.collapsible-active {
 
 #sort-dropdown-content .sale-button {
     color: #f00;
-    border:none;
+    border: none;
 }
 
     #sort-dropdown-content .sale-button:hover {
@@ -414,8 +418,8 @@ div.brands-filter.collapsible-active {
         padding-right: unset;
     }
 
-    #sort-button-current-span{
-        color:#000 !important;
+    #sort-button-current-span {
+        color: #000 !important;
     }
 
     #sort-dropdown-content {

@@ -49,6 +49,18 @@ function addSelectionMark(sizeButton, sizeButtonsArray) {
     sizeButton.classList.add('selected-size');
 }
 
+
+function removeSelectedSise() {
+    for (var i = 0; i < sizeButtons.length; i++) {
+        let sizeButton = sizeButtons[i]
+        if (sizeButton.classList.contains("selected-size")) {
+            sizeButton.classList.remove("selected-size");
+            addToCartButton.dataset.size = null;
+            sizeInfo.textContent = "РАЗМЕР";
+        }
+
+    }
+}
 addToCartButton.onclick = function () {
 
     let buttonIsActive = checkButtonValidity(this)
@@ -67,6 +79,11 @@ addToCartButton.onclick = function () {
             'data': JSON.stringify(this.dataset.size),
             'dataType': 'json',
             'success': function (res) {
+                addInactiveButton(addToCartButton);
+                addToCartButton.textContent = "ВЫБЕРИТЕ РАЗМЕР";
+
+                removeSelectedSise();
+
                 for (let i = 0; i < cartCounters.length; i++) {
                     cartCounters[i].textContent = "(" + res + ")";
                     cartCounters[i].dataset.amount = res;
@@ -79,6 +96,9 @@ addToCartButton.onclick = function () {
                         $("#cart-menu-content").html(res);
                     }
                 });
+
+                openCartMenu();
+
             }
         })
     };

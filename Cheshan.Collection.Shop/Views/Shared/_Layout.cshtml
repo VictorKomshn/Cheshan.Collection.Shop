@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model ViewModels.BaseViewModel
+
+<!DOCTYPE html>
 <html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -137,7 +139,7 @@
                     <div id="woman-categories-inner" class="main-filters-wrapper">
                         <div class="clothes-categories-inner filter-wrapper">
                             <div class="category-name-container">
-                                <span class="category-name text-small-caps">ОДЕЖДА</span>
+                                <a href="/products/filter?IsMan=false&categoryType=1"><span class="category-name text-small-caps">ОДЕЖДА</span></a>
                             </div>
                             <div class="categories-container" data-categorytype="1">
                                 <button class="filter-button" data-category="футболка,топ">ФУТБОЛКИ И ТОПЫ</button>
@@ -156,7 +158,7 @@
                         </div>
                         <div class="footwear-categories-inner filter-wrapper">
                             <div class="category-name-container">
-                                <span class="category-name text-small-caps">ОБУВЬ</span>
+                                <a href="/products/filter?IsMan=false&categoryType=2"><span class="category-name text-small-caps">ОБУВЬ</span></a>
                             </div>
                             <div class="categories-container" data-categorytype="2">
                                 <button class="filter-button" data-category="кроссовки">КРОССОВКИ</button>
@@ -167,7 +169,7 @@
                         </div>
                         <div class="accessories-categories-inner filter-wrapper">
                             <div class="category-name-container">
-                                <span class="category-name text-small-caps">АКСЕССУАРЫ</span>
+                                <a href="/products/filter?IsMan=false&categoryType=3"><span class="category-name text-small-caps">АКСЕССУАРЫ</span></a>
                             </div>
                             <div class="categories-container" data-categorytype="3">
                                 <button class="filter-button" data-category="головной убор">ГОЛОВНЫЕ УБОРЫ</button>
@@ -180,7 +182,7 @@
                     <div id="man-categories-inner" class="main-filters-wrapper">
                         <div class="clothes-categories-inner filter-wrapper">
                             <div class="category-name-container">
-                                <span class="category-name text-small-caps">ОДЕЖДА</span>
+                                <a href="/products/filter?IsMan=true&categoryType=1"><span class="category-name text-small-caps">ОДЕЖДА</span></a>
                             </div>
                             <div class="categories-container" data-categorytype="1">
                                 <button class="filter-button" data-category="футболка">ФУТБОЛКИ</button>
@@ -196,7 +198,7 @@
                         </div>
                         <div class="footwear-categories-inner filter-wrapper">
                             <div class="category-name-container">
-                                <span class="category-name text-small-caps">ОБУВЬ</span>
+                                <a href="/products/filter?IsMan=true&categoryType=2"><span class="category-name text-small-caps">ОБУВЬ</span></a>
                             </div>
                             <div class="categories-container" data-categorytype="2">
                                 <button class="filter-button" data-category="кроссовки">КРОССОВКИ</button>
@@ -207,7 +209,7 @@
                         </div>
                         <div class="accessories-categories-inner filter-wrapper">
                             <div class="category-name-container">
-                                <span class="category-name text-small-caps">АКСЕССУАРЫ</span>
+                                <a href="/products/filter?IsMan=true&categoryType=3"><span class="category-name text-small-caps">АКСЕССУАРЫ</span></a>
                             </div>
                             <div class="categories-container" data-categorytype="3">
                                 <button class="filter-button" data-category="сумка">СУМКИ</button>
@@ -247,7 +249,11 @@
                     <button class="filter-button" onclick="location.href = '/products/brands/balossa';">BALOSSA</button>
                     <button class="filter-button" onclick="location.href = '/products/brands/domrebel';">DOMREBEL</button>
                     <button class="filter-button" onclick="location.href = '/products/brands/parajumpers';">PARAJUMPERS</button>*@
-
+                    @foreach (var brand in Model.AllBrands)
+                    {
+                        var name = brand.Name.Contains('\'') ? brand.Name.Replace("\'", "\\\'") : brand.Name;
+                        <button class="filter-button" onclick="location.href = '/products/brands/@name.ToLower()';">@brand.Name.ToUpper()</button>
+                    }
                 </div>
             </div>
         </div>
@@ -326,7 +332,7 @@
                         </div>
                         <div class="clothes-categories-inner filter-wrapper">
                             <div class="category-name-container">
-                                <span class="category-name text-small-caps">ОДЕЖДА</span>
+                                <a href="/products/filter?IsMan=false&categoryType=1"><span class="category-name text-small-caps">ОДЕЖДА</span></a>
                             </div>
                             <div class="categories-container" data-categorytype="1">
                                 <button class="filter-button" data-category="футболка,топ">ФУТБОЛКИ И ТОПЫ</button>
@@ -345,7 +351,7 @@
                         </div>
                         <div class="footwear-categories-inner filter-wrapper">
                             <div class="category-name-container">
-                                <span class="category-name text-small-caps">ОБУВЬ</span>
+                                <a href="/products/filter?IsMan=false&categoryType=2"><span class="category-name text-small-caps">ОБУВЬ</span></a>
                             </div>
                             <div class="categories-container" data-categorytype="2">
                                 <button class="filter-button" data-category="кроссовки">КРОССОВКИ</button>
@@ -356,7 +362,7 @@
                         </div>
                         <div class="accessories-categories-inner filter-wrapper">
                             <div class="category-name-container">
-                                <span class="category-name text-small-caps">АКСЕССУАРЫ</span>
+                                <a href="/products/filter?IsMan=false&categoryType=3"><span class="category-name text-small-caps">АКСЕССУАРЫ</span></a>
                             </div>
                             <div class="categories-container" data-categorytype="3">
                                 <button class="filter-button" data-category="головной убор">ГОЛОВНЫЕ УБОРЫ</button>
@@ -383,7 +389,7 @@
                         </div>
                         <div class="clothes-categories-inner filter-wrapper">
                             <div class="category-name-container">
-                                <span class="category-name text-small-caps">ОДЕЖДА</span>
+                                <a href="/products/filter?IsMan=true&categoryType=1"><span class="category-name text-small-caps">ОДЕЖДА</span></a>
                             </div>
                             <div class="categories-container" data-categorytype="1">
                                 <button class="filter-button" data-category="футболка">ФУТБОЛКИ</button>
@@ -399,7 +405,7 @@
                         </div>
                         <div class="footwear-categories-inner filter-wrapper">
                             <div class="category-name-container">
-                                <span class="category-name text-small-caps">ОБУВЬ</span>
+                                <a href="/products/filter?IsMan=true&categoryType=2"><span class="category-name text-small-caps">ОБУВЬ</span></a>
                             </div>
                             <div class="categories-container" data-categorytype="2">
                                 <button class="filter-button" data-category="кроссовки">КРОССОВКИ</button>
@@ -410,7 +416,7 @@
                         </div>
                         <div class="accessories-categories-inner filter-wrapper">
                             <div class="category-name-container">
-                                <span class="category-name text-small-caps">АКСЕССУАРЫ</span>
+                                <a href="/products/filter?IsMan=true&categoryType=3"><span class="category-name text-small-caps">АКСЕССУАРЫ</span></a>
                             </div>
                             <div class="categories-container" data-categorytype="3">
                                 <button class="filter-button" data-category="сумка">СУМКИ</button>
@@ -458,6 +464,11 @@
                         <button class="filter-button" onclick="location.href = '/products/brands/balossa';">BALOSSA</button>
                         <button class="filter-button" onclick="location.href = '/products/brands/domrebel';">DOMREBEL</button>
                         <button class="filter-button" onclick="location.href = '/products/brands/parajumpers';">PARAJUMPERS</button>*@
+                        @foreach (var brand in Model.AllBrands)
+                        {
+                            var name = brand.Name.Contains('\'') ? brand.Name.Replace("\'", "\\\'") : brand.Name;
+                            <button class="filter-button" onclick="location.href = '/products/brands/@name.ToLower()';">@brand.Name.ToUpper()</button>
+                        }
                     </div>
                 </div>
                 <hr />
@@ -498,9 +509,9 @@
                         collecti0n.info@yandex.ru
                     </span>
                     <div class="media-info-inner">
-                        <a class="media-icon"><i class="icon-footer whatsapp-icon"></i></a>
-                        <a class="media-icon"><i class="icon-footer telegram-icon"></i></a>
-                        <a class="media-icon"><i class="icon-footer instagram-icon"></i></a>
+                        <a class="media-icon" href="https://wa.me/79080995310"><i class="icon-footer whatsapp-icon"></i></a>
+                        <a class="media-icon" onclick="instagramLink()"><i class="icon-footer telegram-icon"></i></a>
+                        <a class="media-icon" href="https://t.me/+79080995310"><i class="icon-footer instagram-icon"></i></a>
                     </div>
                 </div>
             </div>
@@ -611,11 +622,9 @@
                     *@
                 </div>
                 <div class="media-inner-desktop">
-
-                    <a class="media-logo"><i class="icon-footer whatsapp-icon"></i></a>
-                    <a class="media-logo"><i class="icon-footer instagram-icon"></i></a>
-                    <a class="media-logo"><i class="icon-footer telegram-icon"></i></a>
-                    <a class="media-logo"><i></i></a>
+                    <a class="media-logo" href="https://wa.me/79080995310"><i class="icon-footer whatsapp-icon"></i></a>
+                    <a class="media-logo" onclick="instagramLink()"><i class="icon-footer instagram-icon"></i></a>
+                    <a class="media-logo" href="https://t.me/+79080995310"><i class="icon-footer telegram-icon"></i></a>
                 </div>
 
             </div>
@@ -644,10 +653,9 @@
                     collecti0n.info@yandex.ru
                 </span>
                 <div class="media-inner-mobile">
-                    <a class="media-logo"><i class="icon-footer whatsapp-icon"></i></a>
-                    <a class="media-logo"><i class="icon-footer instagram-icon"></i></a>
-                    <a class="media-logo"><i class="icon-footer telegram-icon"></i></a>
-                    <a class="media-logo"><i></i></a>
+                    <a class="media-logo" href="https://wa.me/79080995310"><i class="icon-footer whatsapp-icon"></i></a>
+                    <a class="media-logo" onclick="instagramLink()"><i class="icon-footer instagram-icon"></i></a>
+                    <a class="media-logo" href="https://t.me/+79080995310"><i class="icon-footer telegram-icon"></i></a>
                 </div>
             </div>
         </div>

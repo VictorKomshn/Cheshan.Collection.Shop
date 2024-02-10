@@ -9,9 +9,11 @@ namespace Cheshan.Collection.Shop.Controllers
     public class CartsController : Controller
     {
         private readonly ICartsService _cartsService;
-        public CartsController(ICartsService service)
+        private readonly IBrandService _brands;
+        public CartsController(ICartsService service, IBrandService brands)
         {
             _cartsService = service ?? throw new ArgumentNullException(nameof(service));
+            _brands = brands;
         }
 
 
@@ -22,6 +24,7 @@ namespace Cheshan.Collection.Shop.Controllers
                 var activeuser = Guid.Parse(Request.Cookies["ActiveUser"]);
                 var cart = await _cartsService.GetAsync(activeuser);
                 var viewModel = new CartViewModel(cart?.Products);
+                viewModel.AllBrands = _brands.GetAll();
                 return View(viewModel);
             }
             catch (Exception ex)

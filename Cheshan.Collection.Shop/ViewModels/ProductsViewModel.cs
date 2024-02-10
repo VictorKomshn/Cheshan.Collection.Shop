@@ -3,7 +3,7 @@ using Cheshan.Collection.Shop.Database.Entities.Enums;
 
 namespace Cheshan.Collection.Shop.ViewModels
 {
-    public class ProductsViewModel
+    public class ProductsViewModel:BaseViewModel
     {
         public BrandModel? Brand { get; set; }
 

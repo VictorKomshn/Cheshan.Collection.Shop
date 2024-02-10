@@ -1,4 +1,5 @@
 ﻿using Cheshan.Collection.Shop.Core.Abstract;
+using Cheshan.Collection.Shop.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cheshan.Collection.Shop.Controllers
@@ -8,10 +9,12 @@ namespace Cheshan.Collection.Shop.Controllers
     public class InfoController : Controller
     {
         private readonly ICartsService _cartsService;
+        private readonly IBrandService _brands;
 
-        public InfoController(ICartsService cartsService)
+        public InfoController(ICartsService cartsService, IBrandService brands)
         {
             _cartsService = cartsService ?? throw new ArgumentNullException(nameof(cartsService));
+            _brands = brands;
         }
 
         [HttpGet]
@@ -26,28 +29,44 @@ namespace Cheshan.Collection.Shop.Controllers
                 Response.Cookies.Append("ActiveUser", newUserGuid.ToString());
                 await _cartsService.CreateCartAsync(newUserGuid);
             }
-            return View();
+            var vm = new BaseViewModel()
+            {
+                AllBrands = _brands.GetAll()
+            };
+            return View(vm);
         }
 
         [HttpGet]
         [Route("delivery-and-payment")]
         public IActionResult DeliveryAndPayment()
         {
-            return View();
+            var vm = new BaseViewModel()
+            {
+                AllBrands = _brands.GetAll()
+            };
+            return View(vm);
         }
 
         [HttpGet]
         [Route("refund")]
         public IActionResult Refund()
         {
-            return View();
+            var vm = new BaseViewModel()
+            {
+                AllBrands = _brands.GetAll()
+            };
+            return View(vm);
         }
 
         [HttpGet]
         [Route("priveleges")]
         public IActionResult Priveleges()
         {
-            return View();
+            var vm = new BaseViewModel()
+            {
+                AllBrands = _brands.GetAll()
+            };
+            return View(vm);
         }
 
         //[HttpGet]

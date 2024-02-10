@@ -34,7 +34,10 @@
         <div class="sticky-info">
             <div class="main-info">
                 <div class="page-product-info-wrapper">
-                    <p id="product-brand" class="text-regular">@Model.Product.Brand</p>
+                    @{
+                        var name = @Model.Product.Brand.Contains('\'') ? @Model.Product.Brand.Replace("\'", "\\\'") : @Model.Product.Brand;
+                        <a href="/products/brands/@name.ToLower()"><p id="product-brand" class="text-regular">@Model.Product.Brand.ToUpper()</p></a>
+                    }
                     <p class="text-regular-small">@Model.Product.Category</p>
                     <p class="text-small-caps" style="color:#ababab">артикул: @Model.Product.SKU</p>
                 </div>
@@ -85,7 +88,9 @@
                             }
                         }
                     </div>
-                    <button id="add-to-cart-button" class="action-button text-regular inactive-button">ВЫБЕРИТЕ РАЗМЕР</button>
+
+                    <button id="add-to-cart-button" class="add-to-cart-button-style action-button text-regular inactive-button">ВЫБЕРИТЕ РАЗМЕР</button>
+
                     <a id="request-size-open-button" class="text-small-caps" onclick="openWindow('size-request-window','flex')">НЕТ НУЖНОГО РАЗМЕРА?</a>
                 </div>
             }
@@ -280,7 +285,7 @@
                         </div>
                     }
                 }
-                else if( Model.Product.Brand.ToLower() == "panicale")
+                else if (Model.Product.Brand.ToLower() == "panicale")
                 {
                     @if (Model.Product.IsMan == false)
                     {
@@ -349,7 +354,7 @@
                         </div>
                     }
                 }
-                else if(Model.Product.Brand.ToLower() == "etro")
+                else if (Model.Product.Brand.ToLower() == "etro")
                 {
                     @if (Model.Product.IsMan == false)
                     {

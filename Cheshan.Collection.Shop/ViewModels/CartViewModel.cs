@@ -2,7 +2,7 @@
 
 namespace Cheshan.Collection.Shop.ViewModels
 {
-    public class CartViewModel
+    public class CartViewModel:BaseViewModel
     {
         public CartViewModel(IEnumerable<SizeWithAmountModel> products)
         {
