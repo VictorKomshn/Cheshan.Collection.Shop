@@ -6,7 +6,7 @@ namespace Cheshan.Collection.Shop.Core.Abstract
     {
         Task<BrandModel?> GetAsync(string name);
 
-        IEnumerable<BrandModel> GetAll();
+        ICollection<BrandModel> GetAll();
 
     }
 }

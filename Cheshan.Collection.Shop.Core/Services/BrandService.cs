@@ -31,11 +31,11 @@ namespace Cheshan.Collection.Shop.Core.Services
             }
         }
 
-        public IEnumerable<BrandModel> GetAll()
+        public ICollection<BrandModel> GetAll()
         {
             try
             {
-                return _brandsBackgroundService.GetBrands();
+                return _brandsBackgroundService.GetBrands().OrderBy(x => x.Name).ToList();
             }
             catch
             {
