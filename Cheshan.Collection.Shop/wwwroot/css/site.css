@@ -1364,6 +1364,10 @@ hr {
     .media-inner-desktop {
         display: none
     }
+
+    #cart-menu-wrapper {
+        position: fixed;
+    }
 }
 
 
