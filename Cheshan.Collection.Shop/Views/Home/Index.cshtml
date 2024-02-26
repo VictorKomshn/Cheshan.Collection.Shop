@@ -47,12 +47,11 @@
                 imgName = rgx.Replace(imgName, "");
                 imgName += "_logo_white.png";
 
-                if (File.Exists(@"~\white_logos\" + imgName))
-                {
-                    <button class="marquee-button" onclick="location.href = '/products/brands/@name.ToLower()';">
-                        <img class="marquee-image" src="~/white_logos/@imgName">
-                    </button>
-                }
+
+                <button class="marquee-button" onclick="location.href = '/products/brands/@name.ToLower()';">
+                    <img class="marquee-image" src="~/white_logos/@imgName" onerror="this.parentElement.style.display='none'">
+                </button>
+
             }
 
         </div>
@@ -67,12 +66,11 @@
                 imgName = rgx.Replace(imgName, "");
                 imgName += "_logo_white.png";
 
-                if (File.Exists(@"~\white_logos\" + imgName))
-                {
-                    <button class="marquee-button" onclick="location.href = '/products/brands/@name.ToLower()';">
-                        <img class="marquee-image" src="~/white_logos/@imgName">
-                    </button>
-                }
+
+                <button class="marquee-button" onclick="location.href = '/products/brands/@name.ToLower()';">
+                    <img class="marquee-image" src="~/white_logos/@imgName" onerror="this.parentElement.style.display='none'">
+                </button>
+
             }
         </div>
     </div>
