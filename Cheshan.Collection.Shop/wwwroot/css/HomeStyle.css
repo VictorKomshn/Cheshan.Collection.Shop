@@ -1,27 +1,65 @@
 html {
-    overflow: hidden;
-    width: 100%;
+    /*    overflow: hidden;
+*/ width: 100%;
     height: 100%;
 }
 
 body {
-    overflow: hidden !important;
-    width: 100%;
+    /*    overflow: hidden !important;
+*/ width: 100%;
     height: 100%;
-    margin:0;
+    margin: 0;
 }
 
-.marquee{
-    background-color:#000;
+.marquee {
+    background-color: #000;
 }
 
 .marquee__group {
     color: #fff;
+    margin-left: 90%;
 }
+
+.brands-marquee {
+    height: 122px;
+}
+
+    .brands-marquee .marquee__group {
+        animation: scroll 120s linear infinite reverse;
+    }
+
+        .brands-marquee .marquee__group button {
+            height: -webkit-fill-available;
+        }
+
+        .brands-marquee .marquee__group img {
+            object-fit: contain;
+            opacity: 1.0;
+            filter: alpha(opacity=100);
+        }
+
+
+        .brands-marquee .marquee__group:hover button:not(:hover) img {
+            opacity: 0.5;
+            filter: alpha(opacity=40);
+        }
+
+        .brands-marquee .marquee__group:hover {
+            -moz-animation-play-state: paused;
+            -webkit-animation-play-state: paused;
+            animation-play-state: paused;
+        }
 
 .content-home {
     width: initial;
     height: initial;
+}
+
+.season-new-inner {
+    margin: 25px 15px 55px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .carousel {
@@ -55,7 +93,7 @@ body {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        object-position:top;
+        object-position: top;
     }
 
 .logo-area-inner {
@@ -84,8 +122,46 @@ body {
     max-width: 365px !important;
 }
 
+.season-new-items-wrapper {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 10px;
+}
+
+
+.marquee__group .marquee-image {
+    max-width: 148px;
+    max-height: -webkit-fill-available;
+}
+
+.start-shopping-buton {
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    background: rgba(255, 255, 255, 0.70);
+    display: inline-flex;
+    min-width: 20px;
+    padding: 15px 30px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transform: translate(-50%, -50%);
+}
+
+.footer-sign-to-priveledges-wrapper {
+    display: flex;
+}
+
 @media(max-width:768px) {
     .cart-menu-inner {
         max-width: unset !important;
+    }
+
+    .season-new-items-wrapper {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .marquee__group button:hover {
+        background: unset !important;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Cheshan.Collection.Shop.Core.Models;
+using Cheshan.Collection.Shop.Database.Entities;
 
 namespace Cheshan.Collection.Shop.Core.Abstract
 {
@@ -7,6 +8,8 @@ namespace Cheshan.Collection.Shop.Core.Abstract
         Task<GetByConditionResultModel> GetByConditionAsync(ProductsCondition? condition, SortingType? sortType = null);
 
         Task<ICollection<ProductModel>> GetSuggestedForProduct(Guid productGuid);
+
+        Task<IEnumerable<ProductModel>> GetFrontPageProductsAsync();
 
         Task<ProductModel> GetAsync(Guid id);
 

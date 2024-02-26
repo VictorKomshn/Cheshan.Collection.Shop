@@ -96,9 +96,22 @@ namespace Cheshan.Collection.Shop.Core.Services
         {
             try
             {
-                var productSuggested = await _repository.GetProductsSuggested(productGuid);
+                var productSuggested = await _repository.GetProductsSuggestedAsync(productGuid);
 
                 return productSuggested.Select(x => x.ToModel()).ToList();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<ProductModel>> GetFrontPageProductsAsync()
+        {
+            try
+            {
+                var result = await _repository.GetFrontPageProductsAsync();
+                return result.Select(x => x.ToModel());
             }
             catch
             {

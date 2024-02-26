@@ -1,8 +1,11 @@
-﻿<head>
+﻿@using System.Text.RegularExpressions;
+@model HomeViewModel
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link href="~/css/HomeStyle.css" rel="stylesheet">
+    <link href="~/css/ProductCardStyle.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </head>
 
@@ -12,6 +15,65 @@
             <div class="carousel-item" style="display:block;">
                 <img src="~/img/home-image4.jpg" alt="Image 4">
             </div>
+        </div>
+    </div>
+    <button class="start-shopping-buton" onclick="location.href='/products'">
+        <span class="text-regular" style="text-wrap:nowrap">
+            НАЧАТЬ ШОППИНГ
+        </span>
+    </button>
+</div>
+<div class="season-new-wrapper">
+    <div class="season-new-inner">
+        <span class="season-new-header text-regular">НОВИНКИ СЕЗОНА</span>
+        <div class="season-new-items-wrapper">
+            @foreach (var product in Model.SeasonalItems)
+            {
+                await Html.RenderPartialAsync("~/Views/Products/ProductCard.cshtml", product);
+            }
+        </div>
+    </div>
+</div>
+<div class="brands-carousel-wrapper">
+    <div class="marquee brands-marquee">
+        <div class="marquee__group " style="gap:5rem">
+            @foreach (var brand in Model.AllBrands)
+            {
+                var name = brand.Name.Contains('\'') ? brand.Name.Replace("\'", "\\\'") : brand.Name;
+                Regex rgx = new Regex("[^a-zA-Z0-9]");
+
+                var imgName = name.ToLower();
+                Regex.Replace(imgName, @"\s+", "");
+                imgName = rgx.Replace(imgName, "");
+                imgName += "_logo_white.png";
+
+                if (File.Exists(@".\wwwroot\white_logos\" + imgName))
+                {
+                    <button class="marquee-button" onclick="location.href = '/products/brands/@name.ToLower()';">
+                        <img class="marquee-image" src="~/white_logos/@imgName">
+                    </button>
+                }
+            }
+
+        </div>
+        <div class="marquee__group" aria-hidden="true" style="gap:5rem">
+            @foreach (var brand in Model.AllBrands)
+            {
+                var name = brand.Name.Contains('\'') ? brand.Name.Replace("\'", "\\\'") : brand.Name;
+                Regex rgx = new Regex("[^a-zA-Z0-9]");
+
+                var imgName = name.ToLower();
+                Regex.Replace(imgName, @"\s+", "");
+                imgName = rgx.Replace(imgName, "");
+                imgName += "_logo_white.png";
+
+                if (File.Exists(@".\wwwroot\white_logos\" + imgName))
+                {
+                    <button class="marquee-button" onclick="location.href = '/products/brands/@name.ToLower()';">
+                        <img class="marquee-image" src="~/white_logos/@imgName">
+                    </button>
+                }
+            }
         </div>
     </div>
 </div>

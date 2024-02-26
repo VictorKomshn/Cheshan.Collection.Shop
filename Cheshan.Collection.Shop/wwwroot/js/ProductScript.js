@@ -185,3 +185,26 @@ else if (brand.textContent.toLowerCase() == "jil sander" ||
     brand.textContent.toLowerCase() == "karl lagerfeld") {
     sizeswindow.style.width = "234px";
 }
+
+
+const imagesDesktop = document.getElementsByClassName("photos-desktop-wrapper")[0].getElementsByTagName("img");
+const imagesMobile = document.getElementById("photos-slideshow").getElementsByTagName("img");
+const images = [].concat(Array.prototype.slice.call(imagesMobile), Array.prototype.slice.call(imagesDesktop));
+const imageEnlargerWrapper = document.getElementById("full-screen-image-wrapper");
+const imageEnlarged = document.getElementById("full-screen-image");
+
+for (var i = 0; i < images.length; i++) {
+    images[i].addEventListener('click', function () {
+        openFullScreenOnClick(this);
+    });
+}
+
+function openFullScreenOnClick(imageSource) {
+    imageEnlarged.src = imageSource.src;
+
+    if (!imageEnlargerWrapper.classList.contains("active")) {
+        imageEnlargerWrapper.classList.add("active");
+    }
+    html.style.overflowY = 'hidden';
+
+}

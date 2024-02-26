@@ -1,4 +1,5 @@
 ﻿using Cheshan.Collection.Shop.Core.Abstract;
+using Cheshan.Collection.Shop.Core.Models;
 using Cheshan.Collection.Shop.Core.Services;
 using Cheshan.Collection.Shop.Database.Entities;
 using Cheshan.Collection.Shop.ViewModels;
@@ -11,13 +12,13 @@ namespace Cheshan.Collection.Shop.Controllers
     [ApiController]
     public class HomeController : Controller
     {
-        private readonly IProductsService _service;
+        private readonly IProductsService _products;
         private readonly ICartsService _carts;
         private readonly IBrandService _brands;
 
-        public HomeController(IProductsService service, ICartsService carts, IBrandService brands)
+        public HomeController(IProductsService products, ICartsService carts, IBrandService brands)
         {
-            _service = service ?? throw new ArgumentNullException(nameof(service));
+            _products = products ?? throw new ArgumentNullException(nameof(products));
             _carts = carts ?? throw new ArgumentNullException(nameof(carts));
             _brands = brands;
         }
@@ -33,9 +34,11 @@ namespace Cheshan.Collection.Shop.Controllers
                 Response.Cookies.Append("ActiveUser", newUserGuid.ToString());
                 await _carts.CreateCartAsync(newUserGuid);
             }
-            var viewModel = new BaseViewModel
+            var suggestedProducts = await _products.GetFrontPageProductsAsync();
+            var viewModel = new HomeViewModel
             {
-                AllBrands = _brands.GetAll()
+                AllBrands = _brands.GetAll(),
+                SeasonalItems = suggestedProducts
             };
             return View(viewModel);
         }

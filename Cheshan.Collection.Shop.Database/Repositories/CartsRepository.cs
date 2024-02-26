@@ -131,7 +131,7 @@ namespace Cheshan.Collection.Shop.Database.Repositories
 
                 _dataContext.Update(product);
             }
-
+            
             await RemoveAllFromCartAsync(userId);
         }
 

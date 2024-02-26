@@ -7,6 +7,7 @@ using Cheshan.Collection.Shop.Database.Entities.Enums;
 using Cheshan.Collection.Shop.Database.Extensions;
 using Cheshan.Collection.Shop.Database.Models;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Cheshan.Collection.Shop.Database.Repositories
 {
@@ -126,7 +127,7 @@ namespace Cheshan.Collection.Shop.Database.Repositories
         }
 
 
-        public async Task<IEnumerable<ProductEntity>> GetProductsSuggested(Guid productId)
+        public async Task<IEnumerable<ProductEntity>> GetProductsSuggestedAsync(Guid productId)
         {
             var take = 4;
 
@@ -175,6 +176,25 @@ namespace Cheshan.Collection.Shop.Database.Repositories
                     products.Remove(douplicateProduct);
                 }
             }
+            return products;
+        }
+
+        public async Task<IEnumerable<ProductEntity>> GetFrontPageProductsAsync()
+        {
+            var latestProductsAmount = 20;
+            var take = 4;
+            var query = _dataContext.Products.AsQueryable();
+            query = query.OrderBy(x => x.DateAdded)
+                 .Where(x => x.CategoryType == CategoryType.Clothes)
+                 .Take(20);
+
+            int skipper = new Random().Next(0, latestProductsAmount);
+
+            var sortingGuid = Guid.NewGuid();
+            var products = await query.OrderBy(product => sortingGuid)
+                              .Skip(skipper)
+                              .Take(take)
+                              .ToArrayAsync();
             return products;
         }
 

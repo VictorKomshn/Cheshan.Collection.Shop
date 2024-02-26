@@ -8,8 +8,7 @@ const cartMenuWrapper = document.getElementById("cart-menu-wrapper");
 const html = document.getElementsByTagName('html')[0];
 
 
-window.onload = function ()
-{
+window.onload = function () {
     $.ajaxSetup({ cache: false });
     $.ajax({
         url: "/cart/count",
@@ -181,12 +180,15 @@ for (let i = 0; i < closeIcons.length; i++) {
             containers[1].style.display = "none";
         }
         let elementToClose = document.getElementById(elementToCloseId);
-        elementToClose.classList.remove("active");
-        elementToClose.style.display = "none";
-        html.style.overflowY = "scroll";
-        let mainElement = document.getElementById("main-content-wrapper-to-hide");
-        if (mainElement != null && mainElement != undefined) {
-            mainElement.style.display = "unset";
+        if (elementToClose != null && elementToClose != undefined) {
+
+            elementToClose.classList.remove("active");
+            elementToClose.style.display = "none";
+            html.style.overflowY = "scroll";
+            let mainElement = document.getElementById("main-content-wrapper-to-hide");
+            if (mainElement != null && mainElement != undefined) {
+                mainElement.style.display = "unset";
+            }
         }
         clearActive();
     };
@@ -308,6 +310,10 @@ function filterCategory(button) {
 
 function closeOnClick(elementName) {
     let element = document.getElementById(elementName);
+
+    if (element.classList.contains("active")) {
+        element.classList.remove("active");
+    }
     element.style.display = "none";
     html.style.overflowY = "initial";
 }
@@ -329,16 +335,13 @@ for (let j = 0; j < coll.length; j++) {
     });
 }
 
-function subscribeOnNotifications(buttonInitiator) {
-
+function subscribeToNotifications(buttonInitiator, nameElementId, emailElementId) {
     let buttonValid = checkButtonValidity(buttonInitiator);
     if (buttonValid == false) {
         return;
     }
-
-    let name = document.getElementById("notifications-subscriber-name-input").value;
-    let email = document.getElementById("notifications-subscriber-email-input").value;
-
+    var name = document.getElementById(nameElementId).value;
+    var email = document.getElementById(emailElementId).value;
     $.ajax({
         headers: {
             'Accept': 'application/json',
@@ -359,6 +362,37 @@ function subscribeOnNotifications(buttonInitiator) {
         }
     });
 }
+
+//function subscribeToNotifications(buttonInitiator) {
+
+//    let buttonValid = checkButtonValidity(buttonInitiator);
+//    if (buttonValid == false) {
+//        return;
+//    }
+
+//    let name = document.getElementById("notifications-subscriber-name-input").value;
+//    let email = document.getElementById("notifications-subscriber-email-input").value;
+
+//    $.ajax({
+//        headers: {
+//            'Accept': 'application/json',
+//            'Content-Type': 'application/json'
+//        },
+//        url: "/notifications/add/" + email,
+//        type: "POST",
+//        data: JSON.stringify(name),
+//        dataType: 'json',
+//        success: function (res) {
+//            let elementToClose = document.getElementsByClassName("notifications-content-info-inner")[0];
+//            elementToClose.style.display = "none";
+//            elementToClose = document.getElementsByClassName("notificaitons-subscribe-wrapper")[0];
+//            elementToClose.style.display = "none";
+
+//            let elementToOpen = document.getElementsByClassName('gratitude-cover')[0];
+//            elementToOpen.style.display = "flex";
+//        }
+//    });
+//}
 
 
 function requestHelp(buttonInitiator) {

@@ -36,20 +36,19 @@
     <header>
         <div class="marquee">
             <div class="marquee__group">
-                <span class="marquee-text">официальный представитель брендов на Урале</span>
-                <span class="marquee-text">официальный представитель брендов на Урале</span>
-                <span class="marquee-text">официальный представитель брендов на Урале</span>
-                <span class="marquee-text">официальный представитель брендов на Урале</span>
-                <span class="marquee-text">официальный представитель брендов на Урале</span>
+                <span class="marquee-text">официальный представитель брендов одежды на Урале</span>
+                <span class="marquee-text">официальный представитель брендов одежды на Урале</span>
+                <span class="marquee-text">официальный представитель брендов одежды на Урале</span>
+                <span class="marquee-text">официальный представитель брендов одежды на Урале</span>
+                <span class="marquee-text">официальный представитель брендов одежды на Урале</span>
 
             </div>
             <div class="marquee__group" aria-hidden="true">
-                <span class="marquee-text">официальный представитель брендов на Урале</span>
-                <span class="marquee-text">официальный представитель брендов на Урале</span>
-                <span class="marquee-text">официальный представитель брендов на Урале</span>
-                <span class="marquee-text">официальный представитель брендов на Урале</span>
-                <span class="marquee-text">официальный представитель брендов на Урале</span>
-
+                <span class="marquee-text">официальный представитель брендов одежды на Урале</span>
+                <span class="marquee-text">официальный представитель брендов одежды на Урале</span>
+                <span class="marquee-text">официальный представитель брендов одежды на Урале</span>
+                <span class="marquee-text">официальный представитель брендов одежды на Урале</span>
+                <span class="marquee-text">официальный представитель брендов одежды на Урале</span>
             </div>
         </div>
         <div class="header-menu-wrapper">
@@ -555,7 +554,7 @@
                         <input id="notifications-subscriber-email-input" type="text" onfocusout="checkField(this,'email')" />
                     </div>
                     <span class="privacy-warning-text">Нажимая "Подписаться", вы даете согласие на обработку моих персональных данных (закон №152-ФЗ «О персональных данных»)</span>
-                    <button class="action-button subscribe-to-notifications-button text-regular-caps inactive-button" onclick="subscribeOnNotifications(this)">ПОДПИСАТЬСЯ</button>
+                    <button class="action-button subscribe-to-notifications-button text-regular-caps inactive-button" onclick="subscribeToNotifications(this,'notifications-subscriber-name-input','notifications-subscriber-email-input')">ПОДПИСАТЬСЯ</button>
                 </div>
             </div>
         </div>
@@ -611,6 +610,26 @@
         </div>
     </div>
     <footer>
+        <div class="footer-sign-to-priveledges-wrapper">
+            <div class="footer-sign-to-priveledges">
+                <span class="text-regular">ПОЛУЧИТЕ ДО <span style="color:red">10%</span> ПО ПРОГРАММЕ ПРИВЕЛЕГИЙ</span>
+                <div class="priveledges-form-wrapper">
+                    <div class="priveledges-form-input">
+                        <span class="text-regular-caps">ИМЯ</span>
+                        <input id="bottom-form-name" type="text" />
+                    </div>
+                    <div class="priveledges-form-input">
+                        <span class="text-regular-caps">EMAIl</span>
+                        <input id="bottom-form-email" type="text" />
+                    </div>
+                    <button class="subscribe-to-priveledges-button" onclick="subscribeToNotifications(this,'bottom-form-name','bottom-form-email')">
+                        <span class="text-regular">
+                            ПОДПИСАТЬСЯ
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
         <div class="footer-inner-grid">
             <div class="footer-menu-inner">
                 <div class="footer-menu-info text-regular">
