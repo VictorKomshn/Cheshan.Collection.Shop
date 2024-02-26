@@ -47,7 +47,7 @@
                 imgName = rgx.Replace(imgName, "");
                 imgName += "_logo_white.png";
 
-                if (File.Exists(@".\white_logos\" + imgName))
+                if (File.Exists(@"~\white_logos\" + imgName))
                 {
                     <button class="marquee-button" onclick="location.href = '/products/brands/@name.ToLower()';">
                         <img class="marquee-image" src="~/white_logos/@imgName">
@@ -67,7 +67,7 @@
                 imgName = rgx.Replace(imgName, "");
                 imgName += "_logo_white.png";
 
-                if (File.Exists(@".\white_logos\" + imgName))
+                if (File.Exists(@"~\white_logos\" + imgName))
                 {
                     <button class="marquee-button" onclick="location.href = '/products/brands/@name.ToLower()';">
                         <img class="marquee-image" src="~/white_logos/@imgName">
