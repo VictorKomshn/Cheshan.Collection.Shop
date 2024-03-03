@@ -1,4 +1,5 @@
 ﻿using Cheshan.Collection.Shop.Core.Abstract;
+using Cheshan.Collection.Shop.Core.EmailCompositions.ViewModels;
 using Cheshan.Collection.Shop.Core.Mappers;
 using Cheshan.Collection.Shop.Core.Models;
 using Cheshan.Collection.Shop.Database.Abstract;
@@ -9,7 +10,8 @@ namespace Cheshan.Collection.Shop.Core.Services
     public class PurchaseService : IPurchaseService
     {
         private readonly ICartsService _cartsService;
-        private readonly IPurchasesRepository _repository;
+        private readonly IPurchasesRepository _purchasesRepository;
+        private readonly IProductsRepository _productsRepository;
         private readonly IEmailService _emailService;
         private readonly IAlfaBankService _alfabankService;
 
@@ -26,12 +28,14 @@ namespace Cheshan.Collection.Shop.Core.Services
         public PurchaseService(ICartsService cartsService,
                                IEmailService emailService,
                                IPurchasesRepository repository,
+                               IProductsRepository productsRepository,
                                IAlfaBankService alfabankService)
         {
             _cartsService = cartsService ?? throw new ArgumentNullException(nameof(cartsService));
-            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _purchasesRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
             _alfabankService = alfabankService ?? throw new ArgumentNullException(nameof(alfabankService));
+            _productsRepository = productsRepository ?? throw new ArgumentNullException(nameof(productsRepository));
         }
 
         public async Task<string> SaveCashPurchase(PurchaseModel purchase, Guid userId)
@@ -66,11 +70,28 @@ namespace Cheshan.Collection.Shop.Core.Services
 
                 purchaseEntity.PurchasedProducts = purchasedProducts;
 
-                await _repository.CreatePurchaseAsync(purchaseEntity);
+                await _purchasesRepository.CreatePurchaseAsync(purchaseEntity);
 
-                await _emailService.SendPurchaseNotificationToCustomer(purchase.Email, purchase.Name, purchase.Phone, purchaseId.ToString(), purchase.DeliveryAdress, purchase.DeliveryType, purchase.PaymentType, purchasedProducts);
 
-                await _emailService.SendPurchaseNotificationToAdministration(purchase.Email, purchase.Name, purchase.Phone, purchaseId.ToString(), purchase.DeliveryAdress, purchase.DeliveryType, purchase.PaymentType, purchasedProducts);
+                var emailProducts = purchasedProducts.Select(x =>
+                {
+                    var product = _productsRepository.GetAsync(x.ProductId).GetAwaiter().GetResult();
+                    return new EmailProductModel
+                    {
+                        Name = x.Name,
+                        Photo = x.Photo,
+                        Price = x.Price,
+                        SalePrice = product.SalePrice,
+                        SKU = x.SKU,
+                        Size = x.Size,
+                        Amount = x.Amount,
+                        Brand = product.Name
+                    };
+                });
+
+                await _emailService.SendPurchaseNotificationToCustomer(purchase.Email, purchase.Name, purchase.Phone, purchaseId.ToString(), purchase.DeliveryAdress, purchase.DeliveryType, purchase.PaymentType, emailProducts);
+
+                await _emailService.SendPurchaseNotificationToAdministration(purchase.Email, purchase.Name, purchase.Phone, purchaseId.ToString(), purchase.DeliveryAdress, purchase.DeliveryType, purchase.PaymentType, emailProducts);
 
                 await _cartsService.ClearCartProductsAsync(userId);
 
@@ -86,7 +107,7 @@ namespace Cheshan.Collection.Shop.Core.Services
 
         public async Task<string> CompletePurchaseAsync(Guid purchaseId)
         {
-            var purchase = await _repository.GetByPaymentIdAsync(purchaseId);
+            var purchase = await _purchasesRepository.GetByPaymentIdAsync(purchaseId);
             if (purchase != null)
             {
                 var paymentLink = purchase?.PaymentLinksWithPurchase.FirstOrDefault(x => x.Id == purchaseId);
@@ -97,7 +118,7 @@ namespace Cheshan.Collection.Shop.Core.Services
                 }
             }
 
-            await _repository.UpdatePurchaseAsync(purchase);
+            await _purchasesRepository.UpdatePurchaseAsync(purchase);
 
             foreach (var payment in purchase.PaymentLinksWithPurchase)
             {
@@ -158,7 +179,7 @@ namespace Cheshan.Collection.Shop.Core.Services
 
             purchaseEntity.PurchaseId = purchaseEntity.GetHashCode().ToString();
 
-            await _repository.CreatePurchaseAsync(purchaseEntity);
+            await _purchasesRepository.CreatePurchaseAsync(purchaseEntity);
 
             if (priceForSP1 != 0)
             {

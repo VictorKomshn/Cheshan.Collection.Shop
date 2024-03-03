@@ -1,4 +1,5 @@
-﻿using Cheshan.Collection.Shop.Database.Entities;
+﻿using Cheshan.Collection.Shop.Core.EmailCompositions.ViewModels;
+using Cheshan.Collection.Shop.Database.Entities;
 
 namespace Cheshan.Collection.Shop.Core.Abstract
 {
@@ -16,7 +17,7 @@ namespace Cheshan.Collection.Shop.Core.Abstract
         /// <param name="paymentType"></param>
         /// <param name="products"></param>
         /// <returns></returns>
-        public Task SendPurchaseNotificationToCustomer(string customerEmail, string customerName, string? customerPhone, string purchaseId, string adress, string deliveryType, string paymentType, IEnumerable<PurchasedProductEntity> products);
+        public Task SendPurchaseNotificationToCustomer(string customerEmail, string customerName, string? customerPhone, string purchaseId, string adress, string deliveryType, string paymentType, IEnumerable<EmailProductModel> products);
 
         /// <summary>
         /// Отправка уведомления об успешной покупке администрации
@@ -30,6 +31,7 @@ namespace Cheshan.Collection.Shop.Core.Abstract
         /// <param name="paymentType"></param>
         /// <param name="products"></param>
         /// <returns></returns>
-        Task SendPurchaseNotificationToAdministration(string customerEmail, string customerName, string? customerPhone, string purchaseId, string adress, string deliveryType, string paymentType, IEnumerable<PurchasedProductEntity> products);
+        Task SendPurchaseNotificationToAdministration(string customerEmail, string customerName, string? customerPhone, string purchaseId, string adress, string deliveryType, string paymentType, IEnumerable<EmailProductModel> products);
+
     }
 }

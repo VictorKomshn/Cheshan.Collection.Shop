@@ -188,7 +188,7 @@ namespace Cheshan.Collection.Shop.Database.Repositories
                  .Where(x => x.CategoryType == CategoryType.Clothes)
                  .Take(20);
 
-            int skipper = new Random().Next(0, latestProductsAmount);
+            int skipper = new Random().Next(0, latestProductsAmount - take);
 
             var sortingGuid = Guid.NewGuid();
             var products = await query.OrderBy(product => sortingGuid)

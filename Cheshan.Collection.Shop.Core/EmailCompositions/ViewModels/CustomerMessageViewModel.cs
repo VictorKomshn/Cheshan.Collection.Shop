@@ -24,9 +24,15 @@ namespace Cheshan.Collection.Shop.Core.EmailCompositions.ViewModels
 
     public class EmailProductModel
     {
+        public string Name { get; set; }
+
+        public string Brand { get; set; }
+
         public string Photo { get; set; }
 
         public double Price { get; set; }
+
+        public double? SalePrice { get; set; }
 
         public int Amount { get; set; }
 

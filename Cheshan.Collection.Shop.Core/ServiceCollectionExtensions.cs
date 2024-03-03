@@ -31,10 +31,11 @@ namespace Cheshan.Collection.Shop.Core
             services.AddTransient<IPurchaseService, PurchaseService>(x =>
             {
                 var carts = x.GetRequiredService<ICartsService>();
-                var repository = x.GetRequiredService<IPurchasesRepository>();
+                var purchasesRepository = x.GetRequiredService<IPurchasesRepository>();
+                var porductsRepository = x.GetRequiredService<IProductsRepository>();
                 var email = x.GetRequiredService<IEmailService>();
                 var alfa = x.GetRequiredService<IAlfaBankService>();
-                return new PurchaseService(carts, email, repository, alfa);
+                return new PurchaseService(carts, email, purchasesRepository, porductsRepository, alfa);
             });
 
             services.AddHostedService<PurchaseStatusesBackgroundService>();

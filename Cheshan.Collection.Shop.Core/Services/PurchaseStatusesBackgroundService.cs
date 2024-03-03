@@ -1,4 +1,5 @@
 ﻿using Cheshan.Collection.Shop.Core.Abstract;
+using Cheshan.Collection.Shop.Core.EmailCompositions.ViewModels;
 using Cheshan.Collection.Shop.Database.Abstract;
 using Cheshan.Collection.Shop.Database.Database;
 using Cheshan.Collection.Shop.Database.Repositories;
@@ -12,6 +13,7 @@ namespace Cheshan.Collection.Shop.Core.Services
     {
         private readonly IPurchasesRepository _purchasesRepository;
         private readonly ICartsRepository _cartsRepository;
+        private readonly IProductsRepository _productsRepository;
 
         private readonly IAlfaBankService _alfaBankService;
 
@@ -29,6 +31,7 @@ namespace Cheshan.Collection.Shop.Core.Services
 
             _purchasesRepository = new PurchasesRepository(scope.ServiceProvider.GetService<DataContext>());
             _cartsRepository = new CartsRepository(scope.ServiceProvider.GetService<DataContext>());
+            _productsRepository = new ProductsRepository(scope.ServiceProvider.GetService<DataContext>());
 
             _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
             _alfaBankService = alfaBankService ?? throw new ArgumentNullException(nameof(alfaBankService));
@@ -91,11 +94,27 @@ namespace Cheshan.Collection.Shop.Core.Services
 
                             var purchasedProducts = purchase.PurchasedProducts;
 
-                            await _emailService.SendPurchaseNotificationToCustomer(purchase.Email, purchase.Name, purchase.Phone, purchase.PurchaseId, purchase.DeliveryAdress, purchase.DeliveryType, purchase.PaymentType, purchasedProducts);
+                            var emailProducts = purchasedProducts.Select(x =>
+                            {
+                                var product = _productsRepository.GetAsync(x.ProductId).GetAwaiter().GetResult();
+                                return new EmailProductModel
+                                {
+                                    Name = x.Name,
+                                    Photo = x.Photo,
+                                    Price = x.Price,
+                                    SalePrice = product.SalePrice,
+                                    SKU = x.SKU,
+                                    Size = x.Size,
+                                    Amount = x.Amount,
+                                    Brand = product.Name
+                                };
+                            });
+
+                            await _emailService.SendPurchaseNotificationToCustomer(purchase.Email, purchase.Name, purchase.Phone, purchase.PurchaseId, purchase.DeliveryAdress, purchase.DeliveryType, purchase.PaymentType, emailProducts);
 
                             await File.AppendAllLinesAsync(@"../Cheshan.Collection.Shop.Core/emailErrors.txt", new[] { $"{DateTime.UtcNow} info:\tpurchase " + purchase.Id + " notification to customer sent" });
 
-                            await _emailService.SendPurchaseNotificationToAdministration(purchase.Email, purchase.Name, purchase.Phone, purchase.PurchaseId, purchase.DeliveryAdress, purchase.DeliveryType, purchase.PaymentType, purchasedProducts);
+                            await _emailService.SendPurchaseNotificationToAdministration(purchase.Email, purchase.Name, purchase.Phone, purchase.PurchaseId, purchase.DeliveryAdress, purchase.DeliveryType, purchase.PaymentType, emailProducts);
 
                             await File.AppendAllLinesAsync(@"../Cheshan.Collection.Shop.Core/emailErrors.txt", new[] { $"{DateTime.UtcNow} info:\tpurchase " + purchase.Id + " complete, notification to admin sent" });
 

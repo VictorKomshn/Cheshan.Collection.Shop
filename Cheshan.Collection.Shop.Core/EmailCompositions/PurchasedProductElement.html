@@ -1,10 +1,59 @@
-﻿<div class="purchase-datails" style=" display: inline-block; margin-bottom: 10px;">
-    <div class="photo-wrapper" style="display: inline">
-        <img class="product-main-photo" src="{productPhoto}" />
-    </div>
-    <div class="product-info-wrapper" style="display: inline-block; vertical-align:top;">
-        <span class="product-SKU product-info-text" style="display: block; margin:0 0 10px 0; font-size: 15px; font-style: normal; font-weight: 400; line-height: 120%; /* 16.8px */ letter-spacing: 1.12px;">Артикул: {sku}</span>
-        <span class="product-price product-info-text" style="display: block; margin:10px 0; font-size: 15px; font-style: normal; font-weight: 400; line-height: 120%; /* 16.8px */ letter-spacing: 1.12px;">Цена: {price}</span>
-        <span class="product-Size product-info-text" style="display: block; margin: 10px 0; font-size: 15px; font-style: normal; font-weight: 400; line-height: 120%; /* 16.8px */ letter-spacing: 1.12px;">Размер: {size}</span>
-    </div>
-</div>
+﻿<tr>
+    <td class="esdev-adapt-off" align="left" style="padding:0;Margin:0;padding-top:20px;padding-left:20px;padding-right:20px">
+        <table cellpadding="0" cellspacing="0" class="esdev-mso-table" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:430px">
+            <tr>
+                <td class="esdev-mso-td" valign="top" style="padding:0;Margin:0">
+                    <table cellpadding="0" cellspacing="0" class="es-left" align="left" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
+                        <tr>
+                            <td class="es-m-p0r" valign="top" align="center" style="padding:0;Margin:0;width:90px">
+                                <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                                    <tr>
+                                        <td align="center" style="padding:0;Margin:0;font-size:0px"><img class="product-img" src="{productPhoto}" alt=alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="padding:0;Margin:0;width:20px"></td>
+                <td class="esdev-mso-td" valign="top" style="padding:0;Margin:0">
+                    <table class="es-left" cellpadding="0" cellspacing="0" align="left" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
+                        <tr>
+                            <td align="left" style="padding:0;Margin:0;width:270px">
+                                <table class="main-product-info-table" cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                                    <tr>
+                                        <td align="left" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:21px;color:#131313;font-size:14px">{brandName}</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:21px;color:#131313;font-size:14px">{categoryName}</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left" style="padding:0;Margin:0"><p class="articul-text" style="Margin: 0; -webkit-text-size-adjust: none; -ms-text-size-adjust: none; mso-line-height-rule: exactly; font-family: roboto, 'helvetica neue', helvetica, arial, sans-serif; line-height: 21px; color: #ababab; font-size: 14px; word-wrap: break-word; ">АРТ: {sku}</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left" style="padding:0;Margin:0"><p style="Margin: 0; -webkit-text-size-adjust: none; -ms-text-size-adjust: none; mso-line-height-rule: exactly; font-family: roboto, 'helvetica neue', helvetica, arial, sans-serif; line-height: 21px; color: #131313; font-size: 14px; vertical-align: bottom">Размер: {size}</p></td>
+                                    </tr>
+                                    {price}
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="padding:0;Margin:0;width:20px"></td>
+                <td class="esdev-mso-td" valign="top" style="padding:0;Margin:0">
+                    <table cellpadding="0" cellspacing="0" class="es-right" align="right" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right">
+                        <tr>
+                            <td align="left" style="padding:0;Margin:0;width:30px">
+                                <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
+                                    <tr>
+                                        <td align="center" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:21px;color:#131313;font-size:14px">{amo}</p></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
