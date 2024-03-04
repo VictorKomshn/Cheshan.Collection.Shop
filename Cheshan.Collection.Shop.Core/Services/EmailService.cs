@@ -21,9 +21,6 @@ namespace Cheshan.Collection.Shop.Core.Services
 
         private readonly string CustomerEmailSubject = "Благодарим за покупку!";
 
-
-        private readonly IProductsService _productsService;
-
         public EmailService()
         {
         }
@@ -207,12 +204,12 @@ namespace Cheshan.Collection.Shop.Core.Services
             };
 
             var mailBody = template.ReplaceAll(bodyReplacements);
-            await SendMail(mailBody, customerEmail, customerName);
+            //await SendMail(mailBody, customerEmail, customerName);
 
-            //foreach (var recepients in adminRecepientAdresses)
-            //{
-            //    await SendMail(mailBody, recepients, "Collectionchel");
-            //}
+            foreach (var recepient in adminRecepientAdresses)
+            {
+                await SendMail(mailBody, recepient, "Collectionchel");
+            }
         }
 
         private async Task SendMail(string mailBody, string recepientAdress, string recepientName)
