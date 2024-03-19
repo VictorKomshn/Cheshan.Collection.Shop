@@ -14,6 +14,7 @@ namespace Cheshan.Collection.Shop.Core
             services.AddScoped<INotificationRecieversService, NotificationRecieversService>();
             services.AddScoped<IPurchaseService, PurchaseService>();
             services.AddScoped<IHelpService, HelpService>();
+            services.AddTransient<ICDEKService, CDEKService>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IAlfaBankService, AlfaBankService>();
             services.AddSingleton<IBrandsBackgroundService, BrandsBackgroundService>();

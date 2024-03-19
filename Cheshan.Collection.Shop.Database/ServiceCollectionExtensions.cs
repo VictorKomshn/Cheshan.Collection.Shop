@@ -5,7 +5,6 @@ using Cheshan.Collection.Shop.Database.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Npgsql;
 
 namespace Cheshan.Collection.Shop.Database
@@ -27,14 +26,13 @@ namespace Cheshan.Collection.Shop.Database
                     Username = postgresOptions.Username,
                     Password = postgresOptions.Password,
                     Database = postgresOptions.Database,
-
                 };
 
                 var builder = new DbContextOptionsBuilder<DataContext>()
                     .UseNpgsql(connectionBuilder.ToString()).EnableSensitiveDataLogging();
-
                 return builder.Options;
             });
+
 
 
             services.AddTransient<ICartsRepository, CartsRepository>();
@@ -42,12 +40,6 @@ namespace Cheshan.Collection.Shop.Database
             services.AddScoped<INotificationRecieversRepository, NotificationRecieversRepository>();
             services.AddTransient<IPurchasesRepository, PurchasesRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
-
-
-            var provider = services.BuildServiceProvider();
-            var postgresOptions = provider.GetRequiredService<IOptions<PostgresOptions>>().Value;
-
-
 
             return services;
         }

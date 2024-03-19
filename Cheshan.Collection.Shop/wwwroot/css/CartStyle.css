@@ -3,7 +3,7 @@
 }
 
 body {
-    margin:unset;
+    margin: unset;
 }
 
 .mobile-price-info-wrapper {
@@ -136,6 +136,44 @@ input[type='radio']:checked:after {
     display: flex;
     gap: 10px;
 }
+
+.sdek-input-wrapper {
+    margin-top: 30px;
+}
+
+#cdek-map-mobile-popup-wrapper {
+    display: none;
+    flex-direction:column;
+    background:#fff;
+    position: fixed;
+    z-index: 9998;
+    width: 100%;
+    height: 100%;
+    top: 0;
+}
+
+#cdek-map-mobile-popup{
+    margin-top:5px;
+    height:100%;
+}
+
+.cdek-map-wrapper,
+.mobile-cdek-wrapper,
+.desktop-cdek-wrapper {
+    margin-top: 30px;
+}
+
+.mobile-cdek-wrapper {
+    display: none;
+}
+
+    .mobile-cdek-wrapper input[type=button] {
+        width: 100%;
+        height: 38px;
+        padding: 5px 15px;
+        border: 1px solid #000;
+        min-width: 20px;
+    }
 
 .promocode-header {
     margin-bottom: 20px;
@@ -303,7 +341,6 @@ input[type=submit]:hover {
     .purchase-info-wrapper {
         margin: 40px auto auto auto;
     }
-
 }
 
 @media(max-width:1000px) {
@@ -315,8 +352,8 @@ input[type=submit]:hover {
         width: unset;
     }
 
-    .purchase-info-wrapper{
-        margin-left:20px;
+    .purchase-info-wrapper {
+        margin-left: 20px;
     }
 }
 
@@ -337,7 +374,7 @@ input[type=submit]:hover {
     .product-in-cart-img {
         max-width: 66px;
         max-height: 97px;
-        object-fit:contain
+        object-fit: contain
     }
 
     .product-in-cart-brand {
@@ -358,5 +395,13 @@ input[type=submit]:hover {
 
     .promocode-input {
         flex-direction: column;
+    }
+
+    .mobile-cdek-wrapper {
+        display: block;
+    }
+
+    .desktop-cdek-wrapper {
+        display: none;
     }
 }

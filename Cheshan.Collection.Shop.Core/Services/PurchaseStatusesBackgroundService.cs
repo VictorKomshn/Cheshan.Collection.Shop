@@ -15,17 +15,18 @@ namespace Cheshan.Collection.Shop.Core.Services
         private readonly ICartsRepository _cartsRepository;
         private readonly IProductsRepository _productsRepository;
 
+        private readonly ICDEKService _cdekService;
         private readonly IAlfaBankService _alfaBankService;
-
         private readonly IEmailService _emailService;
 
         private readonly TimeSpan _statusThreshold = TimeSpan.FromMilliseconds(1000);
-
         private readonly TimeSpan _purchaseThreshold = TimeSpan.FromMilliseconds(1000);
+        private const string errorsRoot = @"../Cheshan.Collection.Shop.Core/emailErrors.txt";
 
         public PurchaseStatusesBackgroundService(IServiceProvider services,
                                                  IEmailService emailService,
-                                                 IAlfaBankService alfaBankService)
+                                                 IAlfaBankService alfaBankService,
+                                                 ICDEKService cdekService)
         {
             var scope = services.CreateScope();
 
@@ -35,6 +36,7 @@ namespace Cheshan.Collection.Shop.Core.Services
 
             _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
             _alfaBankService = alfaBankService ?? throw new ArgumentNullException(nameof(alfaBankService));
+            _cdekService = cdekService ?? throw new ArgumentNullException(nameof(cdekService)); ;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -45,7 +47,7 @@ namespace Cheshan.Collection.Shop.Core.Services
                 var stopwatch = Stopwatch.StartNew();
                 var recentPurchases = await _purchasesRepository.GetIncompleteRecent();
 
-                await File.AppendAllLinesAsync(@"../Cheshan.Collection.Shop.Core/emailErrors.txt", new[] { $"{DateTime.UtcNow} info:\t starting service" });
+                await File.AppendAllLinesAsync(errorsRoot, new[] { $"{DateTime.UtcNow} info:\t starting service" });
 
                 while (!stoppingToken.IsCancellationRequested)
                 {
@@ -61,7 +63,7 @@ namespace Cheshan.Collection.Shop.Core.Services
 
                     foreach (var purchase in recentPurchases)
                     {
-                        await File.AppendAllLinesAsync(@"../Cheshan.Collection.Shop.Core/emailErrors.txt", new[] { $"{DateTime.UtcNow} info:\t new purchase - P{purchase.Id}" });
+                        await File.AppendAllLinesAsync(errorsRoot, new[] { $"{DateTime.UtcNow} info:\t new purchase - P{purchase.Id}" });
 
                         var paymentComplete = false;
 
@@ -86,9 +88,20 @@ namespace Cheshan.Collection.Shop.Core.Services
 
                         if (purchase.PaymentLinksWithPurchase.All(x => x.IsCompleted == true))
                         {
-                            await File.AppendAllLinesAsync(@"../Cheshan.Collection.Shop.Core/emailErrors.txt", new[] { $"{DateTime.UtcNow} info:\tpurchase " + purchase.Id + " complete, sending notifications" });
+                            await File.AppendAllLinesAsync(errorsRoot, new[] { $"{DateTime.UtcNow} info:\tpurchase " + purchase.Id + " complete, sending notifications" });
 
                             purchase.IsComplited = true;
+
+
+                            string? cdekOrderNumber = null;
+                            if (purchase.DeliveryType == "cdek")
+                            {
+                                var cdekOrderId = await _cdekService.RegisterDeliveryRequestAsync(purchase);
+                                cdekOrderNumber = await _cdekService.GetOrderIdAsync(cdekOrderId.ToString());
+                                var adress = await _cdekService.GetAdressAsync(cdekOrderId.ToString());
+                                purchase.CDEKOrderNumber = cdekOrderNumber;
+                                purchase.DeliveryAdress = adress ?? "Ошибка, пожалуйста, обратитесь в службу поддержки";
+                            }
 
                             await _purchasesRepository.UpdatePurchaseAsync(purchase);
 
@@ -110,13 +123,13 @@ namespace Cheshan.Collection.Shop.Core.Services
                                 };
                             });
 
-                            await _emailService.SendPurchaseNotificationToCustomer(purchase.Email, purchase.Name, purchase.Phone, purchase.PurchaseId, purchase.DeliveryAdress, purchase.DeliveryType, purchase.PaymentType, emailProducts);
+                            await _emailService.SendPurchaseNotificationToCustomer(purchase.Email, purchase.Name, purchase.Phone, purchase.PurchaseId, purchase.DeliveryAdress, purchase.DeliveryType, purchase.PaymentType, emailProducts, cdekOrderNumber);
 
-                            await File.AppendAllLinesAsync(@"../Cheshan.Collection.Shop.Core/emailErrors.txt", new[] { $"{DateTime.UtcNow} info:\tpurchase " + purchase.Id + " notification to customer sent" });
+                            await File.AppendAllLinesAsync(errorsRoot, new[] { $"{DateTime.UtcNow} info:\tpurchase " + purchase.Id + " notification to customer sent" });
 
-                            await _emailService.SendPurchaseNotificationToAdministration(purchase.Email, purchase.Name, purchase.Phone, purchase.PurchaseId, purchase.DeliveryAdress, purchase.DeliveryType, purchase.PaymentType, emailProducts);
+                            await _emailService.SendPurchaseNotificationToAdministration(purchase.Email, purchase.Name, purchase.Phone, purchase.PurchaseId, purchase.DeliveryAdress, purchase.DeliveryType, purchase.PaymentType, emailProducts, cdekOrderNumber);
 
-                            await File.AppendAllLinesAsync(@"../Cheshan.Collection.Shop.Core/emailErrors.txt", new[] { $"{DateTime.UtcNow} info:\tpurchase " + purchase.Id + " complete, notification to admin sent" });
+                            await File.AppendAllLinesAsync(errorsRoot, new[] { $"{DateTime.UtcNow} info:\tpurchase " + purchase.Id + " complete, notification to admin sent" });
 
                             await _cartsRepository.ClearCartProductsAsync(purchase.UserId);
                         }
@@ -126,7 +139,7 @@ namespace Cheshan.Collection.Shop.Core.Services
             }
             catch (Exception ex)
             {
-                await File.AppendAllLinesAsync(@"../Cheshan.Collection.Shop.Core/emailErrors.txt", new[] { $"{DateTime.UtcNow} error:\t" + ex.Message });
+                await File.AppendAllLinesAsync(errorsRoot, new[] { $"{DateTime.UtcNow} error:\t" + ex.Message });
             }
         }
     }

@@ -1,4 +1,12 @@
 ﻿@model CartViewModel
+
+<div id="cdek-map-mobile-popup-wrapper">
+    <div class="close-icon-wrapper" data-close="cdek-map-mobile-popup-wrapper" style="background:#fff;">
+        <i class="icon close-icon"></i>
+    </div>
+    <div id="cdek-map-mobile-popup">
+    </div>
+</div>
 <div class="cart-wrapper">
     <div class="mobile-price-info-wrapper">
         <div class="price-info-inner">
@@ -69,8 +77,8 @@
                 <span class="delivery-options-header text-small-caps">ДОСТАВКА</span>
                 <div class="delivery-options-buttons-inner">
                     <input type="button" class="delivery-button cart-button text-medium-cart" value="КУРЬЕР" data-deliverytype="courier" onclick="selectDelivery(this)" />
-                    @*   УБРАЛ СДЭК ДО ДОГОВОРЕННОСТИ <input type="button" class="delivery-button cart-button text-medium-cart" value="СДЭК" data-deliverytype="sdek" onclick="selectDelivery(this)" />
-                *@                    <input type="button" class="delivery-button cart-button text-medium-cart selected-button" value="САМОВЫВОЗ" data-deliverytype="selfpickup" onclick="selectDelivery(this)" />
+                    <input type="button" class="delivery-button cart-button text-medium-cart" value="СДЭК" data-deliverytype="cdek" onclick="selectDelivery(this)" />
+                    <input type="button" class="delivery-button cart-button text-medium-cart selected-button" value="САМОВЫВОЗ" data-deliverytype="selfpickup" onclick="selectDelivery(this)" />
                 </div>
                 <div class="self-pick-up-options-wrapper">
                     <div class="self-pick-up-option">
@@ -95,6 +103,19 @@
                     <div class="input-with-label-wrapper">
                         <label for="Adress" class="required">АДРЕС</label>
                         <input id="adress-input" name="Adress" type="text" onfocusout="checkField(this,'')" />
+                    </div>
+                </div>
+                <div class="sdek-input-wrapper" style="display:none">
+                    <div class="selected-place-wrapper">
+                        <span class="text-regular-small" style="font-weight: 600;">Пункт выдачи: <span id="selected-sdek-adress" class="text-regular-small" style="color:#f00">выберите удобный адрес</span></span>
+                    </div>
+                    <div class="desktop-cdek-wrapper">
+                        <div class="cdek-map-wrapper">
+                            <div id="cdek-map" style="height:400px;"></div>
+                        </div>
+                    </div>
+                    <div class="mobile-cdek-wrapper text-small-caps">
+                        <input type="button" onclick="openCDEKMap()" class="" value="Показать ПВЗ" />
                     </div>
                 </div>
             </div>
@@ -188,6 +209,5 @@
 </div>
 
 <script src="~/js/CartScript.js"></script>
-
 <link href="~/css/CartStyle.css" rel="stylesheet" />
 <link href="~/css/ProductInCartStyle.css" rel="stylesheet" />

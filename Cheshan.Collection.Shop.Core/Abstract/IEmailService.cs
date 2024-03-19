@@ -17,7 +17,7 @@ namespace Cheshan.Collection.Shop.Core.Abstract
         /// <param name="paymentType"></param>
         /// <param name="products"></param>
         /// <returns></returns>
-        public Task SendPurchaseNotificationToCustomer(string customerEmail, string customerName, string? customerPhone, string purchaseId, string adress, string deliveryType, string paymentType, IEnumerable<EmailProductModel> products);
+        public Task SendPurchaseNotificationToCustomer(string customerEmail, string customerName, string? customerPhone, string purchaseId, string adress, string deliveryType, string paymentType, IEnumerable<EmailProductModel> products,string? cdekOrderId = null);
 
         /// <summary>
         /// Отправка уведомления об успешной покупке администрации
@@ -31,7 +31,7 @@ namespace Cheshan.Collection.Shop.Core.Abstract
         /// <param name="paymentType"></param>
         /// <param name="products"></param>
         /// <returns></returns>
-        Task SendPurchaseNotificationToAdministration(string customerEmail, string customerName, string? customerPhone, string purchaseId, string adress, string deliveryType, string paymentType, IEnumerable<EmailProductModel> products);
+        Task SendPurchaseNotificationToAdministration(string customerEmail, string customerName, string? customerPhone, string purchaseId, string adress, string deliveryType, string paymentType, IEnumerable<EmailProductModel> products, string? cdekOrderId = null);
 
     }
 }

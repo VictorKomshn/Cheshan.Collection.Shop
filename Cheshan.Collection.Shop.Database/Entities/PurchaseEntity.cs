@@ -48,6 +48,11 @@
         public string DeliveryAdress { get; set; }
 
         /// <summary>
+        /// Идентификатор заказа в ИС СДЭК
+        /// </summary>
+        public string? CDEKOrderNumber { get; set; }
+
+        /// <summary>
         /// Тип оплаты
         /// </summary>
         public string PaymentType { get; set; }
@@ -86,5 +91,13 @@
         /// Список заказанных продуктов
         /// </summary>
         public virtual ICollection<PurchasedProductEntity> PurchasedProducts { get; set; }
+
+        public override int GetHashCode()
+        {
+            var hash = base.GetHashCode();
+            hash ^= Id.GetHashCode();
+            hash ^= UserId.GetHashCode();
+            return Math.Abs(hash);
+        }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using Cheshan.Collection.Shop.Core.Abstract;
 using Cheshan.Collection.Shop.Core.EmailCompositions.ViewModels;
 using Cheshan.Collection.Shop.Core.Extensions;
-using Cheshan.Collection.Shop.Database.Entities;
-using Cheshan.Collection.Shop.Database.Extensions;
 using System.Net;
 using System.Net.Mail;
 
@@ -25,7 +23,7 @@ namespace Cheshan.Collection.Shop.Core.Services
         {
         }
 
-        public async Task SendPurchaseNotificationToCustomer(string customerEmail, string customerName, string? customerPhone, string purchaseId, string adress, string deliveryType, string paymentType, IEnumerable<EmailProductModel> products)
+        public async Task SendPurchaseNotificationToCustomer(string customerEmail, string customerName, string? customerPhone, string purchaseId, string adress, string deliveryType, string paymentType, IEnumerable<EmailProductModel> products, string? cdekOrderId = null)
         {
             var model = new CustomerMessageViewModel
             {
@@ -84,8 +82,8 @@ namespace Cheshan.Collection.Shop.Core.Services
                     { "{price}", priceHtml },
                     { "{size}", product.Size },
                     { "{productPhoto}", "https://collectionchel.ru/img/" + product.Photo },
-                    {"{categoryName}",product.Name },
-                    {"{amo}",product.Amount > 1 ? "x"+ product.Amount.ToString():string.Empty },
+                    { "{categoryName}",product.Name },
+                    { "{amo}",product.Amount > 1 ? "x"+ product.Amount.ToString():string.Empty },
                     { "{brandName}",product.Brand }
                 };
 
@@ -108,15 +106,22 @@ namespace Cheshan.Collection.Shop.Core.Services
                     { "{purchaseSummaryPrice}",summaryPrice.ToString() },
                     { "{discountPrice}",discountPrice.ToString() },
                     { "{finalPrice}",finalPrice.ToString() },
-
             };
+
+            if (cdekOrderId != null)
+            {
+                var cdekSection = File.ReadAllText(@"../Cheshan.Collection.Shop.Core/EmailCompositions/CdekOrderId.html");
+
+                cdekSection.Replace("{cdekOrderId}", cdekOrderId);
+
+                bodyReplacements.Add("{cdekOrderIdSection}", cdekSection);
+            }
 
             var mailBody = template.ReplaceAll(bodyReplacements);
             await SendMail(mailBody, customerEmail, customerName);
         }
 
-
-        public async Task SendPurchaseNotificationToAdministration(string customerEmail, string customerName, string? customerPhone, string purchaseId, string adress, string deliveryType, string paymentType, IEnumerable<EmailProductModel> products)
+        public async Task SendPurchaseNotificationToAdministration(string customerEmail, string customerName, string? customerPhone, string purchaseId, string adress, string deliveryType, string paymentType, IEnumerable<EmailProductModel> products, string? cdekOrderId = null)
         {
             var model = new CustomerMessageViewModel
             {
