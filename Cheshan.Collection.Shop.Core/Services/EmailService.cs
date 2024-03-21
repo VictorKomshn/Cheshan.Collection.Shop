@@ -110,9 +110,14 @@ namespace Cheshan.Collection.Shop.Core.Services
 
             if (cdekOrderId != null)
             {
-                var cdekSection = File.ReadAllText(@"../Cheshan.Collection.Shop.Core/EmailCompositions/CdekOrderId.html");
+                var cdekTemplate = File.ReadAllText(@"../Cheshan.Collection.Shop.Core/EmailCompositions/CdekOrderId.html");
 
-                cdekSection.Replace("{cdekOrderId}", cdekOrderId);
+                var replacements = new Dictionary<string, string>
+                {
+                    { "{cdekOrderId}",cdekOrderId }
+                };
+
+                var cdekSection = cdekTemplate.ReplaceAll(replacements);
 
                 bodyReplacements.Add("{cdekOrderIdSection}", cdekSection);
             }

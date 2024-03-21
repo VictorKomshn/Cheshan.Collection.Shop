@@ -69,8 +69,8 @@
                 </div>
 
                 <div class="input-with-label-wrapper">
-                    <label for="Phone">ТЕЛЕФОН</label>
-                    <input id="phone-input" name="Phone" type="text" onfocusout="checkField(this,'phone')" />
+                    <label for="Phone" class="required">ТЕЛЕФОН</label>
+                    <input id="phone-input" name="Phone" type="text" onfocusout="checkField(this,'phone')" value="+7"/>
                 </div>
             </div>
             <div class="delivery-options-wrapper">
@@ -102,7 +102,7 @@
                     <span class="adress-input-notification text-regular-small">Доставка курьером доступна только в пределах Челябинска</span>
                     <div class="input-with-label-wrapper">
                         <label for="Adress" class="required">АДРЕС</label>
-                        <input id="adress-input" name="Adress" type="text" onfocusout="checkField(this,'')" />
+                        <input id="adress-input" name="DeliveryAdress" type="text" onfocusout="checkField(this,'')" />
                     </div>
                 </div>
                 <div class="sdek-input-wrapper" style="display:none">
@@ -120,7 +120,7 @@
                 </div>
             </div>
             <input id="delivery-type-input" name="DeliveryType" type="hidden" value="selfpickup">
-
+            <input id="cdek-adress-input" name="CDEKItemId" type="hidden" value="">
             <div class="promocode-wrapper">
                 <span class="promocode-header text-small-caps">ПРОМОКОД</span>
                 <div class="promocode-input">

@@ -44,16 +44,16 @@ namespace Cheshan.Collection.Shop.Controllers
             return Content(result, "application/json");
         }
 
-        /// <summary>
-        /// Метод сохранения выбранного адреса ПВЗ
-        /// </summary>
-        /// <param name="adress"></param>
-        [Route("save")]
-        [HttpPost]
-        public IActionResult SaveSetAdress([FromBody] CDEKAdressModel adress)
-        {
-            _cdekservice.SaveAdress(adress);
-            return Ok();
-        }
+        ///// <summary>
+        ///// Метод сохранения выбранного адреса ПВЗ
+        ///// </summary>
+        ///// <param name="adress"></param>
+        //[Route("save")]
+        //[HttpPost]
+        //public IActionResult SaveSetAdress([FromBody] CDEKAdressModel adress)
+        //{
+        //    _cdekservice.SaveAdress(adress);
+        //    return Ok();
+        //}
     }
 }

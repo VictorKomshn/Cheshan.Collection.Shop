@@ -46,8 +46,8 @@ namespace Cheshan.Collection.Shop.Core.Models
         [JsonPropertyName("location")]
         public double[] Location { get; set; }
 
-        [JsonPropertyName("dimensions")]
-        public string? Dimensions { get; set; }
+        //[JsonPropertyName("dimensions")]
+        //public object? Dimensions { get; set; }
 
         [JsonPropertyName("region")]
         public string? Region { get; set; }

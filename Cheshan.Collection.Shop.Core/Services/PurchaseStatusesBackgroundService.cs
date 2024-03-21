@@ -43,10 +43,9 @@ namespace Cheshan.Collection.Shop.Core.Services
         {
             try
             {
-
                 var stopwatch = Stopwatch.StartNew();
                 var recentPurchases = await _purchasesRepository.GetIncompleteRecent();
-
+                bool newPurchaseAdded = false;
                 await File.AppendAllLinesAsync(errorsRoot, new[] { $"{DateTime.UtcNow} info:\t starting service" });
 
                 while (!stoppingToken.IsCancellationRequested)
@@ -56,14 +55,25 @@ namespace Cheshan.Collection.Shop.Core.Services
 
                     if (stopwatch.Elapsed >= _purchaseThreshold)
                     {
+                        newPurchaseAdded = false;
+                        var previousPurchases = recentPurchases;
                         recentPurchases = await _purchasesRepository.GetIncompleteRecent();
-
+                        if (previousPurchases != null &&
+                            recentPurchases != null &&
+                            previousPurchases.Any() &&
+                            recentPurchases.Any() &&
+                            previousPurchases.OrderByDescending(x => x.Created).First().Id == recentPurchases.OrderByDescending(x => x.Created).First().Id)
+                        {
+                            newPurchaseAdded = true;
+                        }
                         stopwatch.Restart();
                     }
-
                     foreach (var purchase in recentPurchases)
                     {
-                        await File.AppendAllLinesAsync(errorsRoot, new[] { $"{DateTime.UtcNow} info:\t new purchase - P{purchase.Id}" });
+                        if (newPurchaseAdded)
+                        {
+                            await File.AppendAllLinesAsync(errorsRoot, new[] { $"{DateTime.UtcNow} info:\t new purchase - P{purchase.Id}" });
+                        }
 
                         var paymentComplete = false;
 
@@ -88,10 +98,7 @@ namespace Cheshan.Collection.Shop.Core.Services
 
                         if (purchase.PaymentLinksWithPurchase.All(x => x.IsCompleted == true))
                         {
-                            await File.AppendAllLinesAsync(errorsRoot, new[] { $"{DateTime.UtcNow} info:\tpurchase " + purchase.Id + " complete, sending notifications" });
-
                             purchase.IsComplited = true;
-
 
                             string? cdekOrderNumber = null;
                             if (purchase.DeliveryType == "cdek")
@@ -104,6 +111,8 @@ namespace Cheshan.Collection.Shop.Core.Services
                             }
 
                             await _purchasesRepository.UpdatePurchaseAsync(purchase);
+
+                            await File.AppendAllLinesAsync(errorsRoot, new[] { $"{DateTime.UtcNow} info:\tpurchase " + purchase.Id + " complete, sending notifications" });
 
                             var purchasedProducts = purchase.PurchasedProducts;
 
@@ -139,7 +148,7 @@ namespace Cheshan.Collection.Shop.Core.Services
             }
             catch (Exception ex)
             {
-                await File.AppendAllLinesAsync(errorsRoot, new[] { $"{DateTime.UtcNow} error:\t" + ex.Message });
+                await File.AppendAllLinesAsync(errorsRoot, new[] { $"{DateTime.UtcNow} error:\t" + ex.Message + $"\n\t\t{ex.StackTrace}" });
             }
         }
     }

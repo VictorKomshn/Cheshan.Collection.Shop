@@ -32,6 +32,7 @@ function selectDelivery(element) {
         adressInputWrapper.style.display = "block";
         selfPickUpWrapper.style.display = "none";
         sdekInputWrapper.style.display = "none";
+        document.getElementById("tsvillinga-delivery-adress").checked = false;
 
         deliveryTypeInput.value = "courier";
     }
@@ -39,6 +40,7 @@ function selectDelivery(element) {
         sdekInputWrapper.style.display = "block";
         selfPickUpWrapper.style.display = "none";
         adressInputWrapper.style.display = "none";
+        document.getElementById("tsvillinga-delivery-adress").checked = false;
 
         deliveryTypeInput.value = "cdek";
     }
@@ -46,6 +48,7 @@ function selectDelivery(element) {
         selfPickUpWrapper.style.display = "flex";
         adressInputWrapper.style.display = "none";
         sdekInputWrapper.style.display = "none";
+        document.getElementById("tsvillinga-delivery-adress").checked = true;
 
         deliveryTypeInput.value = "selfpickup";
     }
@@ -128,16 +131,16 @@ document.getElementById("phone-input").addEventListener("input", function (e) {
     validateCart();
 })
 
-document.getElementById("phone-input").addEventListener("input", function (e) {
-    if (this.value != "") {
-        cartPhoneInputValid = true;
-    }
-    else {
-        cartPhoneInputValid = false;
-    }
+//document.getElementById("phone-input").addEventListener("input", function (e) {
+//    if (this.value != "") {
+//        cartPhoneInputValid = true;
+//    }
+//    else {
+//        cartPhoneInputValid = false;
+//    }
 
-    validateCart();
-})
+//    validateCart();
+//})
 
 document.getElementById("adress-input").addEventListener("input", function (e) {
 
@@ -157,6 +160,7 @@ function validateCart() {
         cartNameInputValid == true &&
         cartSecondNameInputValid == true &&
         cartEmailInputValid == true &&
+        cartPhoneInputValid == true && 
         deliveryTypeInput.value != "" &&
         pamentTypeInput.value != "") {
         if (deliveryTypeInput.value == "courier") {
@@ -218,21 +222,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-function onDeliveryAdressChosen(deliveryType, tariff, address) {
-    return jQuery.ajax({
-        'contentType': 'application/json; charset=utf-8',
-        'type': 'POST',
-        'url': "/cdek-service/save",
-        'data': JSON.stringify(address),
-        'success': function (res) {
+const selectedCdekAdress = null;
 
-            var cdekDeliveryAdress = document.getElementById("selected-sdek-adress");
-            cdekDeliveryAdress.style.color = "#000";
-            cdekDeliveryAdress.innerHTML = address.city + ", " + address.address;
-            cartCDEKAdressChosen = true;
-            validateCart();
-        }
-    })
+function onDeliveryAdressChosen(deliveryType, tariff, address) {
+
+    document.getElementById("cdek-adress-input").value = address["code"];
+    document.getElementById("adress-input").value = address["city"] + address["address"];
+    var cdekDeliveryAdress = document.getElementById("selected-sdek-adress");
+    cdekDeliveryAdress.style.color = "#000";
+    cdekDeliveryAdress.innerHTML = address.city + ", " + address.address;
+    cartCDEKAdressChosen = true;
+    validateCart();
+    //return jQuery.ajax({
+    //    'contentType': 'application/json; charset=utf-8',
+    //    'type': 'POST',
+    //    'url': "/cdek-service/save",
+    //    'data': JSON.stringify(address),
+    //    'success': function (res) {
+
+    //        var cdekDeliveryAdress = document.getElementById("selected-sdek-adress");
+    //        cdekDeliveryAdress.style.color = "#000";
+    //        cdekDeliveryAdress.innerHTML = address.city + ", " + address.address;
+    //        cartCDEKAdressChosen = true;
+    //        validateCart();
+    //    }
+    //})
 }
 
 var cdekMapPopupWrapper = document.getElementById("cdek-map-mobile-popup-wrapper");

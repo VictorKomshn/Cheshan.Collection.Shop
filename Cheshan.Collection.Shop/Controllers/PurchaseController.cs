@@ -10,12 +10,12 @@ namespace Cheshan.Collection.Shop.Controllers
     public class PurchaseController : Controller
     {
         private readonly IPurchaseService _purchaseService;
-        private readonly ICartsService _cartsService;
+        private readonly IBrandService _brands;
 
-        public PurchaseController(IPurchaseService purchaseService, ICartsService cartsService)
+        public PurchaseController(IPurchaseService purchaseService, IBrandService brands)
         {
             _purchaseService = purchaseService ?? throw new ArgumentNullException(nameof(purchaseService));
-            _cartsService = cartsService ?? throw new ArgumentNullException(nameof(cartsService));
+            _brands = brands ?? throw new ArgumentNullException(nameof(brands));
         }
 
         [HttpPost]
@@ -60,6 +60,7 @@ namespace Cheshan.Collection.Shop.Controllers
             var viewModel = new SuccessViewModel()
             {
                 PurchaseId = id,
+                AllBrands = _brands.GetAll()
             };
             return View("Success", viewModel);
         }

@@ -1,4 +1,4 @@
-﻿const phoneRegex = /^(\+7|8)[(\s]?[0-9]{3}[)]?[-\s]?[0-9]{3}[-\s]?[0-9]{2}[-\s]?[0-9]{2}$/im;
+﻿const phoneRegex = /^(\+7)[(\s]?[0-9]{3}[)]?[-\s]?[0-9]{3}[-\s]?[0-9]{2}[-\s]?[0-9]{2}$/im;
 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
 function isPhoneValid(phone) {

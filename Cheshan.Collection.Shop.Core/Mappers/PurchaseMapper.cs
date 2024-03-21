@@ -21,6 +21,7 @@ namespace Cheshan.Collection.Shop.Core.Mappers
                 UserId = userId,
                 PriceForSP1 = priceForSP1,
                 PriceForSP2 = priceForSP2,
+                CDEKItemId = model.CDEKItemId,
             };
 
             return entity;

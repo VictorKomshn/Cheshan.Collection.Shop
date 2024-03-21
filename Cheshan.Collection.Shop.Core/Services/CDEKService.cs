@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using Cheshan.Collection.Shop.Core.Abstract;
+﻿using Cheshan.Collection.Shop.Core.Abstract;
 using Cheshan.Collection.Shop.Core.Extensions;
 using Cheshan.Collection.Shop.Core.Models;
 using Cheshan.Collection.Shop.Database.Entities;
@@ -63,15 +62,6 @@ namespace Cheshan.Collection.Shop.Core.Services
             {
                 throw;
             }
-        }
-
-        /// <summary>
-        /// Метод сохранения выбранного адреса
-        /// </summary>
-        /// <param name="adress"></param>
-        public void SaveAdress(CDEKAdressModel adress)
-        {
-            _selectedDestinationAdress = adress;
         }
 
         /// <summary>
@@ -173,7 +163,7 @@ namespace Cheshan.Collection.Shop.Core.Services
         /// <returns></returns>
         private JObject CreateRequest(PurchaseEntity purchase)
         {
-            var request = GetBaseRequest(purchase.PurchaseId);
+            var request = GetBaseRequest(purchase.PurchaseId, purchase.CDEKItemId);
 
             var phones = new JObject()
             {
@@ -200,7 +190,7 @@ namespace Cheshan.Collection.Shop.Core.Services
         /// </summary>
         /// <param name="orderId">Номер заказа</param>
         /// <returns></returns>
-        private JObject GetBaseRequest(string orderId)
+        private JObject GetBaseRequest(string orderId, string CDEKItemId)
         {
 
             var request = new JObject
@@ -209,7 +199,7 @@ namespace Cheshan.Collection.Shop.Core.Services
                 { "tariff_code", 483 },         // Экспресс склад-склад
                 { "number",orderId },           // Номер заказа в системе collectionchel
                 { "shipment_point", "CHEL71"},    // Код ПВЗ СДЭК, на который будет производиться самостоятельный привоз клиентом
-                { "delivery_point", _selectedDestinationAdress.Code },    // Код ПВЗ СДЭК, на который будет производиться доставка
+                { "delivery_point", CDEKItemId },    // Код ПВЗ СДЭК, на который будет производиться доставка
             };
 
             var senderInfo = new JObject

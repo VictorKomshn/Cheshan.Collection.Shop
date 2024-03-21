@@ -19,5 +19,7 @@
         public string? Promocode { get; set; }
 
         public bool IsComplited { get; set; }
+
+        public string? CDEKItemId { get; set; }
     }
 }

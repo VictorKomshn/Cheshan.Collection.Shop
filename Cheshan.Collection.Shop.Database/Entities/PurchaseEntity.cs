@@ -53,6 +53,11 @@
         public string? CDEKOrderNumber { get; set; }
 
         /// <summary>
+        /// ID пункта выдачи заказа
+        /// </summary>
+        public string? CDEKItemId { get; set; }
+
+        /// <summary>
         /// Тип оплаты
         /// </summary>
         public string PaymentType { get; set; }

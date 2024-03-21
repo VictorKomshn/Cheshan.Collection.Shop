@@ -8,12 +8,6 @@ namespace Cheshan.Collection.Shop.Core.Abstract
         Task<Guid> RegisterDeliveryRequestAsync(PurchaseEntity purchase);
 
         /// <summary>
-        /// Метод сохранения выбранного адреса
-        /// </summary>
-        /// <param name="adress"></param>
-        void SaveAdress(CDEKAdressModel adress);
-
-        /// <summary>
         /// Метод отправки асинхронного http запроса на CDEK API
         /// </summary>
         /// <param name="method"></param>

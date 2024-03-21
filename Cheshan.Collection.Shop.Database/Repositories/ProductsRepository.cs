@@ -184,7 +184,7 @@ namespace Cheshan.Collection.Shop.Database.Repositories
             var latestProductsAmount = 20;
             var take = 4;
             var query = _dataContext.Products.AsQueryable();
-            query = query.OrderBy(x => x.DateAdded)
+            query = query.OrderByDescending(x => x.DateAdded)
                  .Where(x => x.CategoryType == CategoryType.Clothes)
                  .Take(20);
 
@@ -208,7 +208,7 @@ namespace Cheshan.Collection.Shop.Database.Repositories
                                                                     string[]? sizes,
                                                                     string? color,
                                                                     string? searchString = null,
-                                                                    SortingType? sortType = null)
+                                                                    SortingType? sortType = SortingType.ByDate)
         {
             var valuesToReplace = new[] { ',', '-', '/' };
             brandNames = brandNames?.Select(x => x.Replace(valuesToReplace, ' ')).ToArray();
